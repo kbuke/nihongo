@@ -16,40 +16,40 @@ class AllUsers(Resource):
     
     def post(self):
         json = request.get_json()
-        role = json.get("role")
+        role = json.get("newUserRole")
         try:
             if role == "Admin":
                 new_user = Admin(
-                    username = json.get("username"),
-                    user_info = json.get("user_info"),
-                    profile_picture = json.get("profile_picture"),
+                    username = json.get("newUserName"),
+                    user_info = json.get("newUserInfo"),
+                    profile_picture = json.get("newUserPic"),
                     role = role,
-                    hometown = json.get("hometown"),
-                    home_country = json.get("home_country")
+                    hometown = json.get("newUserHomeTown"),
+                    home_country = json.get("newUserHomeCountry")
                 )
 
-            elif role == "Traveller" or role == "Admin":
+            elif role == "Traveller":
                 new_user = Traveler(
-                    username = json.get("username"),
-                    user_info = json.get("user_info"),
-                    profile_picture = json.get("profile_picture"),
+                    username = json.get("newUserName"),
+                    user_info = json.get("newUserInfo"),
+                    profile_picture = json.get("newUserPic"),
                     role = role,
-                    hometown = json.get("hometown"),
-                    home_country = json.get("home_country")
+                    hometown = json.get("newUserHomeTown"),
+                    home_country = json.get("newUserHomeCountry")
                 )
             
             elif role == "Citizen":
                 new_user = Citizen(
-                    username = json.get("username"),
-                    user_info = json.get("user_info"),
-                    profile_picture = json.get("profile_picture"),
+                    username = json.get("newUserName"),
+                    user_info = json.get("newUserInfo"),
+                    profile_picture = json.get("newUserPic"),
                     role = role,
-                    hometown = json.get("hometown"),
-                    home_country = json.get("home_country"),
-                    current_town = json.get("current_town")
+                    hometown = json.get("newUserHomeTown"),
+                    home_country = json.get("newUserHomeCountry"),
+                    current_town = json.get("newUserCurrentTown")
                 )
 
-            new_user.password = json.get("userPassword")
+            new_user.password = json.get("newUserPassword")
             db.session.add(new_user)
             db.session.commit()
             return new_user.to_dict(), 201

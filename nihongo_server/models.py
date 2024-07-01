@@ -27,7 +27,7 @@ class Users(db.Model, SerializerMixin):
 
     @validates("user_info")
     def validate_user_info(self, key, info):
-        if 20 <= len(info) <= 250:
+        if 0 <= len(info) <= 250:
             return info 
         raise ValueError("Users Information must be between 20 and 250 characters")
 

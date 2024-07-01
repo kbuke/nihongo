@@ -1,0 +1,112 @@
+/* #homePgContainer{
+    border: solid;
+} */
+
+.homePgBanner{
+    height: 150px;
+    background-color: #F9F6EE;
+}
+
+.homePgBannerGrid{
+    display: grid;
+    grid-template-columns: 20% 60% 20%;
+    /* border: dashed; */
+    height: 140px;
+    display: flex;
+    background-color: white;
+
+}
+
+#homePgLogoContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: contain;
+    overflow: hidden;
+}
+
+#homePgLogo{
+    max-width: 100%;
+    height: 270px;
+}
+
+#homePgTitle{
+    font-family: cursive;
+}
+
+#signInForm{
+    border: solid;
+    height: 60px;
+    margin-left: 550px;
+    width: 400px;
+}
+
+#homeInfoContainer{
+    width: 100%;
+    border: solid;
+    margin-top: 5px;
+    height: 650px;
+    margin-bottom: 5px;
+    background-image: url("https://www.state.gov/wp-content/uploads/2019/04/Japan-2107x1406.jpg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+#signUpForm{
+    margin-top: 50px;
+    margin-left: 20px;
+    width: 600px;
+    height: 550px;
+    border: solid;
+    border-radius: 5%;
+    background-color: black;
+    opacity: 0.6;
+}
+
+#signUpTitle{
+    text-align: center;
+    color: white;
+    opacity: 1;
+}
+
+.signUpTypeInstruction{
+    color: white;
+    text-align: center;
+    font-weight: bolder;
+    text-decoration: underline;
+}
+
+#signUpButton,
+#backButton{
+   text-align: center;
+   height: 40px;
+   width: 200px;
+}
+
+#signUpConfirmButtons{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#backButton{
+    margin-right: 10px;
+}
+
+
+.newUserInput{
+    width: 100%;
+    margin-top: 10px;
+    height: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#signUpConfirmButtons{
+    margin-top: 10px;
+}
+
+
+
