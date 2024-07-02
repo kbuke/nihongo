@@ -1,5 +1,5 @@
 import App from "./App";
-import Home from "./app_pages/HomePg/Home";
+import Home from "./app_pages/HomePg/HomePg/Home";
 
 const routes = [
     {

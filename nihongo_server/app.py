@@ -85,6 +85,32 @@ class AllCitizens(Resource):
     def get(self):
         citizens = [citizen.to_dict() for citizen in Citizen.query.all()]
         return citizens, 200
+
+class Login(Resource):
+    def post(self):
+        json = request.get_json()
+        username = json.get("signInName")
+        password = json.get("signInPassword")
+
+        if not username or not password:
+            return {"error": "Username and Password required"}, 400
+        
+        user = Users.query.filter(Users.username == username).first()
+
+        if user and user.authenticate(password):
+            session['user_id'] = user.id 
+            return user.to_dict(), 200
+        
+        return {'error': "Invalid username or password"}, 401
+
+class CheckSession(Resource):
+    def get(self):
+        user_id = session.get('user_id')
+        if user_id:
+            user = User.query.filter(User.id == user_id).first()
+            if user:
+                return user.to_dict(), 200
+        return {"message": "Unauthorized user"}, 401
     
 
 
@@ -93,6 +119,8 @@ api.add_resource(UsersId, '/users/<int:id>')
 api.add_resource(AllAdministrators, '/admins')
 api.add_resource(AllTravelers, '/travelers')
 api.add_resource(AllCitizens, '/citizens')
+api.add_resource(Login, '/login')
+api.add_resource(CheckSession, '/check_session')
 
 
 if __name__ == '__main__':

@@ -19,7 +19,8 @@ if __name__ == '__main__':
             user_info = "Creating a web applicaation to make travelling around the country of Japan easier.",
             profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "London",
-            home_country = "UK"
+            home_country = "UK",
+            role="Admin"
         )
         kbuke13.password = "kara1328"
 
@@ -32,7 +33,8 @@ if __name__ == '__main__':
             user_info = "Hoping to plan a trip to Japan for my boyfriend and I. Looking for recommendations.",
             profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "London",
-            home_country = "UK"
+            home_country = "UK",
+            role = "Traveller"
         )
         zhirji15.password = "louisBruce"
 
@@ -41,7 +43,8 @@ if __name__ == '__main__':
             user_info = "Have always wanted to go to Japan, making it a reality now",
             profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "Armagh",
-            home_country = "Ireland"
+            home_country = "Ireland",
+            role = "Traveller"
         )
         gbuke02.password = "Armagh01"
 
@@ -56,7 +59,8 @@ if __name__ == '__main__':
             profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "Kyoto",
             home_country = "Japan",
-            current_town = "Osaka"
+            current_town = "Osaka",
+            role="Citizen"
         )
         rNishiyama29.password = "Kyoto1"
 

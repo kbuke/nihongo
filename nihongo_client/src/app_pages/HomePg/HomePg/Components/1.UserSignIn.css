@@ -1,0 +1,34 @@
+#userSignInForm{
+    margin-left: 500px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+
+#loginError{
+    border: solid;
+    height: 40px;
+    margin-left: 4px;
+    margin-top: 5px;
+    width: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #D2042D;
+    border: none;
+    color: white;
+}
+
+#username,
+#password,
+#loginButton{
+    margin-left: 10px;
+    text-align: center;
+}
+
+#loginButton{
+    width: 100px;
+}
