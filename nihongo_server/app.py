@@ -107,10 +107,20 @@ class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id')
         if user_id:
-            user = User.query.filter(User.id == user_id).first()
+            user = Users.query.filter(Users.id == user_id).first()
             if user:
                 return user.to_dict(), 200
         return {"message": "Unauthorized user"}, 401
+
+class LogOut(Resource):
+    def delete(self):
+        user_id = session.get('user_id')
+        if user_id:
+            session.pop('user_id')
+            return {}, 204
+        return {"message": "Unautjorized"}, 401
+
+
     
 
 
@@ -121,6 +131,7 @@ api.add_resource(AllTravelers, '/travelers')
 api.add_resource(AllCitizens, '/citizens')
 api.add_resource(Login, '/login')
 api.add_resource(CheckSession, '/check_session')
+api.add_resource(LogOut, '/logout')
 
 
 if __name__ == '__main__':

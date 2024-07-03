@@ -1,0 +1,46 @@
+#verticalNavContainerSmall{
+    border: none;
+    border-right: solid;
+    width: 50px;
+    height: 100%;
+    position: fixed;
+    margin-top: 101px;
+    opacity: 0.5;
+}
+
+#verticalNavContainerBig{
+    border: none;
+    border-right: solid;
+    width: 220px;
+    height: 100%;
+    position: fixed;
+    margin-top: 101px;
+}
+
+#tripIconSmallContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#tripIconSmall{
+    font-size: 200%;
+}
+
+.iconLargeContainer{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.iconLarge{
+    font-size: 200%;
+    margin-left: 5px;
+}
+
+.iconText{
+    font-family: cursive;
+    font-size: 150%;
+}

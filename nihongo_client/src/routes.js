@@ -1,5 +1,6 @@
 import App from "./App";
-import Home from "./app_pages/HomePg/HomePg/Home";
+import Home from "./app_pages/HomePg/NoLoginHome";
+import LoggedInHome from "./app_pages/HomePg/LoggedInHome";
 
 const routes = [
     {
@@ -9,6 +10,10 @@ const routes = [
             {
                 path: "/",
                 element: <Home />
+            },
+            {
+                patch: "/",
+                element: <LoggedInHome />
             }
         ]
     }

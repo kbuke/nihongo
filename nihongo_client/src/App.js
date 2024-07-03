@@ -1,5 +1,6 @@
 import './App.css';
-import Home from './app_pages/HomePg/HomePg/Home';
+import Home from './app_pages/HomePg/NoLoginHome';
+import LoggedInHome from './app_pages/HomePg/LoggedInHome';
 
 import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
@@ -32,7 +33,7 @@ function App() {
       }
     })
   }, [])
-
+  console.log(loggedUser)
 
   return(
     <div>

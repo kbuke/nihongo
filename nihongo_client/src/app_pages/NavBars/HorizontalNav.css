@@ -1,0 +1,60 @@
+#horizontalNav{
+    height: 100px;
+    width: 100%;
+    border: none;
+    border-bottom: solid;
+    display: grid;
+    grid-template-columns: 15% 60% 10%;
+    display: flex;
+    position: fixed;
+}
+
+#loggedLogoContainer{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: none;
+    object-fit: contain;
+    max-height: 100%;
+}
+
+#loggedLogo{
+    max-width: 100%;
+    height: 180px;
+}
+
+#searchBarContainer{
+    width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#searchBar{
+    width: 400px;
+    height: 30px;
+    border: none;
+    border-bottom: solid;
+    text-align: center;
+    font-family: cursive;
+    color: black;
+    font-weight: bolder;
+    font-size: 200%;
+}
+
+#loggedUserImgContainer{
+    margin-left: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loggedUserImg{
+    border: solid;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
