@@ -1,6 +1,8 @@
 import App from "./App";
-import Home from "./app_pages/HomePg/NoLoginHome";
-import LoggedInHome from "./app_pages/HomePg/LoggedInHome";
+import Home from "./app_pages/HomePgNoLogin/NoLoginHome";
+import LoggedInHome from "./app_pages/HomePgLoggedIn/LoggedInHome";
+import Prefectures from "./app_pages/Prefectures/Prefectures";
+import { path } from "@amcharts/amcharts4/core";
 
 const routes = [
     {
@@ -13,7 +15,11 @@ const routes = [
             },
             {
                 patch: "/",
-                element: <LoggedInHome />
+                element: <LoggedInHome />,
+            },
+            {
+                path: "/prefectures/:id",
+                element: <Prefectures />
             }
         ]
     }

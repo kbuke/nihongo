@@ -4,35 +4,36 @@ import logo from "../../assets/logo.png"
 import { NavLink } from "react-router-dom"
 
 function HorizontalNavBar({
+    loggedUser,
     loggedInUserImg
 }){
     return(
-        <div id="horizontalNav">
-            <NavLink>
-                <div id="loggedLogoContainer">
+        loggedUser? 
+            <div id="horizontalNav">
+                <NavLink>
+                    <div id="loggedLogoContainer">
+                        <img 
+                            id="loggedLogo"
+                            src={logo}
+                            alt="nihongoLogo"
+                        />
+                    </div>
+                </NavLink>
+
+                <div id="titleContainer">
+                    <h1 id="title">Nihon-Go</h1>
+                </div>
+
+                <div id="loggedUserImgContainer">
                     <img 
-                        id="loggedLogo"
-                        src={logo}
-                        alt="nihongoLogo"
+                        id="loggedUserImg"
+                        src={loggedInUserImg}
+                        alt="loggedUserImg"
                     />
                 </div>
-            </NavLink>
-
-            <div id="searchBarContainer">
-                <input 
-                    id="searchBar"
-                    placeholder="🔎 Search Nihon-Go"
-                />
             </div>
-
-            <div id="loggedUserImgContainer">
-                <img 
-                    id="loggedUserImg"
-                    src={loggedInUserImg}
-                    alt="loggedUserImg"
-                />
-            </div>
-        </div>
+            :
+            null
     )
 }
 export default HorizontalNavBar

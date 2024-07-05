@@ -1,0 +1,58 @@
+#prefecturePgContainer{
+    background-color: #F4F2F3;;
+}
+
+#prefectureHeader{
+    display: grid;
+    grid-template-columns: 10% 70% 20%;
+    background-color: #ffb7c5;
+}
+
+#prefectureFlagContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+#prefectureFlag{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#prefectureNameContainer{
+    display: grid;
+    grid-template-rows: 60% 40%;
+    margin-left: 80px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#prefectureName{
+    font-family: cursive;
+}
+
+#prefectureCapital{
+    font-family: cursive;
+    margin-top: 1px;
+}
+
+#prefectureInfoContainer{
+    display: grid;
+    grid-template-columns: 40% 60%;
+}
+
+#prefectureInfoImgContainer{
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#prefectureImg{
+    max-width: 100%;
+    max-height: 100%;
+}

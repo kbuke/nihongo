@@ -4,7 +4,8 @@ import "./VerticalNav.css"
 function VerticalNav({
     verticalNavHover,
     setVerticalNavHover,
-    setLoggedUser
+    setLoggedUser,
+    loggedUser
 }){
 
     const logOut = () => {
@@ -14,37 +15,42 @@ function VerticalNav({
         .then((r) => {
             if(r.ok) {
                 setLoggedUser(null)
+                setVerticalNavHover(false)
             }
         })
     }
     
     return(
-       verticalNavHover ? 
-            <div
-                id="verticalNavContainerBig"
-                onMouseLeave={() => setVerticalNavHover(!verticalNavHover)}
-            >
-                <div className="iconLargeContainer">
-                    <h3 className="iconLarge">🎒</h3>
-                    <h3 className="iconText">Planned Trips</h3>
-                </div>
-
-                <div className="iconLargeContainer"
-                    onClick={logOut}
+        loggedUser?(
+            verticalNavHover ? 
+                <div
+                    id="verticalNavContainerBig"
+                    onMouseLeave={() => setVerticalNavHover(!verticalNavHover)}
                 >
-                    <h3 className="iconLarge">👈</h3>
-                    <h3 className="iconText">Sign Out</h3>
+                    <div className="iconLargeContainer">
+                        <h3 className="iconLarge">🎒</h3>
+                        <h3 className="iconText">Planned Trips</h3>
+                    </div>
+
+                    <div className="iconLargeContainer"
+                        onClick={logOut}
+                    >
+                        <h3 className="iconLarge">👈</h3>
+                        <h3 className="iconText">Sign Out</h3>
+                    </div>
                 </div>
-            </div>
-            :
-            <div 
-                id="verticalNavContainerSmall"
-                onMouseEnter={() => setVerticalNavHover(!verticalNavHover)}
-            >
-                <div id="tripIconSmallContainer">
-                    <h3 id="tripIconSmall">🎒</h3>
+                :
+                <div 
+                    id="verticalNavContainerSmall"
+                    onMouseEnter={() => setVerticalNavHover(!verticalNavHover)}
+                >
+                    <div id="tripIconSmallContainer">
+                        <h3 id="tripIconSmall">🎒</h3>
+                    </div>
                 </div>
-            </div>
-    )
+        )
+        :
+        null   
+        )
 }
 export default VerticalNav

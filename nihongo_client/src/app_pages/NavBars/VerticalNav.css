@@ -1,6 +1,5 @@
 #verticalNavContainerSmall{
     border: none;
-    border-right: solid;
     width: 50px;
     height: 100%;
     position: fixed;
@@ -10,7 +9,6 @@
 
 #verticalNavContainerBig{
     border: none;
-    border-right: solid;
     width: 220px;
     height: 100%;
     position: fixed;

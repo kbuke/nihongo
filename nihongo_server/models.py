@@ -5,6 +5,7 @@ from sqlalchemy import Time
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
 
+#-----------------------------------models for Users------------------------------------------
 class Users(db.Model, SerializerMixin):
     __tablename__ = "users"
 
@@ -15,6 +16,28 @@ class Users(db.Model, SerializerMixin):
     role = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
 
+    #Add relationships
+    admins = db.relationship("Admin", backref="user", lazy=True)
+    travelers = db.relationship("Traveler", backref="user", lazy=True)
+    citizens = db.relationship("Citizen", backref="user", lazy=True)
+    businesses = db.relationship("LocalBusinessSites", backref="user", lazy=True)
+
+    type = db.Column(db.String(50))
+
+    __mapper_args__ = {
+        'polymorphic_on': type,
+        'polymorphic_identity': 'user',
+    }
+
+    #Add serialization rules
+    serialize_rules = (
+        "-_password_hash",
+        "-admins.user",
+        "-travelers.user",
+        "-citizens.user",
+        "-businesses.user",
+        "-businesses.prefecture",
+    )
 
     ALLOWED_ROLES = ("Admin", "Traveller", "Local Business", "Citizen")
 
@@ -43,6 +66,7 @@ class Users(db.Model, SerializerMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(self._password_hash, password)
 
+#----------------------------------Model for admins---------------------------------------------
 class Admin(Users):
     __tablename__ = 'admins'
 
@@ -57,12 +81,15 @@ class Admin(Users):
     serialize_rules = (
         "-user.admins",
         "-user.travelers",
+        "-user.citizens",
+        "-user.businesses",
     )
 
     __mapper_args__ = {
         'polymorphic_identity': 'Admin',
     }
 
+#-------------------------------Model for travelers---------------------------------------------
 class Traveler(Users):
     __tablename__ = "travelers"
 
@@ -75,14 +102,17 @@ class Traveler(Users):
 
     # Add serialize rules
     serialize_rules = (
-        "-user.travelers",
         "-user.admins",
+        "-user.travelers",
+        "-user.citizens",
+        "-user.businesses",
     )
 
     __mapper_args__ = {
         'polymorphic_identity': 'Traveller',
     }
 
+#---------------------------Model for citizens-----------------------------------------------
 class Citizen(Users):
     __tablename__ = "citizens"
 
@@ -94,122 +124,68 @@ class Citizen(Users):
     home_country = db.Column(db.String, nullable=True)
     current_town = db.Column(db.String, nullable=True)
 
+    # Add serialize rules
+    serialize_rules = (
+        "-user.admins",
+        "-user.travelers",
+        "-user.citizens",
+        "-user.businesses",
+    )
+
     __mapper_args__ = {
         'polymorphic_identity': 'Citizen',
     }
- #-------------------------------------------Traveler User Class---------------------------------------------------------
-# class Traveller(Users):
-#     __tablename__ = 'travellers'
 
-#     id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-#     hometown = db.Column(db.String, nullable=True)
-#     home_country = db.Column(db.String, nullable=True)
+#--------------------------Model for prefectures---------------------------------------------
+class Prefecture(db.Model, SerializerMixin):
+    __tablename__ = "prefectures"
 
-#     #Set up relations
-#     prefecture_review = db.relationship("PrefectureReviews", backref="travellers", lazy=True)
-#     city_review = db.relationship("CityReviews", backref="travellers", lazy=True)
+    id = db.Column(db.Integer, primary_key=True)
+    prefecture_name = db.Column(db.String, nullable=False, unique=True)
+    capital_city = db.Column(db.String, nullable=False, unique=True)
+    population = db.Column(db.Integer, nullable=False)
+    prefecture_info = db.Column(db.String, nullable=False)
+    prefecture_flag = db.Column(db.String)
+    prefecture_img = db.Column(db.String)
 
-#     #Set up serialize rules
-#     serialize_rules = (
-#         "-prefecture_review.travellers", 
-#         "-cities_review.travellers",
-#     )
+    #Add relationships
+    businesses = db.relationship("LocalBusinessSites", backref="prefecture", lazy=True)
 
-#     __mapper_args__ = {
-#         'polymorphic_identity': 'Traveller',
-#     }
+    serialize_rules = (
+        "-businesses.prefecture",
+    )
 
-# #-------------------------------------------Admin User Class------------------------------------------------------------
-# class Admin(Users):
-#     __tablename__ = 'admins'
+#-------------------------Model for local businesses such as restaraunts, arcades, local sites----------------------
+class LocalBusinessSites(Users):
+    __tablename__ = "businesses"
 
-#     id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-#     hometown = db.Column(db.String, nullable=True)
-#     home_country = db.Column(db.String, nullable=True)
+    @declared_attr
+    def id(cls):
+        return (db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True))
 
-#     __mapper_args__ = {
-#         'polymorphic_identity': 'Admin',
-#     }
+    name = db.Column(db.String, nullable=False)
+    opening_time = db.Column(Time, nullable=False)
+    closing_time = db.Column(Time, nullable=False)
+    postal_code = db.Column(db.String, nullable=False)
+    building_numbers = db.Column(db.String, nullable=False)
+    city = db.Column(db.String, nullable=False)
+    neighbourhood = db.Column(db.String, nullable=False)
 
+    #Add relationship
+    # prefecture = db.relationship("Prefecture", backref="businesses")
+    prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
 
-# #-------------------------------------------Prefecture Class-------------------------------------------------------------
-# class Prefecture(db.Model, SerializerMixin):
-#     __tablename__ = "prefectures"
+    # Add serialize rules
+    serialize_rules = (
+        "-user.admins",
+        "-user.travelers",
+        "-user.citizens",
+        "-user.businesses",
+        "-prefecture.businesses",
+    )
 
-#     id=db.Column(db.Integer, primary_key=True)
-#     name=db.Column(db.String, nullable=False)
-#     capital_city=db.Column(db.String, nullable=False, unique=True)
-#     population=db.Column(db.Integer)
-#     prefecture_info=db.Column(db.String, nullable=True)
+    __mapper_args__ = {
+        'polymorphic_identity': 'Local Business',
+    }
+    
 
-#     #Add relations (one to many)
-#     cities = db.relationship("City", backref="prefecture", lazy=True)
-#     reviews = db.relationship("PrefectureReviews", backref="prefecture", lazy=True)
-
-# #-------------------------------------------City/Town Class--------------------------------------------------------------------
-# class City(db.Model, SerializerMixin):
-#     __tablename__ = "cities"
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String, nullable=False)
-#     city_info=db.Column(db.String, nullable=True)
-#     population=db.Column(db.Integer, nullable=True)
-
-#     #Relations
-#     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
-#     reviews = db.relationship("CityReviews", backref="city", lazy=True)
-
-# #--------------------------------------------All Review Types Class-----------------------------------------------------------------
-# class AllReviewTypes(db.Model, SerializerMixin):
-#     __tablename__ = "review_types"
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     category = db.Column(db.String, unique=True, nullable=False)
-
-# #--------------------------------------------Prefecture Reviews Class--------------------------------------------------------------------------
-# class PrefectureReviews(db.Model, SerializerMixin):
-#     __tablename__ = "prefecture_reviews"
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     rating = db.Column(db.Integer, nullable=False)
-#     comment = db.Column(db.String, nullable=False)
-
-#     #Set up relations
-#     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
-#     review_type_id = db.Column(db.Integer, db.ForeignKey("review_types.id"))
-#     traveler_id = db.Column(db.Integer, db.ForeignKey("travellers.id"))
-
-#     #Set up serialization rules
-#     serialize_rules = (
-#         "-travellers.prefecture_review",
-#         "-travellers.city_review",
-#     )
-
-# #--------------------------------------------City Review Class---------------------------------------------------------------------------------
-# class CityReviews(db.Model, SerializerMixin):
-#     __tablename__="cities_reviews"
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     rating = db.Column(db.Integer, nullable=False)
-#     comment = db.Column(db.String, nullable=False)
-
-#     #Set up relations
-#     city_id = db.Column(db.Integer, db.ForeignKey("cities.id"))
-#     review_type_id = db.Column(db.Integer, db.ForeignKey("review_types.id"))
-#     traveler_id = db.Column(db.Integer, db.ForeignKey("travellers.id"))
-
-#     #Set up serialization 
-#     serialize_rules = (
-#         "-travellers.prefecture_review",
-#         "-travellers.city_review",
-#     )
-
-
-
-# #-------------------------------------------Business Type Model----------------------------------------------------------------------------------
-# class BusinessType(db.Model, SerializerMixin):
-#     __tablename__ = "business_type"
-
-#     id=db.Column(db.Integer, primary_key=True)
-#     business=db.Column(db.String, nullable=False)
-#     icon=db.Column(db.String, nullable=False, unique=True)
