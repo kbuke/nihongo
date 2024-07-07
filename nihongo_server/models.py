@@ -83,6 +83,7 @@ class Admin(Users):
         "-user.travelers",
         "-user.citizens",
         "-user.businesses",
+        "-businesses",
     )
 
     __mapper_args__ = {
@@ -106,6 +107,7 @@ class Traveler(Users):
         "-user.travelers",
         "-user.citizens",
         "-user.businesses",
+        "-businesses",
     )
 
     __mapper_args__ = {
@@ -130,6 +132,7 @@ class Citizen(Users):
         "-user.travelers",
         "-user.citizens",
         "-user.businesses",
+        "-businesses",
     )
 
     __mapper_args__ = {
@@ -152,7 +155,12 @@ class Prefecture(db.Model, SerializerMixin):
     businesses = db.relationship("LocalBusinessSites", backref="prefecture", lazy=True)
 
     serialize_rules = (
-        "-businesses.prefecture",
+        "-businesses",
+    #     "-businesses.prefecture",
+    #     "-businesses.user",
+    #     "-businesses.citizens",
+    #     "-businesses.admins",
+    #     "-businesses.travelers",
     )
 
 #-------------------------Model for local businesses such as restaraunts, arcades, local sites----------------------

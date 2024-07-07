@@ -107,8 +107,7 @@ class AdminsId(Resource):
                     "-user",
                     "-admins",
                     "-travelers",
-                    "-citizens",
-                    "-businesses",)
+                    "-citizens",)
                 ), 201)
         return {
             "error": "admin not found"
@@ -217,6 +216,12 @@ class PrefectureId(Resource):
             return make_response(prefecture_info.to_dict(
                 rules=(
                     "-businesses.prefecture",
+                    "-businesses.businesses",
+                    # "-businesses.prefecture",
+                    # "-businesses.citizens",
+                    # "-businesses.travelers",
+                    # "-businesses.admins",
+                    # "-businesses.users",
                 )
                 # only=(
                 # "prefecture_name",
