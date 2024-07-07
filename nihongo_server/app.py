@@ -216,38 +216,17 @@ class PrefectureId(Resource):
             return make_response(prefecture_info.to_dict(
                 rules=(
                     "-businesses.prefecture",
+                    "-businesses.admins",
+                    "-businesses.travelers",
+                    "businesses.citizens",
                     "-businesses.businesses",
-                    # "-businesses.prefecture",
-                    # "-businesses.citizens",
-                    # "-businesses.travelers",
-                    # "-businesses.admins",
-                    # "-businesses.users",
+                    "-businesses.user",
                 )
-                # only=(
-                # "prefecture_name",
-                # "capital_city",
-                # "population",
-                # "prefecture_info",
-                # "prefecture_flag",
-                # "prefecture_img",
-                # "businesses.username",
-                # "businesses.name",
-                # "businesses.user_info",
-                # "businesses.profile_picture",
-                # "businesses.role",
-                # "businesses.opening_time",
-                # "businesses.closing_time",
-                # "businesses.postal_code",
-                # "businesses.building_numbers",
-                # "businesses.city",
-                # "businesses.neighbourhood",
-                # "businesses.prefecture_id",
-                # )
             ), 201)
         return {
             "errors": "prefecture not found"
         }
-    
+
 class Businesses(Resource):
     def get(self):
         businesses = [business.to_dict(

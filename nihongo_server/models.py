@@ -20,7 +20,7 @@ class Users(db.Model, SerializerMixin):
     admins = db.relationship("Admin", backref="user", lazy=True)
     travelers = db.relationship("Traveler", backref="user", lazy=True)
     citizens = db.relationship("Citizen", backref="user", lazy=True)
-    businesses = db.relationship("LocalBusinessSites", backref="user", lazy=True)
+    businesses = db.relationship("LocalBusinessSites", backref="user")
 
     type = db.Column(db.String(50))
 
@@ -152,14 +152,13 @@ class Prefecture(db.Model, SerializerMixin):
     prefecture_img = db.Column(db.String)
 
     #Add relationships
-    businesses = db.relationship("LocalBusinessSites", backref="prefecture", lazy=True)
+    businesses = db.relationship("LocalBusinessSites", backref="prefecture", lazy='joined')
 
     serialize_rules = (
-        "-businesses",
-    #     "-businesses.prefecture",
-    #     "-businesses.user",
+        # "-businesses.prefec",
+        "-businesses.prefecture",
     #     "-businesses.citizens",
-    #     "-businesses.admins",
+        # "-businesses.admins",
     #     "-businesses.travelers",
     )
 
