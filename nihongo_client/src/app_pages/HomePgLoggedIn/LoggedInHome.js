@@ -22,7 +22,6 @@ function LoggedInHome() {
 
   //Get all prefectures
   const allPrefectures = appData.prefectures 
-  console.log(allPrefectures)
 
   //Decide width of home page, depending on if the vertical nav bar is in use
   const homePgContainerStyle = verticalNavHover

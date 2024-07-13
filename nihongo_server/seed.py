@@ -1,4 +1,4 @@
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes
 
 from datetime import time
 
@@ -94,9 +94,18 @@ if __name__ == '__main__':
             prefecture_info = "A place unlike any other, seperated from Japanese commerce and politice due to the Ou and Dewa mountains, Akita was isolated untill 600AD",
             prefecture_flag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Flag_of_Akita_Prefecture.svg/1200px-Flag_of_Akita_Prefecture.svg.png",
             prefecture_img = "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/d8/8f/ea/nyuto-onsen.jpg?w=1400&h=1400&s=1"
-
         )
-        db.session.add_all([hokkaido, kyoto, akita])
+
+        tokyo = Prefecture(
+            prefecture_name = "Tokyo",
+            capital_city = "Tokyo",
+            population = 38000000,
+            prefecture_info = "Located at the head of Tokyo Bay, Tokyo is part of the Kantō region on the central coast of Honshu, Japan's largest island. Tokyo serves as Japan's economic center and the seat of both the Japanese government and the Emperor of Japan.",
+            prefecture_flag = "https://upload.wikimedia.org/wikipedia/commons/1/15/Flag_of_Tokyo_Metropolis.svg",
+            prefecture_img = "https://media.nomadicmatt.com/2024/tokyothings.jpeg"
+        )
+
+        db.session.add_all([hokkaido, kyoto, akita, tokyo])
         db.session.commit()
 
         print("Seeding Businesses/Sites")
@@ -115,8 +124,146 @@ if __name__ == '__main__':
             prefecture_id = 2
         )
         kyotoMorris.password = "kyotoMorris1"
-        db.session.add_all([kyotoMorris])
+
+        sapparoBeerMuseum = LocalBusinessSites(
+            username = "Sapparo Beer Museum",
+            user_info = "Come and see how one of Japans most famous beer is created, and learn its rich history",
+            profile_picture = "https://i0.wp.com/obsessedwithjapan.com/wp-content/uploads/2020/02/Sapporo-Beer-Museum-Beer-Hall-Photo-by-Obsessed-with-Japan.png?fit=1938%2C1454&ssl=1",
+            role = "Local Business",
+            name = "Sapparo Beer Museum",
+            opening_time = time(9, 0),
+            closing_time = time(17, 0),
+            postal_code = "065-8633",
+            building_numbers = "9 Chome-1-1 Kita 7",
+            city="Higashi Ward",
+            neighbourhood = "Johigashi",
+            prefecture_id = 1
+        )
+        sapparoBeerMuseum.password = "iLoveBeer"
+
+        taitoHokkaido = LocalBusinessSites(
+            username = "Taito Station Arcade Sapparo",
+            user_info = "Biggest arcade in Hokkaido",
+            profile_picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lJpmCa3nVda4iwI9C07LIR0c6TDTlQOdhw&s",
+            role = "Local Business",
+            name = "Taito Station Arcade Sapparo",
+            opening_time = time(10, 0),
+            closing_time = time(00, 0),
+            postal_code = "060-0063",
+            building_numbers = "2 Chome-14 Minami 3",
+            city = "Chuo Ward",
+            neighbourhood = "Jonishi",
+            prefecture_id = 1
+        )
+        taitoHokkaido.password = "bestArcade"
+
+        db.session.add_all([kyotoMorris, sapparoBeerMuseum, taitoHokkaido])
         db.session.commit()
+
+        print("Seeding reviews")
+        kyotoMorrisAdminReview = BusinessReviews(
+            review_rating=5,
+            review_comment="Best hotel I stayed in, in Japan.",
+            business_id=5,
+            admin_id=1,
+        )
+
+        kyotoMorrisCitizenReview = BusinessReviews(
+            review_rating=4,
+            review_comment="I worked here, great place",
+            business_id=5,
+            citizen_id=4,
+        )
+
+        kyotoMorrisTravelerReview = BusinessReviews(
+            review_rating=5,
+            review_comment="Would stay here every day. Loved it",
+            business_id=5,
+            traveler_id=2,
+        )
+        db.session.add_all([kyotoMorrisAdminReview, kyotoMorrisCitizenReview, kyotoMorrisTravelerReview])
+        db.session.commit()
+
+        print("Seeding business types")
+        arcade = RegisteredBusinessTypes(
+            business_type = "Arcade"
+        )
+
+        hotel = RegisteredBusinessTypes(
+            business_type = "Hotel"
+        )
+
+        hostel = RegisteredBusinessTypes(
+            business_type = "Hostel"
+        )
+
+        museum = RegisteredBusinessTypes(
+            business_type = "Museum"
+        )
+
+        craft_shop = RegisteredBusinessTypes(
+            business_type = "Craft Shop"
+        )
+
+        restaurant = RegisteredBusinessTypes(
+            business_type = "Restaurant"
+        )
+
+        park = RegisteredBusinessTypes(
+            business_type = "Park"
+        )
+
+        cafe = RegisteredBusinessTypes(
+            business_type = "Cafe"
+        )
+
+        bar = RegisteredBusinessTypes(
+            business_type = "Bar"
+        )
+
+        exhibition = RegisteredBusinessTypes(
+            business_type = "Exhibition"
+        )
+
+        db.session.add_all([
+            arcade, hotel, hostel, museum, craft_shop, restaurant, park, cafe, bar, exhibition
+        ])
+        db.session.commit()
+
+        print("Seeding businesses and their types")
+        sapparoBeerTypeMuseum = BusinessTypes(
+            business_id = 6, 
+            business_type_id = 4
+        )
+
+        sapparoBeerTypeBar = BusinessTypes(
+            business_id = 6,
+            business_type_id = 9
+        )
+
+        kyotoMorrisTypeHotel = BusinessTypes(
+            business_id = 5,
+            business_type_id = 2
+        )
+
+        kyotoMorrisTypeHostel = BusinessTypes(
+            business_id = 5,
+            business_type_id = 3
+        )
+
+        kyotoMorrisTypeBar = BusinessTypes(
+            business_id = 5,
+            business_type_id = 9
+        )
+
+        taitoHokkaidoTypeArcade = BusinessTypes(
+            business_id = 7,
+            business_type_id = 1
+        )
+
+        db.session.add_all([sapparoBeerTypeBar, sapparoBeerTypeMuseum, kyotoMorrisTypeBar, kyotoMorrisTypeHostel, kyotoMorrisTypeHotel, taitoHokkaidoTypeArcade])
+        db.session.commit()
+
 
 
         print("Finished Seeding")

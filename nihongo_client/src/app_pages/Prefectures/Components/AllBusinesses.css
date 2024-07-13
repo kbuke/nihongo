@@ -1,0 +1,23 @@
+#allPrefectureBusinesses{
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+#prefectureBusinessCard{
+    height: 400px;
+    width: 250px;
+    border-radius: 5%;
+    text-align: center;
+    font-family: cursive;
+    margin-left: 5px;
+    background-color: #a0d2eb;
+}
+
+.buisinessName{
+    text-decoration: underline;
+}
+
+.prefectureBusinessesImg{
+    width: 90%;
+    height: 180px;
+}

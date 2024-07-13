@@ -153,6 +153,20 @@ function UserSignUp({
         </>
     }
 
+    else if(newUserRole == "Citizen"){
+        newUser =
+        <>
+            {infoForAll}
+        </>
+    }
+
+    else if(newUserRole == "Local Business"){
+        newUser = 
+        <>
+            {infoForAll}
+        </>
+    }
+
     return (
         <div id="signUpDiv">
             <h1 id="signUpTitle">Sign Up Form</h1>

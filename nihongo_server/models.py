@@ -20,7 +20,7 @@ class Users(db.Model, SerializerMixin):
     admins = db.relationship("Admin", backref="user", lazy=True)
     travelers = db.relationship("Traveler", backref="user", lazy=True)
     citizens = db.relationship("Citizen", backref="user", lazy=True)
-    businesses = db.relationship("LocalBusinessSites", backref="user")
+    businesses = db.relationship("LocalBusinessSites", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -32,11 +32,12 @@ class Users(db.Model, SerializerMixin):
     #Add serialization rules
     serialize_rules = (
         "-_password_hash",
-        "-admins.user",
-        "-travelers.user",
-        "-citizens.user",
-        "-businesses.user",
-        "-businesses.prefecture",
+        "-user", 
+        "-admins", 
+        "-travelers", 
+        "-citizens",
+        "-businesses",
+        "-prefecture",
     )
 
     ALLOWED_ROLES = ("Admin", "Traveller", "Local Business", "Citizen")
@@ -77,6 +78,9 @@ class Admin(Users):
     hometown = db.Column(db.String, nullable=True)
     home_country = db.Column(db.String, nullable=True)
 
+    # Add relationship
+    business_reviews = db.relationship("BusinessReviews", backref="admin", lazy=True)
+
     # Add serialize rules
     serialize_rules = (
         "-user.admins",
@@ -84,6 +88,7 @@ class Admin(Users):
         "-user.citizens",
         "-user.businesses",
         "-businesses",
+        "-business_reviews",
     )
 
     __mapper_args__ = {
@@ -101,6 +106,9 @@ class Traveler(Users):
     hometown = db.Column(db.String, nullable=True)
     home_country = db.Column(db.String, nullable=True)
 
+    #Add relationship
+    business_reviews = db.relationship("BusinessReviews", backref="traveler", lazy=True)
+
     # Add serialize rules
     serialize_rules = (
         "-user.admins",
@@ -108,6 +116,7 @@ class Traveler(Users):
         "-user.citizens",
         "-user.businesses",
         "-businesses",
+        "-business_reviews",
     )
 
     __mapper_args__ = {
@@ -126,6 +135,9 @@ class Citizen(Users):
     home_country = db.Column(db.String, nullable=True)
     current_town = db.Column(db.String, nullable=True)
 
+    #Add relationships
+    business_reviews = db.relationship("BusinessReviews", backref="citizen", lazy=True)
+
     # Add serialize rules
     serialize_rules = (
         "-user.admins",
@@ -133,6 +145,7 @@ class Citizen(Users):
         "-user.citizens",
         "-user.businesses",
         "-businesses",
+        "-business_reviews",
     )
 
     __mapper_args__ = {
@@ -155,11 +168,7 @@ class Prefecture(db.Model, SerializerMixin):
     businesses = db.relationship("LocalBusinessSites", backref="prefecture", lazy='joined')
 
     serialize_rules = (
-        # "-businesses.prefec",
         "-businesses.prefecture",
-    #     "-businesses.citizens",
-        # "-businesses.admins",
-    #     "-businesses.travelers",
     )
 
 #-------------------------Model for local businesses such as restaraunts, arcades, local sites----------------------
@@ -179,8 +188,9 @@ class LocalBusinessSites(Users):
     neighbourhood = db.Column(db.String, nullable=False)
 
     #Add relationship
-    # prefecture = db.relationship("Prefecture", backref="businesses")
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
+    business_reviews = db.relationship("BusinessReviews", backref="business", lazy=True)
+    business_types = db.relationship("BusinessTypes", backref="business", lazy=True)
 
     # Add serialize rules
     serialize_rules = (
@@ -189,10 +199,66 @@ class LocalBusinessSites(Users):
         "-user.citizens",
         "-user.businesses",
         "-prefecture.businesses",
+        "-business_reviews",
+        "-business_types",
     )
 
     __mapper_args__ = {
         'polymorphic_identity': 'Local Business',
     }
+
+#----------------------------Model for Local Business Reviews------------------------
+class BusinessReviews(db.Model, SerializerMixin):
+    __tablename__ = "business_reviews"
+
+    id=db.Column(db.Integer, primary_key=True)
+    review_rating=db.Column(db.Integer, nullable=False)
+    review_comment=db.Column(db.String, nullable=True)
+    review_date=db.Column(db.DateTime, server_default=db.func.now())
+
+    #Add relationship
+    business_id=db.Column(db.Integer, db.ForeignKey("businesses.id"), nullable=False)
+    traveler_id=db.Column(db.Integer, db.ForeignKey("travelers.id"), nullable=True)
+    citizen_id=db.Column(db.Integer, db.ForeignKey("citizens.id"), nullable=True)
+    admin_id=db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
+
+    #Add serialze rules
+    serialize_rules=(
+        "-admin",
+        "-citizen",
+        "-traveler",
+        "-business",
+    )
+
+#------------------------Model for types of available businesses----------------------------
+class RegisteredBusinessTypes(db.Model, SerializerMixin):
+    __tablename__ = "regsitered_business_types"
+
+    id = db.Column(db.Integer, primary_key=True)
+    business_type = db.Column(db.String, nullable=False, unique=True)
+
+    #Add relationship
+    business_types = db.relationship("BusinessTypes", backref="registered_type", lazy=True)
+
+    #Add serialize rules
+    serialize_rules=(
+        "-business_types",
+    )
     
+
+#-------------------------Set up Businesses and their types---------------------------------
+class BusinessTypes(db.Model, SerializerMixin):
+    __tablename__ = "business_types"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    #Add relationships
+    business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"))
+    business_type_id = db.Column(db.Integer, db.ForeignKey("regsitered_business_types.id"))
+
+    #Add serialize rules
+    serialize_rules=(
+        "-business",
+        "-registered_type",
+    )
 

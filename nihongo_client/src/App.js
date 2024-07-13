@@ -13,6 +13,7 @@ function App() {
   const [loggedUser, setLoggedUser] = useState(null)
   const [prefectures, setPrefectures] = useState([])
   const [verticalNavHover, setVerticalNavHover] = useState(false);
+  const [allBusinesses, setAllBusinesses] = useState([])
 
   //Get all users
   useEffect(() => {
@@ -38,6 +39,18 @@ function App() {
     .then(prefectures => setPrefectures(prefectures))
   }, [])
 
+  //Get all businesses
+  useEffect(() => {
+    fetch("/businesses")
+    .then(r => {
+      if(r.ok) {
+        return r.json()
+      }
+      throw r
+    })
+    .then(businesses => setAllBusinesses(businesses))
+  }, [])
+
   //auto-login function
   useEffect(() => {
     fetch('/check_session')
@@ -48,6 +61,8 @@ function App() {
       }
     })
   }, [])
+
+  console.log(loggedUser)
 
   return(
     <div>
@@ -70,7 +85,10 @@ function App() {
           setLoggedUser: setLoggedUser,
 
           prefectures: prefectures,
-          setPrefectures: setPrefectures,
+          setAllPrefectures: setPrefectures,
+
+          allBusinesses: allBusinesses,
+          setAllBusinesses: setAllBusinesses,
 
           verticalNavHover: verticalNavHover,
           setVerticalNavHover: setVerticalNavHover

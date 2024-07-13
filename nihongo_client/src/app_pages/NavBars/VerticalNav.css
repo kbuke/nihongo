@@ -15,30 +15,40 @@
     margin-top: 101px;
 }
 
-#tripIconSmallContainer{
+.smallIconContainer{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
+    margin-top: 60px;
+    opacity: 0.6;
 }
 
-#tripIconSmall{
-    font-size: 200%;
+.smallIcon{
+    max-width: 100%;
+    max-height: 100%;
 }
 
-.iconLargeContainer{
+.largeIconContainer{
     display: grid;
-    grid-template-columns: 20% 80%;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
+    grid-template-columns: 40% 60%;
+    margin-top: 40px;
 }
 
-.iconLarge{
-    font-size: 200%;
+.largeIconContainer:hover {
+    background-color: lightblue; /* Change this to the desired hover background color */
+}
+
+.largeIcon{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
     margin-left: 5px;
 }
 
-.iconText{
+h3{
     font-family: cursive;
-    font-size: 150%;
 }

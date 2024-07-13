@@ -1,58 +1,65 @@
-#prefecturePgContainer{
-    background-color: #F4F2F3;;
+#prefecturePgContainer {
+    position: absolute;
+    top: 100px;
+    transition: margin-left 0.3s ease;
+    width: calc(100% - 50px); /* Default width when nav is closed */
+    margin-left: 10px;
 }
 
-#prefectureHeader{
+.verticalNavOpen #prefecturePgContainer {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+}
+
+.verticalNavClosed #prefecturePgContainer {
+    margin-left: 250px;
+    width: calc(100% - 50px);
+}
+
+
+
+#prefectureImgHeaderContainer{
+    border: solid;
+    margin-top: 10px;
     display: grid;
-    grid-template-columns: 10% 70% 20%;
-    background-color: #ffb7c5;
-}
-
-#prefectureFlagContainer{
-    display: flex;
-    align-items: center;
     justify-content: center;
-    overflow: hidden;
-    margin-bottom: 10px;
-    margin-left: 5px;
+    grid-template-columns: 35% 65%;
 }
 
-#prefectureFlag{
+#prefectureImg{
+    width: 100%;
     max-width: 100%;
     max-height: 100%;
+    overflow: hidden;
 }
 
-#prefectureNameContainer{
-    display: grid;
-    grid-template-rows: 60% 40%;
-    margin-left: 80px;
-    margin-bottom: 10px;
+#prefectureHeaderInfoContainer{
+    width: 100%;
+    display: block;
     text-align: center;
 }
 
 #prefectureName{
+    text-align: center;
     font-family: cursive;
-}
-
-#prefectureCapital{
-    font-family: cursive;
-    margin-top: 1px;
-}
-
-#prefectureInfoContainer{
-    display: grid;
-    grid-template-columns: 40% 60%;
-}
-
-#prefectureInfoImgContainer{
-    max-width: 100%;
-    display: flex;
+    text-decoration: underline;
+    background-color: #ffb7c5;
+    height: 80px;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
+    border-top: solid;
+    border-bottom: solid;
 }
 
-#prefectureImg{
-    max-width: 100%;
-    max-height: 100%;
+#prefectureInfo h4 {
+    white-space: pre-line;
 }
+
+#prefectureSpecifics{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+/* #ffb7c5; */
