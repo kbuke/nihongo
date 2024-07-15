@@ -1,9 +1,12 @@
+
+
 #prefecturePgContainer {
     position: absolute;
     top: 100px;
     transition: margin-left 0.3s ease;
     width: calc(100% - 50px); /* Default width when nav is closed */
     margin-left: 10px;
+    background-color: #FAF9F6
 }
 
 .verticalNavOpen #prefecturePgContainer {
@@ -16,39 +19,40 @@
     width: calc(100% - 50px);
 }
 
-
-
-#prefectureImgHeaderContainer{
-    border: solid;
-    margin-top: 10px;
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 35% 65%;
-}
-
 #prefectureImg{
     width: 100%;
-    max-width: 100%;
-    max-height: 100%;
+    height: 700px;
     overflow: hidden;
+    margin-top: 20px;
+    max-width: 100%;
 }
 
 #prefectureHeaderInfoContainer{
     width: 100%;
     display: block;
+
+}
+
+#prefectureInfoRight{
     text-align: center;
+    margin-top: 50px;
+}
+
+#prefectureInfo{
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+#prefectureLeftContainer{
+    display: block;
+    border-right: solid;
 }
 
 #prefectureName{
-    text-align: center;
-    font-family: cursive;
-    text-decoration: underline;
-    background-color: #ffb7c5;
-    height: 80px;
-    justify-content: center;
-    align-items: center;
-    border-top: solid;
-    border-bottom: solid;
+   font-size: 400%;
+   font-family: cursive;
+   text-decoration: underline;
+   margin-left: 20px;
 }
 
 #prefectureInfo h4 {
@@ -60,6 +64,21 @@
     grid-template-columns: 50% 50%;
     align-items: center;
     justify-content: center;
+}
+
+#prefectureFlag{
+    height: 60px;
+    width: 100px;
+}
+
+#prefectureIntroInfo{
+    margin-left: 20px;
+    text-decoration: underline;
+}
+
+#prefectureCategoryBar{
+    border: solid;
+    margin-top: 10px;
 }
 
 /* #ffb7c5; */

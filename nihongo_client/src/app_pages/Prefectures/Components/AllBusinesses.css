@@ -1,23 +1,58 @@
-#allPrefectureBusinesses{
-    display: grid;
-    grid-template-columns: 20% 20% 20% 20% 20%;
+.prefectureBusinessesContainer{
+    border-bottom: solid;
 }
 
-#prefectureBusinessCard{
+.prefectureBusinesses {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.prefectureBusinessCard {
     height: 400px;
     width: 250px;
     border-radius: 5%;
     text-align: center;
     font-family: cursive;
-    margin-left: 5px;
+    margin: auto; /* Center the card horizontally */
     background-color: #a0d2eb;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add transition for smooth effect */
+    margin-bottom: 10px;
+    margin-top: 20px;
 }
 
-.buisinessName{
+.prefectureBusinessCard:hover {
+    transform: translateY(-10px); /* Move the card up */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+}
+
+.businessName {
     text-decoration: underline;
 }
 
-.prefectureBusinessesImg{
-    width: 90%;
+.prefectureBusinessesImg {
+    width: 100%;
     height: 180px;
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+}
+
+#businessButtonsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure it takes full width */
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#businessButtons {
+    display: flex;
+    gap: 10px; 
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }

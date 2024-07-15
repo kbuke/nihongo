@@ -84,7 +84,7 @@ if __name__ == '__main__':
             population = 1468065,
             prefecture_info = "The old capital of Japan before Tokyo. The hub of Japanese culture and history.",
             prefecture_flag = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2ZlwPx7_4Q0A9jvT_QRnExfxT3TNPsM6wmw&s",
-            prefecture_img = "https://www.mensjournal.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTk2MTM2NjY0Mzg4MzQ3MDI1/kyoto.jpg"
+            prefecture_img = "https://backiee.com/static/wallpapers/1000x563/214176.jpg"
         )
 
         akita = Prefecture(
@@ -157,7 +157,87 @@ if __name__ == '__main__':
         )
         taitoHokkaido.password = "bestArcade"
 
-        db.session.add_all([kyotoMorris, sapparoBeerMuseum, taitoHokkaido])
+        goldenTemple = LocalBusinessSites(
+            username = "Golden Temple",
+            user_info = "The most famous temple in Kyoto, and possibly all of Japan.",
+            profile_picture="https://japaneseplus.org/wp-content/uploads/2021/05/kinkaku-ji-kyoto.jpeg?w=1024",
+            role="Local Business",
+            name="Golden Temple",
+            opening_time = time(7, 0),
+            closing_time = time(17, 0),
+            postal_code = "603-8361",
+            building_numbers = "1",
+            city = "Kita Ward",
+            neighbourhood = "Kinkakujicho",
+            prefecture_id = 2
+        )
+        goldenTemple.password = "loveGold"
+
+        kyotoMonkeyPark = LocalBusinessSites(
+            username = "Arashiyama Monkey Park Iwatayama",
+            user_info = "Come and see monkeys in Kyoto",
+            profile_picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM3JuFIsBikiMZvKBspT3z57GNG7qN20Usyg&s",
+            role="Local Business",
+            name="Arashiyama Monkey Park Iwatayama",
+            opening_time = time(8, 0),
+            closing_time = time(16, 0),
+            postal_code = "616-0004",
+            building_numbers = "6 1",
+            city = "Nishikyo Ward",
+            neighbourhood = "Arashiyama Nakaoshitacho",
+            prefecture_id = 2
+        )
+        kyotoMonkeyPark.password = "monkeyingAbout"
+
+        kyotoBambooForest = LocalBusinessSites(
+            username = "Arashiyama Bamboo Forest",
+            user_info = "The most beautifule bamboo forest in the world. Come and see it for yourself.",
+            profile_picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGS3pzLfCXr0di0Mrgd_R56tYy4DrwNF-Blw&s",
+            role = "Local Business",
+            name = "Arashiyama Bamboo Forest",
+            opening_time = time(8, 0),
+            closing_time = time(16, 0),
+            postal_code="616-8394",
+            building_numbers="",
+            city = "Ukyo Ward",
+            neighbourhood = "Sagaogurayama Tabuchiyamacho",
+            prefecture_id = 2
+        )
+        kyotoBambooForest.password = "loveBamboo"
+
+        fushimiShrines = LocalBusinessSites(
+            username = "Fushimi Inari Taisha",
+            user_info = "The most famous route of shrines in the world.",
+            profile_picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIB-kHxGfZOAbqrhhMUJiaZ5A59-T4GqWnyw&s",
+            role = "Local Business",
+            name = "Fushimi Inari Taisha",
+            opening_time = time(00, 0),
+            closing_time = time(00, 0),
+            postal_code = "612-0882",
+            building_numbers = "68",
+            city="Fushimi Ward",
+            neighbourhood = "Fukakusa Yabunouchicho",
+            prefecture_id = 2
+        )
+        fushimiShrines.password = "shrinesAlot"
+
+        daigoJi = LocalBusinessSites(
+            username = "Daigo-ji Temple",
+            user_info = "Really pretty Temple, especially in Autumn",
+            profile_picture = "https://i0.wp.com/travellatte.net/wp-content/uploads/2015/10/Daigo-ji-Temple-Garden-01a.png?resize=672%2C372&ssl=1",
+            role = "Local Business",
+            name = "Daigo-ji Temple",
+            opening_time = time(8, 0),
+            closing_time = time(16, 0),
+            postal_code = "601-1325",
+            building_numbers = "22",
+            city = "Fushimi Ward",
+            neighbourhood = "Daigohigashiojicho",
+            prefecture_id = 2
+        )
+        daigoJi.password = "goJi"
+
+        db.session.add_all([kyotoMorris, sapparoBeerMuseum, taitoHokkaido, goldenTemple, kyotoMonkeyPark, kyotoBambooForest, fushimiShrines, daigoJi])
         db.session.commit()
 
         print("Seeding reviews")
@@ -225,8 +305,28 @@ if __name__ == '__main__':
             business_type = "Exhibition"
         )
 
+        shrine = RegisteredBusinessTypes(
+            business_type = "Shrine"
+        )
+
+        temple = RegisteredBusinessTypes(
+            business_type = "Temple"
+        )
+
+        tour_guide = RegisteredBusinessTypes(
+            business_type = "Tour Guide"
+        )
+
+        night_club = RegisteredBusinessTypes(
+            business_type = "Night Club"
+        )
+
+        castle = RegisteredBusinessTypes(
+            business_type = "Castle"
+        )
+
         db.session.add_all([
-            arcade, hotel, hostel, museum, craft_shop, restaurant, park, cafe, bar, exhibition
+            arcade, hotel, hostel, museum, craft_shop, restaurant, park, cafe, bar, exhibition, shrine, temple, night_club, castle
         ])
         db.session.commit()
 
@@ -261,7 +361,24 @@ if __name__ == '__main__':
             business_type_id = 1
         )
 
-        db.session.add_all([sapparoBeerTypeBar, sapparoBeerTypeMuseum, kyotoMorrisTypeBar, kyotoMorrisTypeHostel, kyotoMorrisTypeHotel, taitoHokkaidoTypeArcade])
+        goldenTempleTemple = BusinessTypes(
+            business_id = 8,
+            business_type_id = 12
+        )
+
+        goldenTempleShrine = BusinessTypes(
+            business_id = 8,
+            business_type_id = 11
+        )
+
+        fushimiShrinesShrine = BusinessTypes(
+            business_id = 11,
+            business_type_id = 11
+        )
+
+        db.session.add_all([
+            sapparoBeerTypeBar, sapparoBeerTypeMuseum, kyotoMorrisTypeBar, kyotoMorrisTypeHostel, kyotoMorrisTypeHotel, taitoHokkaidoTypeArcade, goldenTempleShrine, goldenTempleTemple, fushimiShrinesShrine
+        ])
         db.session.commit()
 
 

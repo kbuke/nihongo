@@ -4,6 +4,7 @@ import "./Prefectures.css";
 
 import EditPrefectureInfo from "./Components/EditPrefectureInfo";
 import AllBusinesses from "./Components/AllBusinesses";
+import SpecificBusinesses from "./Components/SpecificBusinesses";
 
 function Prefectures() {
     const appData = useOutletContext();
@@ -18,9 +19,9 @@ function Prefectures() {
     const params = useParams();
 
     const [specificPrefectureInfo, setSpecificPrefectureInfo] = useState(null);
-    const [prefectureBusinessTypes, setPrefectureBusinessTypes] = useState([]);
     const [prefectureInfoText, setPrefectureInfoText] = useState("");
     const [editInfo, setEditInfo] = useState(false);
+    const [selectedButton, setSelectedButton] = useState(null)
 
     // Get all prefectures
     const allPrefectures = appData.prefectures;
@@ -77,8 +78,27 @@ function Prefectures() {
     const prefectureCapital = specificPrefectureInfo.capital_city;
 
     // Get Prefecture Businesses
+    let prefectureBusinessTypes = []
+
     const prefectureBusinesses = specificPrefectureInfo.businesses || [];
-    console.log(prefectureBusinesses)
+    // console.log(prefectureBusinesses)
+
+    prefectureBusinesses.map((businessInfo) => {
+        businessInfo.business_types.map(types => {
+            prefectureBusinessTypes.push(types.registered_type.business_type)
+        })
+    })
+
+    const uniqueBusinesses = [...new Set(prefectureBusinessTypes.sort())];
+
+    const prefectureButtons = uniqueBusinesses.map((category, index) => (
+        <button 
+            key={index}
+            onClick={() =>setSelectedButton(category)}
+        >
+            {category}s
+        </button>
+    ))
 
     const prefectureContainerStyle = verticalNavHover
         ? {
@@ -94,49 +114,61 @@ function Prefectures() {
     return (
         <div id="prefecturePgContainer" style={prefectureContainerStyle}>
             <>
-                <div id="prefectureImgHeaderContainer">
-                    <img id="prefectureImg" alt={`${prefectureName} image`} src={prefectureImg} />
-
                     <div id="prefectureHeaderInfoContainer">
-                        <div id="prefectureName">
-                            <h1>{prefectureName}</h1>
-                        </div>
-
                         <div id="prefectureInfo">
-                            {editInfo ? (
-                                <EditPrefectureInfo
-                                    editInfo={editInfo}
-                                    setEditInfo={setEditInfo}
-                                    prefectureInfoText={prefectureInfoText}
-                                    setPrefectureInfoText={setPrefectureInfoText}
-                                    specificPrefectureId={specificPrefectureId}
-                                    allPrefectures={allPrefectures}
-                                    setAllPrefectures={setAllPrefectures}
-                                />
-                            ) : (
-                                <h4>{prefectureInfo}</h4>
-                            )}
+                            <div id="prefectureInfoLeft">
+                                <div id="prefectureLeftContainer">
+                                    <h1 id="prefectureName">{prefectureName}</h1>
+                                        {editInfo ? (
+                                            <EditPrefectureInfo
+                                                editInfo={editInfo}
+                                                setEditInfo={setEditInfo}
+                                                prefectureInfoText={prefectureInfoText}
+                                                setPrefectureInfoText={setPrefectureInfoText}
+                                                specificPrefectureId={specificPrefectureId}
+                                                allPrefectures={allPrefectures}
+                                                setAllPrefectures={setAllPrefectures}
+                                            />
+                                        ) : (
+                                            <h3 id="prefectureIntroInfo">{prefectureInfo}</h3>
+                                        )}
 
-                            <div id="prefectureSpecifics">
+                                        {userType === "Admin" && !editInfo ? (
+                                            <button id="editInfoButton" onClick={() => setEditInfo(true)}>
+                                                {`Edit ${prefectureName}'s Info`}
+                                            </button>
+                                        ) : null}
+                                </div>
+                            </div>
+                            <div id="prefectureInfoRight">
                                 <h5>🏛️ {prefectureCapital}</h5>
                                 <h5>👤 {renderPop}</h5>
+                                <img 
+                                    id="prefectureFlag"
+                                    alt={`${prefectureName} Flag`}
+                                    src={prefectureFlag}
+                                />
                             </div>
-
-                            {userType === "Admin" && !editInfo ? (
-                                <button id="editInfoButton" onClick={() => setEditInfo(true)}>
-                                    {`Edit ${prefectureName}'s Info`}
-                                </button>
-                            ) : null}
                         </div>
+                        <img id="prefectureImg" alt={`${prefectureName} image`} src={prefectureImg} />
                     </div>
-                </div>
             </>
-            <>
-                <AllBusinesses 
+            <div id="prefectureCategoryBar">
+                {prefectureButtons}
+                <SpecificBusinesses 
+                    selectedButton={selectedButton}
+                    prefectureBusinesses={prefectureBusinesses}
+                />
+                {/* <AllBusinesses 
                     prefectureBusinesses={prefectureBusinesses}
                     prefectureName={prefectureName}
                 />
-            </>
+
+                <SpecificBusinesses 
+                    prefectureBusinesses={prefectureBusinesses}
+                    prefectureName={prefectureName}
+                /> */}
+            </div>
         </div>
     );
 }
