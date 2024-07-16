@@ -1,85 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import "./SpecificBusinesses.css"
+import "./SpecificBusinesses.css";
 
 function SpecificBusinesses({
-    prefectureBusinesses,
+    copyPrefectureBusinesses,
     selectedButton
 }) {
 
-    const filteredBusinesses = prefectureBusinesses.filter(business => 
+    const [filterButtons, setFilterButtons] = useState("Ratings");
+
+    const selectedFilterButton = filterButtons === "Ratings" ? 
+        copyPrefectureBusinesses.sort((a, b) => {
+            if (a.averageRating === 'N/A') return 1;
+            if (b.averageRating === 'N/A') return -1;
+            return b.averageRating - a.averageRating;
+        })
+        :
+        copyPrefectureBusinesses.sort((a, b) => b.numberReviews - a.numberReviews);
+
+    const filteredBusinesses = selectedFilterButton.filter(business =>
         business.business_types.some(businessType =>
             businessType.registered_type.business_type === selectedButton
         )
     );
-    console.log(filteredBusinesses)
 
     const renderBusinessCards = filteredBusinesses.map((business, index) => (
-        <div 
+        <div
             key={index}
             className='prefectureBusinessCard'
         >
-            <img 
+            <img
                 className='prefectureBusinessesImg'
                 alt="prefecture businesses image"
                 src={business.profile_picture}
             />
             <h3 className='businessName'>{business.name}</h3>
-        </div>
-    ))
+            <div id='businessInfoGrid'>
+                <div id='leftBusinessInfo'>
+                    <h5 id="businessPrefectureInfo">{business.card_info}</h5>
+                </div>
 
-    return(
+                <div id='rightBusinessInfo'>
+                    <div id='reviewGrid'>
+                        <h4>{business.averageRating} ⭐️ </h4>
+                        <h4 className="numberReviews">({business.numberReviews})</h4>
+                    </div>
+                </div>
+            </div>
+            <h5 id="businessRegisterDate">Registered: {business.date_registered.slice(0, 10)}</h5>
+        </div>
+    ));
+
+    return (
         <div id="prefectureBusinessesContainer">
+            <div id="specificBusinessButtonContainer">
+                <button 
+                    id="sortRatings"
+                    className={filterButtons == "Ratings" ? "selectedCategory" : "sortBusinessButton"}
+                    onClick={() => setFilterButtons("Ratings")}
+                >
+                    Show Highest Rated {selectedButton}s
+                </button>
+
+                <button 
+                    id="sortViews"
+                    className={filterButtons == "Views" ? "selectedCategory" : "sortBusinessButton"}
+                    onClick={() => setFilterButtons("Views")}
+                >
+                    Show Most Visited {selectedButton}s
+                </button>
+
+                <button
+                    id="sortDate"
+                    className={filterButtons == "Date" ? "selectedCategory" : "sortBusinessButton"}
+                    onClick={() => setFilterButtons("Date")}
+                >
+                    Show Newly Registered {selectedButton}s
+                </button>
+            </div>
+
             <div className='prefectureBusinesses'>
-                {renderBusinessCards}
+                {renderBusinessCards} 
             </div>
         </div>
-    )
-    
-    // Create a mapping from business types to businesses
-    // let businessTypeMapping = {};
-
-    // prefectureBusinesses.forEach(businessInfo => {
-    //     businessInfo.business_types.forEach(businessSpecifics => {
-    //         const businessType = businessSpecifics.registered_type.business_type;
-    //         if (!businessTypeMapping[businessType]) {
-    //             businessTypeMapping[businessType] = [];
-    //         }
-    //         businessTypeMapping[businessType].push(businessInfo);
-    //     });
-    // });
-
-
-    // const filterBusinesses = Object.keys(businessTypeMapping).map((businessType, index) => (
-    //     <div key={index}>
-    //         <h2 id="businessType">{businessType}s in {prefectureName}</h2>
-    //         <div id='prefectureBusinessesContainer'>
-    //             <div className='prefectureBusinesses'>
-    //                 {businessTypeMapping[businessType].map((business, index) => (
-    //                     <div key={index} className="prefectureBusinessCard">
-    //                         <img 
-    //                             className="prefectureBusinessesImg"
-    //                             alt="prefecture businesses image"
-    //                             src={business.profile_picture}
-    //                         />
-    //                         <h3 className="businessName">{business.name}</h3>
-    //                         <ul>
-    //                             {business.business_types.map((everyBusiness, idx) => (
-    //                                 <li key={idx}>{everyBusiness.registered_type.business_type}</li>
-    //                             ))}
-    //                         </ul>
-    //                     </div>
-    //                 ))}
-    //             </div>
-    //         </div>
-    //     </div>
-    // ));
-
-    // return (
-    //     <div>
-    //         {filterBusinesses}
-    //     </div>
-    // );
+    );
 }
 
 export default SpecificBusinesses;

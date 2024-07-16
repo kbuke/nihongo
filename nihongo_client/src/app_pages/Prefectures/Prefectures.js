@@ -11,7 +11,7 @@ function Prefectures() {
 
     // Check if the user is an admin
     const loggedUser = appData.loggedUser;
-    const userType = loggedUser? loggedUser.type : null;
+    const userType = loggedUser ? loggedUser.type : null;
 
     // Check if vertical nav is open
     const verticalNavHover = appData.verticalNavHover;
@@ -21,14 +21,16 @@ function Prefectures() {
     const [specificPrefectureInfo, setSpecificPrefectureInfo] = useState(null);
     const [prefectureInfoText, setPrefectureInfoText] = useState("");
     const [editInfo, setEditInfo] = useState(false);
-    const [selectedButton, setSelectedButton] = useState(null)
+    const [selectedButton, setSelectedButton] = useState("All Account");
+    const [orderedBusinesses, setOrderedBusinesses] = useState([]);
 
     // Get all prefectures
     const allPrefectures = appData.prefectures;
-    const setAllPrefectures = appData.setAllPrefectures
+    const setAllPrefectures = appData.setAllPrefectures;
 
     // Get all businesses
     const allBusinesses = appData.allBusinesses;
+    console.log(allBusinesses)
 
     const specificPrefecture = allPrefectures.find((prefecture) => prefecture.id === parseInt(params.id));
     const specificPrefectureId = specificPrefecture ? specificPrefecture.id : null;
@@ -49,7 +51,39 @@ function Prefectures() {
         }
     }, [specificPrefectureId]);
 
+    useEffect(() => {
+        if (specificPrefectureInfo) {
+            const prefectureBusinessTypes = ["All Account", "User"];
+            const prefectureBusinesses = specificPrefectureInfo.businesses || [];
+
+            prefectureBusinesses.forEach((businessInfo) => {
+                businessInfo.business_types.forEach((types) => {
+                    console.log(types)
+                    prefectureBusinessTypes.push(types.registered_type.business_type);
+                });
+            });
+
+            const uniqueBusinesses = [...new Set(prefectureBusinessTypes)].sort();
+            setOrderedBusinesses(uniqueBusinesses);
+        }
+    }, [specificPrefectureInfo]);
+
     if (!specificPrefectureInfo) return null; // Handle case when specificPrefectureInfo is not yet loaded
+
+    //Show all prefecture businesses
+    const prefectureBusinesses = specificPrefectureInfo.businesses || [];
+
+    //Make a copt of businesses in the prefecture
+    const copyPrefectureBusinesses = [...prefectureBusinesses];
+
+    // Calculate the average rating for each business
+    copyPrefectureBusinesses.forEach(business => {
+        const reviewRatings = business.business_reviews.map(ratings => ratings.review_rating);
+        const totalSum = reviewRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        const averageRating = reviewRatings.length ? (totalSum / reviewRatings.length).toFixed(1) : 'N/A';
+        business.numberReviews = reviewRatings.length;
+        business.averageRating = averageRating;
+    });
 
     // Get Prefecture Name
     const prefectureName = specificPrefectureInfo.prefecture_name;
@@ -77,28 +111,26 @@ function Prefectures() {
     // Get Prefecture Capital
     const prefectureCapital = specificPrefectureInfo.capital_city;
 
-    // Get Prefecture Businesses
-    let prefectureBusinessTypes = []
+    // Handle button click
+    const handleButtonClick = (category) => {
+        setSelectedButton(category);
+        // Move the selected category to the front and sort the rest
+        setOrderedBusinesses((prevOrderedBusinesses) => [
+            category,
+            ...prevOrderedBusinesses.filter((item) => item !== category).sort()
+        ]);
+    };
 
-    const prefectureBusinesses = specificPrefectureInfo.businesses || [];
-    // console.log(prefectureBusinesses)
-
-    prefectureBusinesses.map((businessInfo) => {
-        businessInfo.business_types.map(types => {
-            prefectureBusinessTypes.push(types.registered_type.business_type)
-        })
-    })
-
-    const uniqueBusinesses = [...new Set(prefectureBusinessTypes.sort())];
-
-    const prefectureButtons = uniqueBusinesses.map((category, index) => (
-        <button 
+    const prefectureButtons = orderedBusinesses.map((category, index) => (
+        <button
             key={index}
-            onClick={() =>setSelectedButton(category)}
+            id="categoryButtons"
+            className={selectedButton === category ? "selected" : ""}
+            onClick={() => handleButtonClick(category)}
         >
             {category}s
         </button>
-    ))
+    ));
 
     const prefectureContainerStyle = verticalNavHover
         ? {
@@ -109,68 +141,64 @@ function Prefectures() {
               marginLeft: "50px",
               width: "calc(100% - 50px)",
           };
-    
+        
+    console.log(selectedButton)
 
     return (
         <div id="prefecturePgContainer" style={prefectureContainerStyle}>
             <>
-                    <div id="prefectureHeaderInfoContainer">
-                        <div id="prefectureInfo">
-                            <div id="prefectureInfoLeft">
-                                <div id="prefectureLeftContainer">
-                                    <h1 id="prefectureName">{prefectureName}</h1>
-                                        {editInfo ? (
-                                            <EditPrefectureInfo
-                                                editInfo={editInfo}
-                                                setEditInfo={setEditInfo}
-                                                prefectureInfoText={prefectureInfoText}
-                                                setPrefectureInfoText={setPrefectureInfoText}
-                                                specificPrefectureId={specificPrefectureId}
-                                                allPrefectures={allPrefectures}
-                                                setAllPrefectures={setAllPrefectures}
-                                            />
-                                        ) : (
-                                            <h3 id="prefectureIntroInfo">{prefectureInfo}</h3>
-                                        )}
+                <div id="prefectureHeaderInfoContainer">
+                    <div id="prefectureInfo">
+                        <div id="prefectureInfoLeft">
+                            <div id="prefectureLeftContainer">
+                                <h1 id="prefectureName">{prefectureName}</h1>
+                                {editInfo ? (
+                                    <EditPrefectureInfo
+                                        editInfo={editInfo}
+                                        setEditInfo={setEditInfo}
+                                        prefectureInfoText={prefectureInfoText}
+                                        setPrefectureInfoText={setPrefectureInfoText}
+                                        specificPrefectureId={specificPrefectureId}
+                                        allPrefectures={allPrefectures}
+                                        setAllPrefectures={setAllPrefectures}
+                                    />
+                                ) : (
+                                    <h3 id="prefectureIntroInfo">{prefectureInfo}</h3>
+                                )}
 
-                                        {userType === "Admin" && !editInfo ? (
-                                            <button id="editInfoButton" onClick={() => setEditInfo(true)}>
-                                                {`Edit ${prefectureName}'s Info`}
-                                            </button>
-                                        ) : null}
-                                </div>
-                            </div>
-                            <div id="prefectureInfoRight">
-                                <h5>🏛️ {prefectureCapital}</h5>
-                                <h5>👤 {renderPop}</h5>
-                                <img 
-                                    id="prefectureFlag"
-                                    alt={`${prefectureName} Flag`}
-                                    src={prefectureFlag}
-                                />
+                                {userType === "Admin" && !editInfo ? (
+                                    <button id="editInfoButton" onClick={() => setEditInfo(true)}>
+                                        {`Edit ${prefectureName}'s Info`}
+                                    </button>
+                                ) : null}
                             </div>
                         </div>
-                        <img id="prefectureImg" alt={`${prefectureName} image`} src={prefectureImg} />
+                        <div id="prefectureInfoRight">
+                            <h5>🏛️ {prefectureCapital}</h5>
+                            <h5>👤 {renderPop}</h5>
+                            <img id="prefectureFlag" alt={`${prefectureName} Flag`} src={prefectureFlag} />
+                        </div>
                     </div>
+                    <img id="prefectureImg" alt={`${prefectureName} image`} src={prefectureImg} />
+                </div>
             </>
             <div id="prefectureCategoryBar">
                 {prefectureButtons}
-                <SpecificBusinesses 
-                    selectedButton={selectedButton}
-                    prefectureBusinesses={prefectureBusinesses}
-                />
-                {/* <AllBusinesses 
-                    prefectureBusinesses={prefectureBusinesses}
-                    prefectureName={prefectureName}
-                />
-
-                <SpecificBusinesses 
-                    prefectureBusinesses={prefectureBusinesses}
-                    prefectureName={prefectureName}
-                /> */}
+                {selectedButton === "All Account" ? 
+                    <AllBusinesses 
+                        copyPrefectureBusinesses={copyPrefectureBusinesses}
+                        prefectureName={prefectureName}
+                    />
+                    :
+                    <SpecificBusinesses
+                        selectedButton={selectedButton}
+                        copyPrefectureBusinesses={copyPrefectureBusinesses}
+                    />
+                }
             </div>
         </div>
     );
 }
 
 export default Prefectures;
+

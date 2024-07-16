@@ -186,7 +186,8 @@ class LocalBusinessSites(Users):
     building_numbers = db.Column(db.String, nullable=False)
     city = db.Column(db.String, nullable=False)
     neighbourhood = db.Column(db.String, nullable=False)
-    # card_info = db.Column(db.String, nullable=False, default='Please enter a small introduction')
+    date_registered = db.Column(db.DateTime, server_default=db.func.now())
+    card_info = db.Column(db.String, nullable=False, server_default='Please enter a small introduction')
 
     #Add relationship
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
@@ -194,11 +195,11 @@ class LocalBusinessSites(Users):
     business_types = db.relationship("BusinessTypes", backref="business", lazy=True)
 
     #Add validations
-    # @validates("card_info")
-    # def validate_cars_info(self, key, info):
-    #     if 5 <= len(info) <= 20:
-    #         return info 
-    #     raise ValueError("Card Info must be between 5 and 20 characters")
+    @validates("card_info")
+    def validate_cars_info(self, key, info):
+        if 5 <= len(info) <= 100:
+            return info 
+        raise ValueError("Card Info must be between 5 and 100 characters")
 
     # Add serialize rules
     serialize_rules = (
@@ -269,4 +270,6 @@ class BusinessTypes(db.Model, SerializerMixin):
         "-business",
         "-registered_type",
     )
+
+
 

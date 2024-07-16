@@ -251,6 +251,7 @@ class PrefectureId(Resource):
     def get(self, id):
         prefecture_info = Prefecture.query.filter(Prefecture.id==id).first()
         if prefecture_info:
+            # breakpoint()
             return make_response(prefecture_info.to_dict(
                 rules=(
                     "-businesses.prefecture",
@@ -260,7 +261,19 @@ class PrefectureId(Resource):
                     "-businesses.businesses",
                     "-businesses.user",
                     "-businesses._password_hash",
-                    "-businesses.business_reviews",
+
+                    "-businesses.business_reviews.business",
+                    "-businesses.business_reviews.admin",
+                    "-businesses.business_reviews.traveler",
+                    "-businesses.business_reviews.citizen",
+                    "-businesses.business_reviews.admin_id",
+                    "-businesses.business_reviews.business_id",
+                    "-businesses.business_reviews.citizen_id",
+                    "-businesses.business_reviews.id",
+                    "-businesses.business_reviews.review_comment",
+                    "-businesses.business_reviews.review_date",
+                    "-businesses.business_reviews.traveler_id",
+
                     "-businesses.business_types.business",
                     "businesses.business_types.registered_type",
                     "-businesses.building_numbers",

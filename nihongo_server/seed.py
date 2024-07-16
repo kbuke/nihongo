@@ -121,7 +121,8 @@ if __name__ == '__main__':
             building_numbers = "133-1",
             city = "Nakagyo Ward",
             neighbourhood = "Umenokicho",
-            prefecture_id = 2
+            prefecture_id = 2,
+            card_info = "A lovely hotel/hostel in the heart of Kyoto, 5 minutes from the palace"
         )
         kyotoMorris.password = "kyotoMorris1"
 
@@ -137,7 +138,8 @@ if __name__ == '__main__':
             building_numbers = "9 Chome-1-1 Kita 7",
             city="Higashi Ward",
             neighbourhood = "Johigashi",
-            prefecture_id = 1
+            prefecture_id = 1,
+            card_info = "The home of Japans oldest, and most famous beers. Come and see how it's produced."
         )
         sapparoBeerMuseum.password = "iLoveBeer"
 
@@ -169,7 +171,8 @@ if __name__ == '__main__':
             building_numbers = "1",
             city = "Kita Ward",
             neighbourhood = "Kinkakujicho",
-            prefecture_id = 2
+            prefecture_id = 2,
+            card_info = "One of the most famouse temples in Japan, and the only golden one"
         )
         goldenTemple.password = "loveGold"
 
@@ -261,7 +264,46 @@ if __name__ == '__main__':
             business_id=5,
             traveler_id=2,
         )
-        db.session.add_all([kyotoMorrisAdminReview, kyotoMorrisCitizenReview, kyotoMorrisTravelerReview])
+
+        kyotoMonkeyParkTravelerReview = BusinessReviews(
+            review_rating = 5,
+            review_comment = "Loved seeing these cute little guys, and an amazing view of Kyoto",
+            business_id = 9,
+            traveler_id= 3
+        )
+
+        kyotoMonkeyParkAdminReview = BusinessReviews(
+            review_rating = 3, 
+            review_comment = "The monkeys are cool, and the views nice. But the walk up is very difficult, and the view is bad",
+            business_id = 9,
+            admin_id = 1
+        )
+
+        daigoJiTravelerReview = BusinessReviews(
+            review_rating = 2,
+            review_comment = "The shrine itself is nice, but it's small and expensive",
+            business_id = 12,
+            traveler_id = 3
+        )
+
+        daigoJiAdminReview = BusinessReviews(
+            review_rating = 4,
+            review_comment = "Amazing shrine, however there isn't a lot else there and can be very crowded.",
+            business_id = 12,
+            admin_id = 1
+        )
+
+        goldenTempleAdminReview = BusinessReviews(
+            review_rating = 5,
+            review_comment = "Simply amazing",
+            business_id = 8,
+            admin_id = 1
+        )
+        db.session.add_all([
+            kyotoMorrisAdminReview, kyotoMorrisCitizenReview, kyotoMorrisTravelerReview,
+            kyotoMonkeyParkTravelerReview, kyotoMonkeyParkAdminReview, daigoJiTravelerReview,
+            daigoJiAdminReview, goldenTempleAdminReview
+        ])
         db.session.commit()
 
         print("Seeding business types")
@@ -325,8 +367,12 @@ if __name__ == '__main__':
             business_type = "Castle"
         )
 
+        animal = RegisteredBusinessTypes(
+            business_type = "Animal"
+        )
+
         db.session.add_all([
-            arcade, hotel, hostel, museum, craft_shop, restaurant, park, cafe, bar, exhibition, shrine, temple, night_club, castle
+            arcade, hotel, hostel, museum, craft_shop, restaurant, park, cafe, bar, exhibition, shrine, temple, night_club, castle, animal
         ])
         db.session.commit()
 
@@ -376,8 +422,24 @@ if __name__ == '__main__':
             business_type_id = 11
         )
 
+        kyotoMonkeyParkWildlife = BusinessTypes(
+            business_id = 9,
+            business_type_id = 15
+        )
+
+        daigoJiTemple = BusinessTypes(
+            business_id = 12,
+            business_type_id = 12
+        )
+
+        daigoJiShrine = BusinessTypes(
+            business_id = 12,
+            business_type_id = 11
+        )
+
         db.session.add_all([
-            sapparoBeerTypeBar, sapparoBeerTypeMuseum, kyotoMorrisTypeBar, kyotoMorrisTypeHostel, kyotoMorrisTypeHotel, taitoHokkaidoTypeArcade, goldenTempleShrine, goldenTempleTemple, fushimiShrinesShrine
+            sapparoBeerTypeBar, sapparoBeerTypeMuseum, kyotoMorrisTypeBar, kyotoMorrisTypeHostel, kyotoMorrisTypeHotel, taitoHokkaidoTypeArcade, goldenTempleShrine, 
+            goldenTempleTemple, fushimiShrinesShrine, kyotoMonkeyParkWildlife, daigoJiTemple, daigoJiShrine
         ])
         db.session.commit()
 

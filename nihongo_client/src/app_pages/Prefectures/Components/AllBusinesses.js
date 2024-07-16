@@ -3,15 +3,28 @@ import "./AllBusinesses.css"
 
 
 function AllBusinesses({
-    prefectureBusinesses,
+    copyPrefectureBusinesses,
     prefectureName
 }){
-    const numberOfBusinesses = prefectureBusinesses.length
+    const numberOfBusinesses = copyPrefectureBusinesses.length
+
     const [businessNumber, setBusinessNumber] = useState(0)
+    const [filterButtons, setFilterButtons] = useState("Ratings");
 
-    const numberBusinessPerPg = 5
+    const numberBusinessPerPg = 10
 
-    let slicedBusinesses = prefectureBusinesses.slice(businessNumber, businessNumber + numberBusinessPerPg)
+    const filterBusinesses = filterButtons == "Ratings" ? 
+        copyPrefectureBusinesses.sort((a, b) => {
+            if (a.averageRating === 'N/A') return 1;
+            if (b.averageRating === 'N/A') return -1;
+            return b.averageRating - a.averageRating
+        })
+        :
+        copyPrefectureBusinesses.sort((a, b) => b.numberReviews - a.numberReviews)
+    
+    console.log(filterBusinesses[0].date_registered.slice(0,10))
+
+    let slicedBusinesses = filterBusinesses.slice(0, businessNumber + numberBusinessPerPg)
 
     const clickMore = () => {
         setBusinessNumber(businessNumber + numberBusinessPerPg)
@@ -32,16 +45,51 @@ function AllBusinesses({
                 src={business.profile_picture}
             />
             <h3 className="businessName">{business.name}</h3>
-            <ul>
-                {business.business_types.map((everyBusiness, idx) => (
-                    <li key={idx}>{everyBusiness.registered_type.business_type}</li>
-                ))}
-            </ul>
+            <div id='businessInfoGrid'>
+                <div id='leftBusinessInfo'>
+                    <h5 id="businessPrefectureInfo">{business.card_info}</h5>
+                </div>
+
+                <div id='rightBusinessInfo'>
+                    <div id='reviewGrid'>
+                        <h4>{business.averageRating} ⭐️ </h4>
+                        <h4 className="numberReviews">({business.numberReviews})</h4>
+                    </div>
+                </div>
+            </div>
+            <h5 id="businessRegisterDate">Registered: {business.date_registered.slice(0, 10)}</h5>
         </div>
     ))
     return(
         <div>
             <h2>{`Businesses in ${prefectureName}`}</h2>
+
+            <div id="specificBusinessButtonContainer">
+                <button 
+                    id="sortRatings"
+                    className={filterButtons == "Ratings" ? "selectedCategory" : "sortBusinessButton"}
+                    onClick={() => setFilterButtons("Ratings")}
+                >
+                    Show Highest Rated Businesses
+                </button>
+
+                <button 
+                    id="sortViews"
+                    className={filterButtons == "Views" ? "selectedCategory" : "sortBusinessButton"}
+                    onClick={() => setFilterButtons("Views")}
+                >
+                    Show Most Visited Businesses
+                </button>
+
+                <button
+                    id="sortDate"
+                    className={filterButtons == "Date" ? "selectedCategory" : "sortBusinessButton"}
+                    onClick={() => setFilterButtons("Date")}
+                >
+                    Show Newly Registered Businesses
+                </button>
+            </div>
+
             <div className="prefectureBusinessesContainer">
                 <div className="prefectureBusinesses">
                     {eachBusiness}

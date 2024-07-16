@@ -56,3 +56,12 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
+#leftBusinessInfo{
+    border-right: solid;
+}
+
+#businessPrefectureInfo{
+    margin-top: 1px;
+    color: red;
+}

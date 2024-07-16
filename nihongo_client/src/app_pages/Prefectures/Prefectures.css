@@ -77,8 +77,35 @@
 }
 
 #prefectureCategoryBar{
-    border: solid;
     margin-top: 10px;
+}
+
+#categoryButtons{
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+    margin-top: 20px;
+    border: none;
+    font-family: cursive;
+    transition: transform 1s, box-shadow 0.4s;
+}
+
+#categoryButtons:hover{
+    transform: translateY(-10px); /* Move the card up */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+    opacity: 1;
+    text-decoration: underline;
+    font-size: 200%;
+    font-weight: bold;
+}
+
+.selected{
+    transform: translateY(-10px); /* Move the card up */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a shadow for depth */
+    opacity: 1;
+    text-decoration: underline;
+    font-size: 200%;
+    font-weight: bold;
+    background-color: #ffb7c5;;
 }
 
 /* #ffb7c5; */
