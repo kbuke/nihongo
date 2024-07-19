@@ -1,0 +1,47 @@
+
+
+#interactivePrefectureContainer {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4.5px;
+}
+
+#interactivePrefectureButton {
+    height: 70px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 15px;
+    border: none;
+    background-color: #FAF9F6;
+    margin-left: 50px;
+}
+
+#interactivePrefectureImg {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Ensure the image covers the container proportionally */
+}
+
+#interactivePrefectureImg:hover{
+    transform: translateY(-10px);
+    transition: 0.3s;
+}
+
+#interactivePrefectureImgContainer{
+    border: solid;
+    width: 100%;
+}
+
+h5 {
+    margin-bottom: 1px;
+    margin-top: 1px;
+}
+
+h6 {
+    margin-top: 0px;
+    text-decoration: underline;
+}

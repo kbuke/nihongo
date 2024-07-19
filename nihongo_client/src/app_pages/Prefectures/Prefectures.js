@@ -5,6 +5,9 @@ import "./Prefectures.css";
 import EditPrefectureInfo from "./Components/EditPrefectureInfo";
 import AllBusinesses from "./Components/AllBusinesses";
 import SpecificBusinesses from "./Components/SpecificBusinesses";
+import PrefectureReviews from "./Components/PrefectureReviews";
+import PrefetcureCheckIn from "./Components/PrefectureCheckIn";
+import PrefectureBag from "./Components/PrefectureBag";
 
 function Prefectures() {
     const appData = useOutletContext();
@@ -30,7 +33,6 @@ function Prefectures() {
 
     // Get all businesses
     const allBusinesses = appData.allBusinesses;
-    console.log(allBusinesses)
 
     const specificPrefecture = allPrefectures.find((prefecture) => prefecture.id === parseInt(params.id));
     const specificPrefectureId = specificPrefecture ? specificPrefecture.id : null;
@@ -58,7 +60,6 @@ function Prefectures() {
 
             prefectureBusinesses.forEach((businessInfo) => {
                 businessInfo.business_types.forEach((types) => {
-                    console.log(types)
                     prefectureBusinessTypes.push(types.registered_type.business_type);
                 });
             });
@@ -142,7 +143,6 @@ function Prefectures() {
               width: "calc(100% - 50px)",
           };
         
-    console.log(selectedButton)
 
     return (
         <div id="prefecturePgContainer" style={prefectureContainerStyle}>
@@ -151,7 +151,7 @@ function Prefectures() {
                     <div id="prefectureInfo">
                         <div id="prefectureInfoLeft">
                             <div id="prefectureLeftContainer">
-                                <h1 id="prefectureName">{prefectureName}</h1>
+                                    <h1 id="prefectureName">{prefectureName}</h1>
                                 {editInfo ? (
                                     <EditPrefectureInfo
                                         editInfo={editInfo}
@@ -173,10 +173,29 @@ function Prefectures() {
                                 ) : null}
                             </div>
                         </div>
+
+                        <div id="prefectureInfoCenter">
+                            <h2>Reviews</h2>
+                            <PrefectureReviews 
+                                specificPrefecture={specificPrefecture}
+                                loggedUser={loggedUser}
+                            />
+                        </div>
+
                         <div id="prefectureInfoRight">
                             <h5>🏛️ {prefectureCapital}</h5>
                             <h5>👤 {renderPop}</h5>
                             <img id="prefectureFlag" alt={`${prefectureName} Flag`} src={prefectureFlag} />
+                            <div id="interactiveButtonContainer">
+                                <PrefetcureCheckIn 
+                                    loggedUser={loggedUser}
+                                    specificPrefecture={specificPrefecture}
+                                />
+                                <PrefectureBag 
+                                    loggedUser={loggedUser}
+                                    specificPrefecture={specificPrefecture}
+                                />
+                            </div>
                         </div>
                     </div>
                     <img id="prefectureImg" alt={`${prefectureName} image`} src={prefectureImg} />

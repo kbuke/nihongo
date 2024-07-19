@@ -21,6 +21,8 @@ class Users(db.Model, SerializerMixin):
     travelers = db.relationship("Traveler", backref="user", lazy=True)
     citizens = db.relationship("Citizen", backref="user", lazy=True)
     businesses = db.relationship("LocalBusinessSites", backref="user", lazy=True)
+    prefecture_visit = db.relationship("CheckInPrefecture", backref="user", lazy=True)
+    prefecture_wishlist = db.relationship("PrefectureWishList", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -80,6 +82,7 @@ class Admin(Users):
 
     # Add relationship
     business_reviews = db.relationship("BusinessReviews", backref="admin", lazy=True)
+    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="admin", lazy=True)
 
     # Add serialize rules
     serialize_rules = (
@@ -107,7 +110,8 @@ class Traveler(Users):
     home_country = db.Column(db.String, nullable=True)
 
     #Add relationship
-    business_reviews = db.relationship("BusinessReviews", backref="traveler", lazy=True)
+    business_reviews = db.relationship("BusinessReviews", backref="traveler", lazy=True) 
+    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="traveler", lazy=True)
 
     # Add serialize rules
     serialize_rules = (
@@ -137,6 +141,7 @@ class Citizen(Users):
 
     #Add relationships
     business_reviews = db.relationship("BusinessReviews", backref="citizen", lazy=True)
+    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="citizen", lazy=True)
 
     # Add serialize rules
     serialize_rules = (
@@ -166,6 +171,10 @@ class Prefecture(db.Model, SerializerMixin):
 
     #Add relationships
     businesses = db.relationship("LocalBusinessSites", backref="prefecture", lazy='joined')
+    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="prefecture", lazy=True)
+    prefecture_visit = db.relationship("CheckInPrefecture", backref="prefecture", lazy=True)
+    prefecture_wishlist = db.relationship("PrefectureWishList", backref="prefecture", lazy=True)
+    
 
     serialize_rules = (
         "-businesses.prefecture",
@@ -187,7 +196,7 @@ class LocalBusinessSites(Users):
     city = db.Column(db.String, nullable=False)
     neighbourhood = db.Column(db.String, nullable=False)
     date_registered = db.Column(db.DateTime, server_default=db.func.now())
-    card_info = db.Column(db.String, nullable=False, server_default='Please enter a small introduction')
+    card_info = db.Column(db.String, nullable=False, server_default='')
 
     #Add relationship
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
@@ -270,6 +279,81 @@ class BusinessTypes(db.Model, SerializerMixin):
         "-business",
         "-registered_type",
     )
+
+#------------------------Set up Prefecture Reviews Model-------------------------------------
+class PrefectureCategories(db.Model, SerializerMixin):
+    __tablename__ = "prefecture_categories"
+
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String, nullable=False)
+
+    #Add relations
+    prefecture_category_ratings = db.relationship("PrefectureCategoryReviews", backref="review_category", lazy=True)
+
+    #Add serializer rules
+    serialize_rules=(
+        "-prefecture_category_ratings",
+    )
+
+    
+
+class PrefectureCategoryReviews(db.Model, SerializerMixin):
+    __tablename__ = "prefecture_reviews"
+
+    id=db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer, nullable=False)
+
+    #add relationships
+    prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
+    prefecture_type_id = db.Column(db.Integer, db.ForeignKey("prefecture_categories.id"))
+    admin_id = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
+    citizen_id = db.Column(db.Integer, db.ForeignKey("citizens.id"), nullable=True)
+    traveler_id = db.Column(db.Integer, db.ForeignKey("travelers.id"), nullable=True)
+
+    #Add serialization rules
+    serialize_rules=(
+        "-admin",
+        "-citizen",
+        "-traveler",
+        "-prefecture",
+        "-prefecture",
+    )
+
+class CheckInPrefecture(db.Model, SerializerMixin):
+    __tablename__ = "prefecture_checkin"
+
+    id=db.Column(db.Integer, primary_key=True)
+    visited = db.Column(db.Boolean, default=False)
+
+    #Add relations
+    prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+
+    #Add serialize rules
+    serialize_rules = (
+        "-prefecture",
+        "-user",
+    )
+
+class PrefectureWishList(db.Model, SerializerMixin):
+    __tablename__ = "prefecture_wishlist"
+
+    id=db.Column(db.Integer, primary_key=True)
+    wish_list = db.Column(db.Boolean, default=False)
+
+    #Add relations
+    prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+
+    #Add serialize rules
+    serialize_rules = (
+        "-user",
+        "-prefecture",
+    )
+
+
+    
 
 
 

@@ -40,12 +40,18 @@
 
 #prefectureInfo{
     display: grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 40% 25% 35%;
 }
 
 #prefectureLeftContainer{
     display: block;
+}
+
+#prefectureInfoCenter{
     border-right: solid;
+    margin-top: 46px;
+    text-align: center;
+    border-left: solid;
 }
 
 #prefectureName{
@@ -106,6 +112,13 @@
     font-size: 200%;
     font-weight: bold;
     background-color: #ffb7c5;;
+}
+
+#interactiveButtonContainer{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
 }
 
 /* #ffb7c5; */

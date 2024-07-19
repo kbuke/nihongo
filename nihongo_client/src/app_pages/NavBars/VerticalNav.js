@@ -26,7 +26,6 @@ function VerticalNav({
             }
         })
     }
-    console.log(verticalNavHover)
     
     return(
         loggedUser?(

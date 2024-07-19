@@ -5,7 +5,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList
 from sqlalchemy import event
 
 #Show all available users, and allow frontend to add new ones
@@ -458,6 +458,128 @@ class AllBusinessTypesConnection(Resource):
         business_types = [business_type.to_dict() for business_type in BusinessTypes.query.all()]
         return business_types, 200
 
+class AllPrefectureCategories(Resource):
+    def get(self):
+        category_types = [category_type.to_dict() for category_type in PrefectureCategories.query.all()]
+        return category_types, 200
+
+class AllPrefectureRatings(Resource):
+    def get(self):
+        ratings = [rating.to_dict() for rating in PrefectureCategoryReviews.query.all()]
+        return ratings, 200
+    
+    def post(self):
+        json = request.get_json()
+        try:
+            new_rating = PrefectureCategoryReviews(
+                rating = json.get("rating"),
+                prefecture_id = json.get("prefectureId"),
+                prefecture_type_id = json.get("categoryId"),
+                admin_id = json.get("adminId"),
+                citizen_id = json.get("citizenId"),
+                traveler_id = json.get("travelerId")
+            )
+            db.session.add(new_rating)
+            db.session.commit()
+            return new_rating.to_dict(), 201
+        except ValueError as e:
+            return{
+                "error": [str(e)]
+            }, 400
+
+class prefectureCheckIn(Resource):
+    def get(self):
+        checkIns = [checkIn.to_dict() for checkIn in CheckInPrefecture.query.all()]
+        return checkIns, 200
+
+    def post(self):
+        json = request.get_json()
+        try:
+            new_checkin = CheckInPrefecture(
+                visited = json.get("visited"),
+                prefecture_id = json.get("prefectureId"),
+                user_id=json.get("userId")
+            )
+            db.session.add(new_checkin)
+            db.session.commit()
+            return new_checkin.to_dict(), 201 
+        except ValueError as e:
+            return{
+                "error": [str(e)]
+            }, 400
+    
+class prefectureCheckInId(Resource):
+    def get(self, id):
+        check_in_info = CheckInPrefecture.query.filter(CheckInPrefecture.id==id).first()
+        if check_in_info:
+            # breakpoint()
+            return make_response(check_in_info.to_dict(
+                rules=(
+                    # "-user",
+                    "-prefecture",
+                )
+            ),201)
+        return {
+            "error": "check in not found"
+        }, 404
+    
+    def delete(self, id):
+        check_in = CheckInPrefecture.query.filter(CheckInPrefecture.id==id).first()
+        if check_in:
+            db.session.delete(check_in)
+            db.session.commit()
+            return{
+                "message": "Prefecture Check In Deleted"
+            }, 200
+        return{
+            "error": "Blog not found"
+        }, 404
+
+class PrefectureWishLists(Resource):
+    def get(self):
+        wishlists = [wishlist.to_dict() for wishlist in PrefectureWishList.query.all()]
+        return wishlists, 200
+    
+    def post(self):
+        json = request.get_json()
+        # breakpoint()
+        try:
+            new_wishlist = PrefectureWishList(
+                wish_list = json.get("inBag"),
+                prefecture_id = json.get("prefectureId"),
+                user_id = json.get("userId")
+            )
+            db.session.add(new_wishlist)
+            db.session.commit()
+            return new_wishlist.to_dict(), 201
+        except ValueError as e:
+            return{
+                "error": [str(e)]
+            }, 400
+
+class PrefectureWishListId(Resource):
+    def get(self, id):
+        wish_list_info = PrefectureWishList.query.filter(PrefectureWishList.id==id).first()
+        if wish_list_info:
+            return make_response(wish_list_info.to_dict(), 201)
+        return{
+            "error": "Wish List not found"
+        }, 404 
+    
+    def delete(self, id):
+        wish_list = PrefectureWishList.query.filter(PrefectureWishList.id==id).first()
+        if wish_list:
+            db.session.delete(wish_list)
+            db.session.commit()
+            return{
+                "message": "Prefecture wish list is Deleted"
+            }, 200
+        return{
+            "error": "Wish List not found"
+        }, 404
+
+
+
 
     
 
@@ -482,6 +604,12 @@ api.add_resource(BusinessReviewId, '/businessreviews/<int:id>')
 api.add_resource(AllBusinessTypes, '/businesstypes')
 api.add_resource(BusinessTypesId, '/businesstypes/<int:id>')
 api.add_resource(AllBusinessTypesConnection, '/businesstypesconnection')
+api.add_resource(AllPrefectureCategories, '/prefecturecategories')
+api.add_resource(AllPrefectureRatings, '/prefectureratings')
+api.add_resource(prefectureCheckIn, '/prefecturecheckin')
+api.add_resource(prefectureCheckInId, '/prefecturecheckin/<int:id>')
+api.add_resource(PrefectureWishLists, '/prefecturewishlist')
+api.add_resource(PrefectureWishListId, '/prefecturewishlist/<int:id>')
 
 
 if __name__ == '__main__':

@@ -1,0 +1,24 @@
+#ratingsContainer{
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+#ratingGrid{
+    display: grid;
+    grid-template-columns: 70% 30%;
+    margin-top: 0px;
+}
+
+.ratingButtons{
+    width: 100px;
+    margin: 5px;
+}
+
+#reviewPrefectureButton{
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 80%;
+    background-color: green;
+    color: white;
+}

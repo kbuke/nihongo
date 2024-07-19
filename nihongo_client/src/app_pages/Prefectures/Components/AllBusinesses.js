@@ -21,8 +21,6 @@ function AllBusinesses({
         })
         :
         copyPrefectureBusinesses.sort((a, b) => b.numberReviews - a.numberReviews)
-    
-    console.log(filterBusinesses[0].date_registered.slice(0,10))
 
     let slicedBusinesses = filterBusinesses.slice(0, businessNumber + numberBusinessPerPg)
 

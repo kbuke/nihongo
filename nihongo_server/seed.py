@@ -1,4 +1,4 @@
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList
 
 from datetime import time
 
@@ -441,6 +441,92 @@ if __name__ == '__main__':
             sapparoBeerTypeBar, sapparoBeerTypeMuseum, kyotoMorrisTypeBar, kyotoMorrisTypeHostel, kyotoMorrisTypeHotel, taitoHokkaidoTypeArcade, goldenTempleShrine, 
             goldenTempleTemple, fushimiShrinesShrine, kyotoMonkeyParkWildlife, daigoJiTemple, daigoJiShrine
         ])
+        db.session.commit()
+
+        print("Seeding prefecture review categories")
+        prefectureHistory = PrefectureCategories(
+            category = "History"
+        )
+
+        prefectureCulture = PrefectureCategories(
+            category = "Culture"
+        )
+
+        prefectureCuisine = PrefectureCategories(
+            category = "Food"
+        )
+
+        prefectureWildlife = PrefectureCategories(
+            category = "Wildlife"
+        )
+
+        prefectureNightLife = PrefectureCategories(
+            category = "Nightlife"
+        )
+
+        prefectureBeaches = PrefectureCategories(
+            category = "Beaches"
+        )
+
+        prefectureNature = PrefectureCategories(
+            category = "Nature"
+        )
+
+        prefectureShopping = PrefectureCategories(
+            category = "Shopping"
+        )
+
+        prefectureArt = PrefectureCategories(
+            category = "Art"
+        )
+
+        db.session.add_all([
+            prefectureHistory, prefectureCulture, prefectureCuisine, 
+            prefectureWildlife, prefectureNightLife, prefectureBeaches,
+            prefectureNature, prefectureShopping, prefectureArt
+        ])
+        db.session.commit()
+
+        print("Seeding prefecture ratings")
+        kyotoAdminHistoryReview = PrefectureCategoryReviews(
+            rating = 5,
+            prefecture_id = 2,
+            prefecture_type_id = 1,
+            admin_id = 1
+        )
+
+        kyotoTravelerHistoryReview = PrefectureCategoryReviews(
+            rating=4,
+            prefecture_id = 2,
+            prefecture_type_id = 1,
+            traveler_id = 2
+        )
+
+        kyotoFoodAdminReview = PrefectureCategoryReviews(
+            rating = 4,
+            prefecture_id = 2,
+            prefecture_type_id = 3,
+            admin_id = 1
+        )
+        db.session.add_all([kyotoAdminHistoryReview, kyotoTravelerHistoryReview, kyotoFoodAdminReview])
+        db.session.commit()
+
+        print("Seeding prefecture check ins")
+        kyotoTravelerCheckin = CheckInPrefecture(
+            visited=True,
+            prefecture_id = 2,
+            user_id = 2
+        )
+        db.session.add_all([kyotoTravelerCheckin])
+        db.session.commit()
+
+        print("Seeding Prefecture WishLists")
+        kyotoTravelerWishList = PrefectureWishList(
+            wish_list=True,
+            prefecture_id=2,
+            user_id=2
+        )
+        db.session.add_all([kyotoTravelerWishList])
         db.session.commit()
 
 
