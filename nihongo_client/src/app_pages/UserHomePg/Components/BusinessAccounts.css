@@ -1,0 +1,15 @@
+#allBusinessInfoGrid{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+#businessInfoCardGrid{
+    margin-left: 20px;
+    display: block;
+}
+
+
+
+h6{
+    text-decoration: none;
+}

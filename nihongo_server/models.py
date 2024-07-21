@@ -79,6 +79,8 @@ class Admin(Users):
 
     hometown = db.Column(db.String, nullable=True)
     home_country = db.Column(db.String, nullable=True)
+    current_town = db.Column(db.String, nullable=True)
+    current_country = db.Column(db.String, nullable=True)
 
     # Add relationship
     business_reviews = db.relationship("BusinessReviews", backref="admin", lazy=True)
@@ -108,6 +110,8 @@ class Traveler(Users):
 
     hometown = db.Column(db.String, nullable=True)
     home_country = db.Column(db.String, nullable=True)
+    current_town = db.Column(db.String, nullable=True)
+    current_country = db.Column(db.String, nullable=True)
 
     #Add relationship
     business_reviews = db.relationship("BusinessReviews", backref="traveler", lazy=True) 
@@ -138,6 +142,7 @@ class Citizen(Users):
     hometown = db.Column(db.String, nullable=True)
     home_country = db.Column(db.String, nullable=True)
     current_town = db.Column(db.String, nullable=True)
+    current_country = db.Column(db.String, nullable=True, server_default="Japan")
 
     #Add relationships
     business_reviews = db.relationship("BusinessReviews", backref="citizen", lazy=True)
@@ -217,8 +222,8 @@ class LocalBusinessSites(Users):
         "-user.citizens",
         "-user.businesses",
         "-prefecture.businesses",
-        "-business_reviews",
-        "-business_types",
+        # "-business_reviews",
+        # "-business_types",
     )
 
     __mapper_args__ = {

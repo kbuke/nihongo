@@ -338,7 +338,29 @@ class Businesses(Resource):
                 "-citizens",
                 "-businesses",
                 "-prefectures",
-                "-prefecture",
+                "business_types.registered_type",
+            
+                "-prefecture.prefecture_reviews",
+                "-prefecture.prefecture_visit",
+                "-prefecture.prefecture_wishlist",
+                "-prefecture.id",
+                "-prefecture.prefecture_img",
+                "-prefecture.prefecture_info",
+                "-prefecture.capital_city",
+                "-prefecture.population",
+                "prefecture.prefecture_flag",
+                
+                
+
+                "-business_reviews.business_id",
+                "-business_reviews.citizen_id",
+                "-business_reviews.review_comment",
+                "-business_reviews.review_date",
+                "-business_reviews.id",
+                "-business_reviews.traveler_id",
+                "-business_reviews.admin_id",
+
+
             )) for business in LocalBusinessSites.query.all()]
         return businesses, 200
 

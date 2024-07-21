@@ -6,6 +6,7 @@ import sitesImg from "../../assets/sitesImg.jpg"
 import JapanMap from "./Components/JapanMap";
 
 import { useOutletContext } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function LoggedInHome() {
   // Retrieve data from App.js
@@ -20,29 +21,24 @@ function LoggedInHome() {
   // const [verticalNavHover, setVerticalNavHover] = useState(false);
   const verticalNavHover = appData.verticalNavHover
 
+  const homePgContainerStyle = verticalNavHover
+        ? {
+              marginLeft: "220px",
+              width: "calc(100% - 220px)",
+          }
+        : {
+              marginLeft: "50px",
+              width: "calc(100% - 50px)",
+          };
+
   //Get all prefectures
   const allPrefectures = appData.prefectures 
 
-  //Decide width of home page, depending on if the vertical nav bar is in use
-  const homePgContainerStyle = verticalNavHover
-    ? {
-        marginLeft: "220px",
-        position: "absolute",
-        top: "100px",
-        width: "100%"
-      }
-    : {
-        marginLeft: "50px",
-        position: "absolute",
-        top: "100px",
-        width: "100%"
-      };
-
   return (
-    <div style={{ position: "relative" }}>
+    <div>
       <div
         style={homePgContainerStyle}
-        id="homePgContainer"
+        id="pgContainer"
       >
         <JapanMap allPrefectures={allPrefectures}/>
 
@@ -91,8 +87,9 @@ function LoggedInHome() {
                 <h2>Restaraunts</h2>
               </div>
 
-              <div 
+              <Link 
                 className="options"
+                to={`/userhome`}
                 style={{
                   backgroundImage: `url(${peopleImg})`,
                   display: "flex",
@@ -100,8 +97,8 @@ function LoggedInHome() {
                   alignItems: "center"
                 }}
               >
-                <h2>Locals</h2>
-              </div>
+                <h2>Users</h2>
+              </Link>
 
               <div
                 className="options"

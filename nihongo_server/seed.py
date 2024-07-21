@@ -22,7 +22,9 @@ if __name__ == '__main__':
             profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "London",
             home_country = "UK",
-            role="Admin"
+            role="Admin",
+            current_town = "Johannesburg",
+            current_country = "South Africa",
         )
         kbuke13.password = "kara1328"
 
@@ -36,7 +38,9 @@ if __name__ == '__main__':
             profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "London",
             home_country = "UK",
-            role = "Traveller"
+            role = "Traveller",
+            current_town = "Johannesburg",
+            current_country = "South Africa",
         )
         zhirji15.password = "louisBruce"
 

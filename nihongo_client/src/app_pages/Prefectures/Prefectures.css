@@ -9,12 +9,12 @@
     background-color: #FAF9F6
 }
 
-.verticalNavOpen #prefecturePgContainer {
+.verticalNavOpen #pgContainer {
     margin-left: 220px;
     width: calc(100% - 220px);
 }
 
-.verticalNavClosed #prefecturePgContainer {
+.verticalNavClosed #pgContainer {
     margin-left: 250px;
     width: calc(100% - 50px);
 }

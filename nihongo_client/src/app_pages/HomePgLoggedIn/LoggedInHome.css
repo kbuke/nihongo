@@ -1,8 +1,13 @@
-#homePgContainer {
+#pgContainer {
     display: grid;
     grid-template-columns: 40% 60%;
     background-color: #F4F2F3;
   }
+
+  .verticalNavOpen #homePgContainer {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+}
   
   #homePgTextContainer {
     text-align: center;
@@ -26,7 +31,7 @@
     border: solid;
     height: 150px;
     width: 350px;
-    border-radius: 30%;
+    border-radius: 24px;
     position: relative;
     overflow: hidden;
     color: white;
