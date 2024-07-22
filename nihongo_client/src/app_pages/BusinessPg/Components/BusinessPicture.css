@@ -1,0 +1,15 @@
+#businessImgContainer{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#businessImg{
+    height: 100%;
+    width: 100%;
+}

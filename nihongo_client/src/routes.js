@@ -4,7 +4,7 @@ import LoggedInHome from "./app_pages/HomePgLoggedIn/LoggedInHome";
 import Prefectures from "./app_pages/Prefectures/Prefectures";
 import UserHome from "./app_pages/UserHomePg/UserHome";
 import UserPg from "./app_pages/UserPg/UserPg";
-import { path } from "@amcharts/amcharts4/core";
+import BusinessPg from "./app_pages/BusinessPg/BusinessPg";
 
 const routes = [
     {
@@ -30,6 +30,10 @@ const routes = [
             {
                 path: "/user/:id",
                 element: <UserPg />
+            },
+            {
+                path: "/business/:id",
+                element: <BusinessPg />
             }
         ]
     }

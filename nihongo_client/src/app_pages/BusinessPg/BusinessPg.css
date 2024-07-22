@@ -1,0 +1,16 @@
+#businessPgContainer{
+    position: absolute;
+    top: 100px;
+    transition: margin-left 0.3s ease;
+    width: calc(100% - 50px); /* Default width when nav is closed */
+    margin-left: 10px;
+    background-color: #FAF9F6
+}
+
+#renderedBusinessInfoContainer{
+    display: grid;
+    grid-template-columns: 15% 25% 25% 35%;
+    margin-left: 20px;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,5 +1,7 @@
 import "./BusinessAccounts.css";
 
+import { Link } from "react-router-dom";
+
 function BusinessAccounts({
     businessRole,
     filterBar,
@@ -40,7 +42,7 @@ function BusinessAccounts({
     );
 
     const businessCard = filterSearch.map((businessInfo, index) => (
-        <div key={index} id="userCard">
+        <Link key={index} id="userCard" to={`/business/${businessInfo.id}`}>
             <div id="userImgCardContainer">
                 <img 
                     id="userCardImg"
@@ -74,7 +76,7 @@ function BusinessAccounts({
                     ))}
                 </div>
             </div>
-        </div>
+        </Link>
     ));
 
     return (

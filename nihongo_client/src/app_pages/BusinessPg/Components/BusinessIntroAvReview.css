@@ -1,0 +1,19 @@
+#businessAvReviewContainer{
+    border-left: solid;
+    border-right: solid;
+    display: block;
+    text-align: center;
+    text-align: center;
+}
+
+#averageRatingTitle{
+    text-decoration: underline;
+    font-family: cursive;
+    font-size: 200%;
+
+}
+
+#averageReviewGrid{
+    display: flex;
+    justify-content: center;
+}

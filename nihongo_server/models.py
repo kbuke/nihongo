@@ -23,6 +23,7 @@ class Users(db.Model, SerializerMixin):
     businesses = db.relationship("LocalBusinessSites", backref="user", lazy=True)
     prefecture_visit = db.relationship("CheckInPrefecture", backref="user", lazy=True)
     prefecture_wishlist = db.relationship("PrefectureWishList", backref="user", lazy=True)
+    business_visit = db.relationship("CheckInBusiness", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -207,6 +208,7 @@ class LocalBusinessSites(Users):
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
     business_reviews = db.relationship("BusinessReviews", backref="business", lazy=True)
     business_types = db.relationship("BusinessTypes", backref="business", lazy=True)
+    business_visit = db.relationship("CheckInBusiness", backref="business", lazy=True)
 
     #Add validations
     @validates("card_info")
@@ -341,6 +343,24 @@ class CheckInPrefecture(db.Model, SerializerMixin):
         "-user",
     )
 
+#----------------------------------Create a business check in model------------------------------
+class CheckInBusiness(db.Model, SerializerMixin):
+    __tablename__ = "business_checkin"
+
+    id=db.Column(db.Integer, primary_key=True)
+    visited = db.Column(db.Boolean, default=False)
+
+    #add relations
+    business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    #add serialize rules
+    serialize_rules = (
+        "-business",
+        "-user",
+    )
+
+#-------------------------------Create a prefecture wishlist model-------------------------------
 class PrefectureWishList(db.Model, SerializerMixin):
     __tablename__ = "prefecture_wishlist"
 
