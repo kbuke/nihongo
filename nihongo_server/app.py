@@ -5,7 +5,7 @@ from flask_restful import Resource
 # Local imports
 from config import app, db, api
 # Add your model imports
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, CheckInBusiness
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, CheckInBusiness, BusinessWishList
 from sqlalchemy import event
 
 #Show all available users, and allow frontend to add new ones
@@ -701,10 +701,102 @@ class BusinessCheckInId(Resource):
             "error": "Business check in not found"
         }
 
-
-
-
+class BusinessWishLists(Resource):
+    def get(self):
+        wishlists = [wishlist.to_dict() for wishlist in BusinessWishList.query.all()]
+        return wishlists, 200 
     
+    def post(self):
+        json=request.get_json()
+        try:
+            new_wishlist = BusinessWishList(
+                wish_list = json.get("wishList"),
+                business_id = json.get("specificBusinessId"),
+                user_id = json.get("loggedUserId")
+            )
+            db.session.add(new_wishlist)
+            db.session.commit()
+            return new_wishlist.to_dict(), 201 
+        except ValueError as e:
+            return {
+                "error": [str(e)]
+            }, 400
+
+class BusinessWishListsId(Resource):
+    def get(self, id):
+        wishlist_info = BusinessWishList.query.filter(BusinessWishList.id==id).first()
+        if wishlist_info:
+            return make_response(wishlist_info.to_dict(rules=(
+                #Stop recursion error
+                "-business.prefecture_id",
+                "-business.business_reviews",
+                "-business.business_types",
+                "-business.business_visit",
+                "-business.user",
+                "-business.admins",
+                "-business.citizens",
+                "-business.travelers",
+                "-business.businesses",
+
+                "-business.prefecture.businesses",
+                "-business.prefecture.prefecture_reviews",
+                "-business.prefecture.prefecture_visit",
+                "-business.prefecture.prefecture_wishlist",
+
+                "-user.admins",
+                "-user.user",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.travelers",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.business_visit",
+                "-user.business_reviews",
+                "-user.prefecture_reviews",
+                "-user.business_visit",
+                "-user.business_types",
+
+                #Make it more readable
+                "-business._password_hash",
+                "-business.building_numbers",
+                "-buisiness.city",
+                "-business.closing_time",
+                "-business.date_registered",
+                "-business.neighbourhood",
+                "-business.opening_time",
+                "-business.postal_code",
+                "-business.prefecture.population",
+                "-business.prefecture.prefecture_img",
+                "-business.prefecture.capital_city",
+                "-business.prefecture_visit",
+                "-business.prefecture_wishlist",
+                "-business.role",
+                "-business.type",
+                "-business.username",
+                "-business_id",
+                "-user._password_hash",
+                "-user.current_country",
+                "-user.current_town",
+                "-user.home_country",
+                "-user.hometown",
+                "-user.role",
+                "-user.type",
+            )), 201)
+        return {
+            "error": "wishlist not found"
+        }
+    
+    def delete(self, id):
+        wishlist_info = BusinessWishList.query.filter(BusinessWishList.id == id).first()
+        if wishlist_info:
+            db.session.delete(wishlist_info)
+            db.session.commit()
+            return{
+                "message": "Business wishlist deleted"
+            }
+        return{
+            "error": "Business wishlist not found"
+        }
 
 
 api.add_resource(AllUsers, '/users')
@@ -735,6 +827,8 @@ api.add_resource(PrefectureWishLists, '/prefecturewishlist')
 api.add_resource(PrefectureWishListId, '/prefecturewishlist/<int:id>')
 api.add_resource(BusinessCheckIn, '/businesscheckin')
 api.add_resource(BusinessCheckInId, '/businesscheckin/<int:id>')
+api.add_resource(BusinessWishLists, '/businesswishlist')
+api.add_resource(BusinessWishListsId, '/businesswishlist/<int:id>')
 
 
 if __name__ == '__main__':

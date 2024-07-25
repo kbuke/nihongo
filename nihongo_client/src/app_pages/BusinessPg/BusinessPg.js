@@ -42,8 +42,13 @@ function BusinessPg() {
     const loggedUser = appData.loggedUser
     const loggedUserId = loggedUser? loggedUser.id : null
 
-    //Show business checkins or user
+    console.log(loggedUser)
+
+    //Show user checkins or user
     const userCheckIns = loggedUser ? loggedUser.business_visit : null
+
+    //Show user wishlists
+    const userWishList = loggedUser? loggedUser.business_wishlist : null
 
     // Add additional elements to calculate average review rating
     useEffect(() => {
@@ -109,6 +114,8 @@ function BusinessPg() {
                     specificBusinessId={specificBusinessId}
                     loggedUserId={loggedUserId}
                     userCheckIns={userCheckIns}
+                    businessName={businessName}
+                    userWishList={userWishList}
                 />
             </div>
         </div>

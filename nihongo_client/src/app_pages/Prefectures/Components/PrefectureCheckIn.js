@@ -85,17 +85,17 @@ function PrefectureCheckIn({ loggedUser, specificPrefecture }) {
     // Handle the logic for displaying icons
     const markInOrOut = userType ? (
         !visited ? (
-            <div id="interactivePrefectureContainer" onClick={checkIn}>
-                <button id="interactivePrefectureButton" onClick={checkIn}>
-                    <img id="interactivePrefectureImg" alt="userNotCheckedIn" src={noCheckInIcon} />
+            <div id="interactiveContainer" onClick={checkIn}>
+                <button id="interactiveButton" onClick={checkIn}>
+                    <img id="interactiveImg" alt="userNotCheckedIn" src={noCheckInIcon} />
                 </button>
                 <h5>You have not been to {specificPrefecture.prefecture_name}</h5>
                 <h6>Click Icon to Check-In</h6>
             </div>
         ) : (
-            <div id="interactivePrefectureContainer" onClick={handleDelete}>
-                <button id="interactivePrefectureButton">
-                    <img id="interactivePrefectureImg" alt="userCheckedIn" src={checkedInIcon} />
+            <div id="interactiveContainer" onClick={handleDelete}>
+                <button id="interactiveButton">
+                    <img id="interactiveImg" alt="userCheckedIn" src={checkedInIcon} />
                 </button>
                 <h5>You've been to {specificPrefecture.prefecture_name}</h5>
                 <h6>Click Icon To Remove Check-In</h6>

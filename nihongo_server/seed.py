@@ -1,4 +1,4 @@
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList,CheckInBusiness
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList,CheckInBusiness, BusinessWishList
 
 from datetime import time
 
@@ -540,6 +540,15 @@ if __name__ == '__main__':
             user_id=2
         )
         db.session.add_all([kyotoMorrisCheckIn])
+        db.session.commit()
+
+        print("Seeding business wishlists")
+        kyotoMorrisWishList = BusinessWishList(
+            wish_list = True,
+            business_id=5,
+            user_id=2
+        )
+        db.session.add_all([kyotoMorrisWishList])
         db.session.commit()
 
 

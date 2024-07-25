@@ -84,12 +84,12 @@ function PrefectureBag({
     const renderBag = userType?(
         inBag? (
             <div 
-                id="interactivePrefectureContainer"
+                id="interactiveContainer"
                 onClick={handleDelete}
             >
-                <button id="interactivePrefectureButton">
+                <button id="interactiveButton">
                     <img 
-                        id="interactivePrefectureImg"
+                        id="interactiveImg"
                         src={fullBag}
                         alt="fullBag"
                     />
@@ -101,12 +101,12 @@ function PrefectureBag({
         :
         (
             <div 
-                id="interactivePrefectureContainer"
+                id="interactiveContainer"
                 onClick={handlePost}
             >
-                <button id="interactivePrefectureButton">
+                <button id="interactiveButton">
                     <img
-                        id="interactivePrefectureImg"
+                        id="interactiveImg"
                         src={emptyBag}
                         alt="emptyBag"  
                     />
