@@ -37,6 +37,8 @@ function Prefectures() {
     const specificPrefecture = allPrefectures.find((prefecture) => prefecture.id === parseInt(params.id));
     const specificPrefectureId = specificPrefecture ? specificPrefecture.id : null;
 
+    console.log(specificPrefecture)
+
     useEffect(() => {
         if (specificPrefectureId) {
             fetch(`/prefectures/${specificPrefectureId}`)
@@ -68,6 +70,7 @@ function Prefectures() {
             setOrderedBusinesses(uniqueBusinesses);
         }
     }, [specificPrefectureInfo]);
+
 
     if (!specificPrefectureInfo) return null; // Handle case when specificPrefectureInfo is not yet loaded
 

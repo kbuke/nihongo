@@ -13,13 +13,16 @@ class AllUsers(Resource):
     def get(self):
         users = [user.to_dict(
             rules=(
-                "-_password_hash",
-                "-user", 
-                "-admins", 
-                "-travelers", 
+                "-admins",
+                "-travelers",
                 "-citizens",
                 "-businesses",
-                "-prefecture",
+                "-prefecture_visit",
+                "-prefecture_wishlist",
+                "-business_visit",
+                "-business_wishlist",
+                "-business_reviews",
+                "-user",
             )) for user in Users.query.all()]
         return users, 200
     
@@ -80,6 +83,7 @@ class AllUsers(Resource):
 class UsersId(Resource):
     def get(self, id):
         user_info = Users.query.filter(Users.id==id).first()
+        # breakpoint()
         if user_info:
             return make_response(user_info.to_dict(
                 rules=(
@@ -87,9 +91,9 @@ class UsersId(Resource):
                     "-admins", 
                     "-travelers", 
                     "-citizens",
-                    "-businesses",
+                    "-businesses", 
 
-                    
+                    "-business_reviews.user",
                 )
             ), 201)
         return {
@@ -227,7 +231,7 @@ class CheckSession(Resource):
                         "-admins",
                         "-citizens",
                         "-travelers",
-                        "-business_reviews",
+                        "-business_reviews.user",
                         "-businesses",
                         "-user",
                         "-prefectures",
@@ -254,7 +258,6 @@ class PrefectureId(Resource):
     def get(self, id):
         prefecture_info = Prefecture.query.filter(Prefecture.id==id).first()
         if prefecture_info:
-            # breakpoint()
             return make_response(prefecture_info.to_dict(
                 rules=(
                     "-businesses.prefecture",
@@ -266,12 +269,7 @@ class PrefectureId(Resource):
                     "-businesses._password_hash",
 
                     "-businesses.business_reviews.business",
-                    "-businesses.business_reviews.admin",
-                    "-businesses.business_reviews.traveler",
-                    "-businesses.business_reviews.citizen",
-                    "-businesses.business_reviews.admin_id",
-                    "-businesses.business_reviews.business_id",
-                    "-businesses.business_reviews.citizen_id",
+                    "-businesses.business_reviews.user",
                     "-businesses.business_reviews.id",
                     "-businesses.business_reviews.review_comment",
                     "-businesses.business_reviews.review_date",
@@ -334,36 +332,53 @@ class Businesses(Resource):
     def get(self):
         businesses = [business.to_dict(
             rules=(
-                "-_password_hash",
                 "-user",
-                "-admins",
-                "-travelers",
-                "-citizens",
+                "-admin",
+                "-traveler",
+                "-citizen",
                 "-businesses",
-                "-prefectures",
+                # "-prefecture",
+
+                "-business_reviews.business",
+
+                "-business_reviews.user.admins",
+                "-business_reviews.user.travelers",
+                "-business_reviews.user.citizens",
+                "-business_reviews.user.businesses",
+                "-business_reviews.user.prefecture_visit",
+                "-business_reviews.user.prefecture_wishlist",
+                "-business_reviews.user.business_visit",
+                "-business_reviews.user.business_wishlist",
+                "-business_reviews.user.business_reviews",
+                "-business_reviews.user.user",
+
+                "-business_types.business",
                 "business_types.registered_type",
-            
-                "-prefecture.prefecture_reviews",
-                "-prefecture.prefecture_visit",
-                "-prefecture.prefecture_wishlist",
-                "-prefecture.id",
-                "-prefecture.prefecture_img",
-                "-prefecture.prefecture_info",
-                "-prefecture.capital_city",
-                "-prefecture.population",
-                "prefecture.prefecture_flag",
-                
-                
 
-                "-business_reviews.business_id",
-                "-business_reviews.citizen_id",
-                "-business_reviews.review_comment",
-                "-business_reviews.review_date",
-                "-business_reviews.id",
-                "-business_reviews.traveler_id",
-                "-business_reviews.admin_id",
+                "-business_visit.business",
 
+                "-business_visit.user.admins",
+                "-business_visit.user.travelers",
+                "-business_visit.user.citizens",
+                "-business_visit.user.prefecture_visit",
+                "-business_visit.user.prefecture_wishlist",
+                "-business_visit.user.business_visit",
+                "-business_visit.user.business_wishlist",
+                "-business_visit.user.business_reviews",
+                "-business_visit.user.user",
+                "-business_visit.user.current_country",
+                "-business_visit.user.user_info",
+                "-business_visit.user.prefecture_reviews",
+                "-business_visit.user.hometown",
+                "-business_visit.user.home_country",
+                "-business_visit.user.current_town",
+                "-business_visit.user._password_hash",
+                "-business_visit.user.role",
+                "-business_visit.user.type",
+                "-business_visit.user.user_info",
 
+                "-business_wishlist",
+                "-prefecture_id",
             )) for business in LocalBusinessSites.query.all()]
         return businesses, 200
 
@@ -371,25 +386,104 @@ class BusinessesId(Resource):
     def get(self, id):
         business_info = LocalBusinessSites.query.filter(LocalBusinessSites.id==id).first()
         if business_info:
-            # breakpoint()
             return make_response(business_info.to_dict(
                 rules=(
-                    "-user",
-                    "-admins",
-                    "-travelers",
-                    "-citizens",
-                    "-businesses",
-                    "business_reviews",
-                    "-business_types.business",
-                    "-business_types.registered_type.business_types",
+                "-user",
+                "-admin",
+                "-traveler",
+                "-citizen",
+                "-businesses",
+
+
+                "-business_reviews.business",
+
+                "-business_reviews.user.admins",
+                "-business_reviews.user.travelers",
+                "-business_reviews.user.citizens",
+                "-business_reviews.user.businesses",
+                "-business_reviews.user.prefecture_visit",
+                "-business_reviews.user.prefecture_wishlist",
+                "-business_reviews.user.business_visit",
+                "-business_reviews.user.business_wishlist",
+                "-business_reviews.user.business_reviews",
+                "-business_reviews.user.user",
+
+                "-business_types.business",
+                "business_types.registered_type",
+
+                "-business_visit.business",
+
+                "-business_visit.user.admins",
+                "-business_visit.user.travelers",
+                "-business_visit.user.citizens",
+                "-business_visit.user.prefecture_visit",
+                "-business_visit.user.prefecture_wishlist",
+                "-business_visit.user.business_visit",
+                "-business_visit.user.business_wishlist",
+                "-business_visit.user.business_reviews",
+                "-business_visit.user.user",
+                "-business_visit.user.current_country",
+                "-business_visit.user.user_info",
+                "-business_visit.user.prefecture_reviews",
+                "-business_visit.user.hometown",
+                "-business_visit.user.home_country",
+                "-business_visit.user.current_town",
+                "-business_visit.user._password_hash",
+                "-business_visit.user.role",
+                "-business_visit.user.type",
+                "-business_visit.user.user_info",
+
+                "-business_wishlist",
+                "-prefecture_id",
                 )
             ), 201)
         return {"error": "Business not found"}
 
 class AllBusinessReviews(Resource):
     def get(self):
-        business_reviews = [business_review.to_dict() for business_review in BusinessReviews.query.all()]
+        business_reviews = [business_review.to_dict(rules = (
+            "-user",
+            "-business",
+        )) for business_review in BusinessReviews.query.all()]
         return business_reviews, 200
+    
+    def post(self):
+        json=request.get_json()
+        # breakpoint()
+        try:
+            new_business_review = BusinessReviews(
+                review_rating = json.get("rating"),
+                review_comment = json.get("comment"),
+                business_id = json.get("business_id"),
+                user_id = json.get("user_id")
+            )
+            db.session.add(new_business_review)
+            db.session.commit()
+            return new_business_review.to_dict(rules = (
+                "-user.admins",
+                "-user.travelers",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.business_visit",
+                "-user.business_wishlist",
+                "-user.business_reviews",
+                "-user.user",
+
+                "-business.prefecture_id",
+                "-business.prefecture",
+                "-business.business_reviews",
+                "-business.business_types",
+                "-business.business_visit",
+                "-business.business_wishlist",
+                "-business.businesses",
+                "-business.user",
+            )), 201 
+        except ValueError as e:
+            return{
+                "error": [str(e)]
+            }, 400
 
 class BusinessReviewId(Resource):
     def get(self, id):
@@ -397,60 +491,40 @@ class BusinessReviewId(Resource):
         if business_review_info:
             # breakpoint()
             return make_response(business_review_info.to_dict(rules=(
-                "-admin.business_reviews",
-                "-admin.businesses",
-                "-admin.user",
-                "-admin.citizens",
-                "-admin.admins",
-                "-admin.travelers",
+                "-user.admins",
+                "-user.travelers",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.business_visit",
+                "-user.business_wishlist",
+                "-user.business_reviews",
+                "-user.user",
 
-                "-citizen.business_reviews",
-                "-citizen.businesses",
-                "-citizen.user",
-                "-citizen.citizens",
-                "-citizen.admins",
-                "-citizen.travelers",
-
-
-                "-travelers.business_reviews",
-                "-travelers.businesses",
-                "-travelers.user",
-                "-travelers.citizens",
-                "-travelers.admins",
-                "-travelers.travelers",
-
+                "-business.prefecture_id",
+                "-business.prefecture",
                 "-business.business_reviews",
+                "-business.business_types",
+                "-business.business_visit",
+                "-business.business_wishlist",
                 "-business.businesses",
                 "-business.user",
-                "-business.citizens",
-                "-business.admins",
-                "-business.travelers",
-
-                "-business._password_hash",
-                "-business.building_numbers",
-                "-business.city",
-                "-business.closing_time",
-                "-business.neighbourhood",
-                "-business.opening_time",
-                "-business.prefecture.population",
-                "-business.prefecture.prefecture_flag",
-                "-business.prefecture.prefecture_img",
-                "-business.prefecture.prefecture_info",
-                "-business.prefecture.capital_city",
-                "-citizen._password_hash",
-                "-citizen.current_town",
-                "-citizen.home_country",
-                "-citizen.hometown",
-                "-citizen.role",
-                "-citizen.user_info",
-
-                "-admin._password_hash",
-                "-admin.home_country",
-                "-admin.hometown",
-                "-admin.role",
-                "-admin.user_info",
             )), 201)
         return {"error": "Business Review Not Found"}
+    
+    def delete(self, id):
+        review_info = BusinessReviews.query.filter(BusinessReviews.id == id).first()
+        if review_info:
+            db.session.delete(review_info)
+            db.session.commit()
+            return{
+                "message": "Business Review Deleted"
+            }, 200
+        return {
+            "error": "Business Review not found"
+        }, 404
+
 
 class AllBusinessTypes(Resource):
     def get(self):

@@ -126,7 +126,9 @@ if __name__ == '__main__':
             city = "Nakagyo Ward",
             neighbourhood = "Umenokicho",
             prefecture_id = 2,
-            card_info = "A lovely hotel/hostel in the heart of Kyoto, 5 minutes from the palace"
+            card_info = "A lovely hotel/hostel in the heart of Kyoto, 5 minutes from the palace",
+            email = "kyotomorris@gmail.com",
+            contact_number = "0923768978",
         )
         kyotoMorris.password = "kyotoMorris1"
 
@@ -252,56 +254,56 @@ if __name__ == '__main__':
             review_rating=5,
             review_comment="Best hotel I stayed in, in Japan.",
             business_id=5,
-            admin_id=1,
+            user_id=1,
         )
 
         kyotoMorrisCitizenReview = BusinessReviews(
             review_rating=4,
             review_comment="I worked here, great place",
             business_id=5,
-            citizen_id=4,
+            user_id=4,
         )
 
         kyotoMorrisTravelerReview = BusinessReviews(
             review_rating=5,
             review_comment="Would stay here every day. Loved it",
             business_id=5,
-            traveler_id=2,
+            user_id=2,
         )
 
         kyotoMonkeyParkTravelerReview = BusinessReviews(
             review_rating = 5,
             review_comment = "Loved seeing these cute little guys, and an amazing view of Kyoto",
             business_id = 9,
-            traveler_id= 3
+            user_id= 3
         )
 
         kyotoMonkeyParkAdminReview = BusinessReviews(
             review_rating = 3, 
             review_comment = "The monkeys are cool, and the views nice. But the walk up is very difficult, and the view is bad",
             business_id = 9,
-            admin_id = 1
+            user_id = 1
         )
 
         daigoJiTravelerReview = BusinessReviews(
             review_rating = 2,
             review_comment = "The shrine itself is nice, but it's small and expensive",
             business_id = 12,
-            traveler_id = 3
+            user_id = 3
         )
 
         daigoJiAdminReview = BusinessReviews(
             review_rating = 4,
             review_comment = "Amazing shrine, however there isn't a lot else there and can be very crowded.",
             business_id = 12,
-            admin_id = 1
+            user_id = 1
         )
 
         goldenTempleAdminReview = BusinessReviews(
             review_rating = 5,
             review_comment = "Simply amazing",
             business_id = 8,
-            admin_id = 1
+            user_id = 1
         )
         db.session.add_all([
             kyotoMorrisAdminReview, kyotoMorrisCitizenReview, kyotoMorrisTravelerReview,

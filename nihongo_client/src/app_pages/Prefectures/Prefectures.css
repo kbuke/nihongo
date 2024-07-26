@@ -87,8 +87,7 @@
 }
 
 #categoryButtons{
-    border-top-left-radius: 5%;
-    border-top-right-radius: 5%;
+    border-radius: 24px;
     margin-top: 20px;
     border: none;
     font-family: cursive;
@@ -111,7 +110,7 @@
     text-decoration: underline;
     font-size: 200%;
     font-weight: bold;
-    background-color: #ffb7c5;;
+    background-color: #ffb7c5;
 }
 
 #interactiveButtonContainer{

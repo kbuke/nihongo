@@ -1,7 +1,5 @@
 import "./BusinessCheckInWishList.css"
 
-import BusinessWishList from "./BusinessWishList"
-
 import noCheckInIcon from "../../../assets/unvisitedMark.png"
 import checkInIcon from "../../../assets/visitedMark.png"
 
@@ -31,7 +29,6 @@ function BusinessCheckInWishList({
             userCheckIns.filter(checkInInfo => checkInInfo.business_id === specificBusinessId)
             :
             []
-        console.log(checkUserCheckedIn)
         setVisited(checkUserCheckedIn.length > 0)
         setCheckInId(checkUserCheckedIn.length > 0 ? checkUserCheckedIn[0].id : null)
     }, [userCheckIns, specificBusinessId])
@@ -42,7 +39,6 @@ function BusinessCheckInWishList({
             userWishList.filter(wishListInfo => wishListInfo.business_id === specificBusinessId)
             :
             []
-        console.log(checkUserWishList)
         setWishList(checkUserWishList.length > 0)
         setWishListId(checkUserWishList.length > 0 ? checkUserWishList[0].id : null)
     }, [userWishList, specificBusinessId])

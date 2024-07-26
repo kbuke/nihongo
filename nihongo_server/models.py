@@ -4,6 +4,7 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy import Time
 from sqlalchemy.ext.hybrid import hybrid_property
 from config import db, bcrypt
+import re
 
 #-----------------------------------models for Users------------------------------------------
 class Users(db.Model, SerializerMixin):
@@ -25,6 +26,7 @@ class Users(db.Model, SerializerMixin):
     prefecture_wishlist = db.relationship("PrefectureWishList", backref="user", lazy=True)
     business_visit = db.relationship("CheckInBusiness", backref="user", lazy=True)
     business_wishlist = db.relationship("BusinessWishList", backref="user", lazy=True)
+    business_reviews = db.relationship("BusinessReviews", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -85,7 +87,6 @@ class Admin(Users):
     current_country = db.Column(db.String, nullable=True)
 
     # Add relationship
-    business_reviews = db.relationship("BusinessReviews", backref="admin", lazy=True)
     prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="admin", lazy=True)
 
     # Add serialize rules
@@ -116,7 +117,6 @@ class Traveler(Users):
     current_country = db.Column(db.String, nullable=True)
 
     #Add relationship
-    business_reviews = db.relationship("BusinessReviews", backref="traveler", lazy=True) 
     prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="traveler", lazy=True)
 
     # Add serialize rules
@@ -147,7 +147,6 @@ class Citizen(Users):
     current_country = db.Column(db.String, nullable=True, server_default="Japan")
 
     #Add relationships
-    business_reviews = db.relationship("BusinessReviews", backref="citizen", lazy=True)
     prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="citizen", lazy=True)
 
     # Add serialize rules
@@ -204,6 +203,8 @@ class LocalBusinessSites(Users):
     neighbourhood = db.Column(db.String, nullable=False)
     date_registered = db.Column(db.DateTime, server_default=db.func.now())
     card_info = db.Column(db.String, nullable=False, server_default='')
+    email = db.Column(db.String, nullable=True)
+    contact_number = db.Column(db.String, nullable=True)
 
     #Add relationship
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
@@ -214,10 +215,24 @@ class LocalBusinessSites(Users):
 
     #Add validations
     @validates("card_info")
-    def validate_cars_info(self, key, info):
+    def validate_card_info(self, key, info):
         if 5 <= len(info) <= 100:
             return info 
         raise ValueError("Card Info must be between 5 and 100 characters")
+    
+    @validates("email")
+    def validate_email(self, key, email):
+        if email is not None:
+            if re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                return email
+            raise ValueError("Please enter a valid email")
+        return email
+
+    @validates("contact_number")
+    def validate_number(self, key, phone):
+        if len(phone) == 10:
+            return phone 
+        raise ValueError("Please enter valid phone number")
 
     # Add serialize rules
     serialize_rules = (
@@ -245,9 +260,7 @@ class BusinessReviews(db.Model, SerializerMixin):
 
     #Add relationship
     business_id=db.Column(db.Integer, db.ForeignKey("businesses.id"), nullable=False)
-    traveler_id=db.Column(db.Integer, db.ForeignKey("travelers.id"), nullable=True)
-    citizen_id=db.Column(db.Integer, db.ForeignKey("citizens.id"), nullable=True)
-    admin_id=db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
 
     #Add serialze rules
     serialize_rules=(

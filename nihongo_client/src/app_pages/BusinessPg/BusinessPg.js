@@ -6,6 +6,8 @@ import BusinessPicture from "./Components/BusinessPicture";
 import BusinessNameInfo from "./Components/BusinessNameInfo";
 import BusinessIntroAvReview from "./Components/BusinessIntroAvReview";
 import BusinessCheckInWishList from "./Components/BusinessCheckInWishList";
+import BusinessInfoContainer from "./Components/BusinessInfoContainer";
+import BusinessFeed from "./Components/BusinessFeed";
 
 function BusinessPg() {
     const appData = useOutletContext();
@@ -41,8 +43,6 @@ function BusinessPg() {
     //Get specific logged in user
     const loggedUser = appData.loggedUser
     const loggedUserId = loggedUser? loggedUser.id : null
-
-    console.log(loggedUser)
 
     //Show user checkins or user
     const userCheckIns = loggedUser ? loggedUser.business_visit : null
@@ -92,6 +92,31 @@ function BusinessPg() {
     //Set up the number of reviews
     const reviewNumbers = specificBusinessInfo? specificBusinessInfo.business_reviews.length : null
 
+    //Set up business phone number
+    const businessNumber = specificBusinessInfo? specificBusinessInfo.contact_number : null 
+
+    //Set up business email
+    const businessEmail = specificBusinessInfo? specificBusinessInfo.email : null 
+
+    //Set up business register date
+    const businessRegistered = specificBusinessInfo ? specificBusinessInfo.date_registered : null 
+
+    //Set up business address
+    const businessBuildingNumber = specificBusinessInfo ? specificBusinessInfo.building_numbers : null
+    const businessNeighbourHood = specificBusinessInfo ? specificBusinessInfo.neighbourhood : null 
+    const businessCity = specificBusinessInfo ? specificBusinessInfo.city : null 
+    const businessPrefecture = specificBusinessInfo ? specificBusinessInfo.prefecture.prefecture_name : null
+    const businessPostCode = specificBusinessInfo ? specificBusinessInfo.postal_code : null 
+    const businessAddress = `${businessBuildingNumber}, ${businessNeighbourHood}, ${businessCity}, ${businessPrefecture}, ${businessPostCode}`
+
+    //Set up business operation times
+    const businessOpeningTime = specificBusinessInfo ? specificBusinessInfo.opening_time : null
+    const businessClosingTime = specificBusinessInfo ? specificBusinessInfo.closing_time : null
+    const businessOperatingHours = `${businessOpeningTime} - ${businessClosingTime}`
+
+    //Set up current business reviews
+    const currentBusinessReviews = specificBusinessInfo? specificBusinessInfo.business_reviews : null 
+
     return (
         <div id="businessPgContainer" style={businessPgContainerStyle}>
             <div id="renderedBusinessInfoContainer">
@@ -116,6 +141,22 @@ function BusinessPg() {
                     userCheckIns={userCheckIns}
                     businessName={businessName}
                     userWishList={userWishList}
+                />
+            </div>
+
+            <div id="renderedPrefectureGrid">
+                <BusinessInfoContainer 
+                    businessNumber={businessNumber}
+                    businessEmail={businessEmail}
+                    businessRegistered={businessRegistered}
+                    businessAddress={businessAddress}
+                    businessOperatingHours={businessOperatingHours}
+                />
+
+                <BusinessFeed 
+                    currentBusinessReviews={currentBusinessReviews}
+                    loggedUser={loggedUser}
+                    specificBusinessId={specificBusinessId}
                 />
             </div>
         </div>
