@@ -7,7 +7,6 @@ import AllBusinesses from "./Components/AllBusinesses";
 import SpecificBusinesses from "./Components/SpecificBusinesses";
 import PrefectureReviews from "./Components/PrefectureReviews";
 import PrefetcureCheckIn from "./Components/PrefectureCheckIn";
-import PrefectureBag from "./Components/PrefectureBag";
 
 function Prefectures() {
     const appData = useOutletContext();
@@ -31,13 +30,19 @@ function Prefectures() {
     const allPrefectures = appData.prefectures;
     const setAllPrefectures = appData.setAllPrefectures;
 
-    // Get all businesses
-    const allBusinesses = appData.allBusinesses;
+    //Show all check ins
+    const prefectureCheckIn = loggedUser ? loggedUser.prefecture_visit : []
+    console.log(prefectureCheckIn)
+
+    const allPrefectureCheckIns = appData.allPrefectureCheckIns
+    const setAllPrefectureCheckIns = appData.setAllPrefectureCheckIns
+    console.log(allPrefectureCheckIns)
+
+    const allPrefectureWishLists = appData.allPrefectureWishLists
+    const setAllPrefectureWishLists = appData.setAllPrefectureWishLists
 
     const specificPrefecture = allPrefectures.find((prefecture) => prefecture.id === parseInt(params.id));
     const specificPrefectureId = specificPrefecture ? specificPrefecture.id : null;
-
-    console.log(specificPrefecture)
 
     useEffect(() => {
         if (specificPrefectureId) {
@@ -193,10 +198,10 @@ function Prefectures() {
                                 <PrefetcureCheckIn 
                                     loggedUser={loggedUser}
                                     specificPrefecture={specificPrefecture}
-                                />
-                                <PrefectureBag 
-                                    loggedUser={loggedUser}
-                                    specificPrefecture={specificPrefecture}
+                                    allPrefectureCheckIns={allPrefectureCheckIns}
+                                    setAllPrefectureCheckIns={setAllPrefectureCheckIns}
+                                    allPrefectureWishLists={allPrefectureWishLists}
+                                    setAllPrefectureWishLists={setAllPrefectureWishLists}
                                 />
                             </div>
                         </div>

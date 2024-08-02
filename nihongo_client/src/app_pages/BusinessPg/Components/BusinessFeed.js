@@ -4,13 +4,15 @@ import "./BusinessFeed.css"
 import BusinessReviews from "./BusinessReviews"
 
 function BusinessFeed({
-    currentBusinessReviews,
     loggedUser,
-    specificBusinessId
+    specificBusinessId,
+    allCheckIns,
+    allBusinessReviews,
+    setAllBusinessReviews
 }){
-    const [selectedCategory, setSelectedCategory] = useState("Blogs")
+    const [selectedCategory, setSelectedCategory] = useState("Pictures")
 
-    const businessFeedCategory = ["Blogs", "Check-Ins", "Pictures", "Reviews"]
+    const businessFeedCategory = ["Pictures", "Reviews", "Check-Ins", "Blogs"]
 
     const renderButtons = businessFeedCategory.map((category, index) => (
         <button 
@@ -32,9 +34,11 @@ function BusinessFeed({
             <div id="renderedBusinessChoice">
                 {selectedCategory === "Reviews" ? 
                     <BusinessReviews 
-                        currentBusinessReviews={currentBusinessReviews}
                         loggedUser={loggedUser}
                         specificBusinessId={specificBusinessId}
+                        allCheckIns={allCheckIns}
+                        allBusinessReviews={allBusinessReviews}
+                        setAllBusinessReviews={setAllBusinessReviews}
                     />
                     :
                     null

@@ -24,13 +24,16 @@ function HorizontalNavBar({
                     <h1 id="title">Nihon-Go</h1>
                 </div>
 
-                <div id="loggedUserImgContainer">
+                <NavLink 
+                    id="loggedUserImgContainer"
+                    to={`user/${loggedUser.id}`}
+                >
                     <img 
                         id="loggedUserImg"
                         src={loggedInUserImg}
                         alt="loggedUserImg"
                     />
-                </div>
+                </NavLink>
             </div>
             :
             null

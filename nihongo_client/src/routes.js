@@ -34,6 +34,10 @@ const routes = [
             {
                 path: "/business/:id",
                 element: <BusinessPg />
+            },
+            {
+                path: "users/:id",
+                element: <UserPg />
             }
         ]
     }

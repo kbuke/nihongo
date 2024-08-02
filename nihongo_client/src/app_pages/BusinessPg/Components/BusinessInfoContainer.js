@@ -8,7 +8,6 @@ import phoneIcon from "../../../assets/phone_icon.png"
 function BusinessInfoContainer({
     businessNumber,
     businessEmail,
-    businessRegistered,
     businessAddress,
     businessOperatingHours
 }){

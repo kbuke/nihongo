@@ -13,16 +13,42 @@ class AllUsers(Resource):
     def get(self):
         users = [user.to_dict(
             rules=(
-                "-admins",
-                "-travelers",
+                "-user", 
+                "-admins", 
+                "-travelers", 
                 "-citizens",
-                "-businesses",
-                "-prefecture_visit",
-                "-prefecture_wishlist",
-                "-business_visit",
-                "-business_wishlist",
-                "-business_reviews",
-                "-user",
+                "-businesses", 
+
+                "-business_reviews.user",
+
+                "-business_reviews.business.admins",
+                "-business_reviews.business.travelers",
+                "-business_reviews.business.citizens",
+                "-business_reviews.business.user",
+                "-business_reviews.business.business_reviews",
+                "-business_reviews.business.businesses",
+                "-business_reviews.business._password_hash",
+                "-business_reviews.business.building_numbers",
+                "-business_reviews.business.business_types",
+                "-business_reviews.business.card_info",
+                "-business_reviews.business.city",
+                "-business_reviews.business.closing_time",
+                "-business_reviews.business.contact_number",
+                "-business_reviews.business.date_registered",
+                "-business_reviews.business.email",
+                "-business_reviews.business.neighbourhood",
+                "-business_reviews.business.opening_time",
+                "-business_reviews.business.postal_code",
+                "-business_reviews.business.prefecture",
+                "-business_reviews.business.role",
+                "-business_reviews.business.type",
+                "-business_reviews.business.prefecture_id",
+                "-business_reviews.business.prefecture_visit",
+                "-business_reviews.business.prefecture_wishlist",
+                "-business_reviews.business.user_info",
+                "-business_reviews.business.username",
+                "-business_reviews.business.business_visit",
+                "-business_reviews.business.business_wishlist",
             )) for user in Users.query.all()]
         return users, 200
     
@@ -83,17 +109,105 @@ class AllUsers(Resource):
 class UsersId(Resource):
     def get(self, id):
         user_info = Users.query.filter(Users.id==id).first()
-        # breakpoint()
         if user_info:
             return make_response(user_info.to_dict(
                 rules=(
-                    "-user", 
-                    "-admins", 
-                    "-travelers", 
-                    "-citizens",
-                    "-businesses", 
+                "-_password_hash",
+                "-user", 
+                "-admins", 
+                "-travelers", 
+                "-citizens",
+                "-businesses", 
 
-                    "-business_reviews.user",
+                "-business_reviews.user",
+
+                "-business_reviews.business.admins",
+                "-business_reviews.business.travelers",
+                "-business_reviews.business.citizens",
+                "-business_reviews.business.user",
+                "-business_reviews.business.business_reviews.id",
+                "-business_reviews.business.business_reviews.review_comment",
+                "-business_reviews.business.business_reviews.review_date",
+                "-business_reviews.business.business_reviews.business",
+                "-business_reviews.business.business_reviews.user",
+                "-business_reviews.business.businesses",
+                "-business_reviews.business._password_hash",
+                # "-business_reviews.business.building_numbers",
+                # "-business_reviews.business.business_types",
+                "business_reviews.business.business_types.registered_type",
+                # "-business_reviews.business.card_info",
+                # "-business_reviews.business.city",
+                # "-business_reviews.business.closing_time",
+                # "-business_reviews.business.contact_number",
+                "-business_reviews.business.date_registered",
+                # "-business_reviews.business.email",
+                # "-business_reviews.business.neighbourhood",
+                # "-business_reviews.business.opening_time",
+                # "-business_reviews.business.postal_code",
+                "-business_reviews.business.prefecture.capital_city",
+                "-business_reviews.business.prefecture.id",
+                "-business_reviews.business.prefecture.population",
+                "-business_reviews.business.prefecture.prefecture_flag",
+                "-business_reviews.business.prefecture.prefecture_img",
+                "-business_reviews.business.prefecture.prefecture_info",
+                "-business_reviews.business.role",
+                "-business_reviews.business.type",
+                "-business_reviews.business.prefecture_id",
+                "-business_reviews.business.prefecture_visit",
+                "-business_reviews.business.prefecture_wishlist",
+                "-business_reviews.business.user_info",
+                "-business_reviews.business.username",
+                "-business_reviews.business.business_visit",
+                "-business_reviews.business.business_wishlist",
+
+                "-prefecture_wishlist.user",
+
+                "-prefecture_wishlist.prefecture.businesses",
+                "-prefecture_wishlist.prefecture.prefecture_reviews",
+                "-prefecture_wishlist.prefecture.prefecture_visit",
+                "-prefecture_wishlist.prefecture.prefecture_wishlist",
+                "-prefecture_wishlist.prefecture.capital_city",
+                "-prefecture_wishlist.prefecture.population",
+                "-prefecture_wishlist.prefecture.prefecture_info",
+
+                "-prefecture_visit.prefecture.capital_city",
+                "-prefecture_visit.prefecture.population",
+                "--prefecture_visit.prefecture.population",
+                "-prefecture_visit.prefecture.prefecture_info",
+                "-prefecture_visit.prefecture.businesses",
+                "-prefecture_visit.prefecture.prefecture_reviews",
+                "-prefecture_visit.prefecture.prefecture_visit",
+                "-prefecture_visit.prefecture.prefecture_wishlist",
+
+                "-prefecture_visit.prefecture_id",
+                "-prefecture_visit.user",
+
+                "-business_visit.business.opening_time",
+                "-business_visit.business.closing_time",
+                "-business_visit.business.postal_code",
+                "-business_visit.business.building_numbers",
+                "-business_visit.business.city",
+                "-business_visit.business.neighbourhood",
+                "-business_visit.business.date_registered",
+                "-business_visit.business.card_info",
+                "-business_visit.business.email",
+                "-business_visit.business.contact_number",
+                "-business_visit.business.prefecture",
+
+                "-business_visit.business.business_reviews.user",
+                "-business_visit.business.business_reviews.business",
+
+                "-business_visit.business.business_types",
+                "-business_visit.business.business_visit",
+                "-business_visit.business.business_wishlist",
+                "-business_visit.business.user",
+                "-business_visit.business.businesses",
+                "-business_visit.business.admins",
+                "-business_visit.business.citizens",
+                "-business_visit.business.prefecture_wishlist",
+                "-business_visit.business.prefecture_visit",
+                "-business_visit.business.travelers",
+                "-business_visit.business._password_hash",
                 )
             ), 201)
         return {
@@ -442,8 +556,25 @@ class BusinessesId(Resource):
 class AllBusinessReviews(Resource):
     def get(self):
         business_reviews = [business_review.to_dict(rules = (
-            "-user",
-            "-business",
+            "-user.admins",
+            "-user.travelers",
+            "-user.citizens",
+            "-user.businesses",
+            "-user.prefecture_visit",
+            "-user.prefecture_wishlist",
+            "-user.business_visit",
+            "-user.business_wishlist",
+            "-user.business_reviews",
+            "-user.user",
+
+            "-business.prefecture_id",
+            "-business.prefecture",
+            "-business.business_reviews",
+            "-business.business_types",
+            "-business.business_visit",
+            "-business.business_wishlist",
+            "-business.businesses",
+            "-business.user",
         )) for business_review in BusinessReviews.query.all()]
         return business_reviews, 200
     
@@ -595,7 +726,7 @@ class prefectureCheckIn(Resource):
         json = request.get_json()
         try:
             new_checkin = CheckInPrefecture(
-                visited = json.get("visited"),
+                # visited = json.get("visited"),
                 prefecture_id = json.get("prefectureId"),
                 user_id=json.get("userId")
             )
@@ -644,7 +775,7 @@ class PrefectureWishLists(Resource):
         # breakpoint()
         try:
             new_wishlist = PrefectureWishList(
-                wish_list = json.get("inBag"),
+                # wish_list = json.get("inBag"),
                 prefecture_id = json.get("prefectureId"),
                 user_id = json.get("userId")
             )
@@ -686,7 +817,7 @@ class BusinessCheckIn(Resource):
         json=request.get_json()
         try:
             new_checkin = CheckInBusiness(
-                visited = json.get("visited"),
+                # visited = json.get("visited"),
                 business_id = json.get("specificBusinessId"),
                 user_id=json.get("loggedUserId")
             )
@@ -784,7 +915,7 @@ class BusinessWishLists(Resource):
         json=request.get_json()
         try:
             new_wishlist = BusinessWishList(
-                wish_list = json.get("wishList"),
+                # wish_list = json.get("wishList"),
                 business_id = json.get("specificBusinessId"),
                 user_id = json.get("loggedUserId")
             )

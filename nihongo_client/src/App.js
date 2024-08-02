@@ -14,6 +14,9 @@ function App() {
   const [prefectures, setPrefectures] = useState([])
   const [verticalNavHover, setVerticalNavHover] = useState(false);
   const [allBusinesses, setAllBusinesses] = useState([])
+  const [allBusinessReviews, setAllBusinessReviews] = useState([]);
+  const [allPrefectureCheckIns, setAllPrefectureCheckIns] = useState([])
+  const [allPrefectureWishLists, setAllPrefectureWishLists] = useState([])
 
   //Get all users
   useEffect(() => {
@@ -25,7 +28,8 @@ function App() {
       throw r
     })
     .then(users => setUsers(users))
-  }, [])
+  }, [allPrefectureWishLists])
+
 
   //Get all prefectures
   useEffect(() => {
@@ -62,6 +66,42 @@ function App() {
     })
   }, [])
 
+  //fetch all business reviews
+  useEffect(() => {
+    fetch("/businessreviews")
+        .then(r => {
+            if (r.ok) {
+                return r.json();
+            }
+            throw r;
+        })
+        .then(reviews => setAllBusinessReviews(reviews));
+  }, []);
+
+  //fetch all prefecture checkins
+  useEffect(() => {
+    fetch('/prefecturecheckin')
+      .then(r => {
+        if(r.ok) {
+          return r.json()
+        }
+        throw r
+      })
+      .then(checkIns => setAllPrefectureCheckIns(checkIns))
+  }, [])
+
+  //fetch all prefecture wishlists
+  useEffect(() => {
+    fetch('/prefecturewishlist')
+      .then(r => {
+        if(r.ok) {
+          return r.json()
+        }
+        throw r 
+      })
+      .then(wishlists => setAllPrefectureWishLists(wishlists))
+  }, [])
+
   return(
     <div>
       <HorizontalNavBar 
@@ -89,7 +129,16 @@ function App() {
           setAllBusinesses: setAllBusinesses,
 
           verticalNavHover: verticalNavHover,
-          setVerticalNavHover: setVerticalNavHover
+          setVerticalNavHover: setVerticalNavHover,
+
+          allBusinessReviews: allBusinessReviews,
+          setAllBusinessReviews: setAllBusinessReviews,
+
+          allPrefectureCheckIns: allPrefectureCheckIns,
+          setAllPrefectureCheckIns: setAllPrefectureCheckIns,
+
+          allPrefectureWishLists: allPrefectureWishLists,
+          setAllPrefectureWishLists, setAllPrefectureWishLists
         }
       }/>
     </div>

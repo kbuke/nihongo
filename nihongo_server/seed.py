@@ -519,16 +519,19 @@ if __name__ == '__main__':
 
         print("Seeding prefecture check ins")
         kyotoTravelerCheckin = CheckInPrefecture(
-            visited=True,
             prefecture_id = 2,
             user_id = 2
         )
-        db.session.add_all([kyotoTravelerCheckin])
+
+        kyotoAdminCheckIn = CheckInPrefecture(
+            prefecture_id = 2,
+            user_id = 1
+        )
+        db.session.add_all([kyotoTravelerCheckin, kyotoAdminCheckIn])
         db.session.commit()
 
         print("Seeding Prefecture WishLists")
         kyotoTravelerWishList = PrefectureWishList(
-            wish_list=True,
             prefecture_id=2,
             user_id=2
         )
@@ -536,17 +539,20 @@ if __name__ == '__main__':
         db.session.commit()
 
         print("Seeding business check ins")
-        kyotoMorrisCheckIn = CheckInBusiness(
-            visited=True,
+        sapparoBeerMuseumAdminCheckIn = CheckInBusiness(
+            business_id=6,
+            user_id=1
+        )
+
+        kyotoMorrisTravelerCheckIn = CheckInBusiness(
             business_id=5,
             user_id=2
         )
-        db.session.add_all([kyotoMorrisCheckIn])
+        db.session.add_all([sapparoBeerMuseumAdminCheckIn, kyotoMorrisTravelerCheckIn])
         db.session.commit()
 
         print("Seeding business wishlists")
         kyotoMorrisWishList = BusinessWishList(
-            wish_list = True,
             business_id=5,
             user_id=2
         )

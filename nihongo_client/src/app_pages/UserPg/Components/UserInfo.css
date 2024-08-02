@@ -1,0 +1,16 @@
+#visitedPrefectureButtonGrid{
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    margin-left: 10px;
+}
+
+#prefectureVisitedButtons{
+    border: solid;
+    text-align: center;
+    border-radius: 24px;
+    margin-left: 5px;
+}
+
+.selectedPrefecture{
+    background-color: pink;
+}

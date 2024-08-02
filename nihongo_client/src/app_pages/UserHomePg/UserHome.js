@@ -1,6 +1,7 @@
 import { useOutletContext } from "react-router-dom";
 import "./UserHome.css";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 import AllUsers from "./Components/AllUsers";
 import CitizenAccounts from "./Components/CitizenAccounts";
@@ -128,10 +129,12 @@ function UserHome() {
     
     //Create the business cards
     const userCards = (userAccounts) => {
+        console.log(userAccounts)
         return userAccounts.map((userInfo, index) => (
-            <div 
+            <Link 
                 key={index}
                 id="userCard"
+                to={`/users/${userInfo.id}`}
             >
                 <div id="userImgCardContainer">
                     <img 
@@ -180,7 +183,7 @@ function UserHome() {
                         <h6>{userInfo.role}</h6>
                     </div>
                 </div>
-            </div>
+            </Link>
         ))
     }
 

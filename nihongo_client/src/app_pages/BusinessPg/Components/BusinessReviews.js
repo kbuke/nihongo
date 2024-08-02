@@ -3,34 +3,21 @@ import "./BusinessReviews.css";
 import binIcon from "../../../assets/binIcon.png";
 import editIcon from "../../../assets/editIcon.png";
 import ReviewModal from "./ReviewModal"; // Import the modal component
+import { useOutletContext } from "react-router-dom";
 
 function BusinessReviews({
-    currentBusinessReviews,
     loggedUser,
-    specificBusinessId
+    specificBusinessId,
+    allCheckIns,
+    allBusinessReviews,
+    setAllBusinessReviews
 }) {
-    const [allBusinessReviews, setAllBusinessReviews] = useState([]);
     const [writingReview, setWritingReview] = useState(false); // State for modal visibility
 
-    const usersBusinessCheckIns = loggedUser.business_visit;
-    const filterCheckIns = usersBusinessCheckIns.filter(business => business.business_id === specificBusinessId);
 
-    const userReviews = loggedUser.business_reviews;
-    const filterReviews = userReviews.filter(reviews => reviews.business_id === specificBusinessId);
-    console.log(filterReviews); 
+    const filterCheckIns = allCheckIns.filter(business => business.business_id === specificBusinessId && business.user_id === loggedUser.id);
 
-    // Get all business reviews
-    useEffect(() => {
-        fetch("/businessreviews")
-            .then(r => {
-                if (r.ok) {
-                    return r.json();
-                }
-                throw r;
-            })
-            .then(reviews => setAllBusinessReviews(reviews));
-    }, []);
-    console.log(allBusinessReviews);
+    const filterReviews = allBusinessReviews.filter(reviews => reviews.business_id === specificBusinessId && reviews.user_id === loggedUser.id)
 
     const handleDeleteReview = (e, reviewId) => {
         e.preventDefault();
@@ -63,7 +50,10 @@ function BusinessReviews({
             });
     };
 
-    const reviewDates = currentBusinessReviews.sort((a, b) => new Date(b.review_date) - new Date(a.review_date));
+    // const reviewDates = currentBusinessReviews.sort((a, b) => new Date(b.review_date) - new Date(a.review_date));
+    const filterBusinessReviews = allBusinessReviews.filter(reviewInfo => reviewInfo.business_id === specificBusinessId)
+
+    const reviewDates = filterBusinessReviews.sort((a, b) => new Date(b.review_date) - new Date(a.review_date))
 
     const renderReviews = reviewDates.map((reviewInfo, index) => (
         <div key={index} id="userReviewContainer">
@@ -91,9 +81,6 @@ function BusinessReviews({
             </div>
         </div>
     ));
-
-    console.log(filterCheckIns);
-    console.log(filterReviews);
 
     const createReview = filterCheckIns.length === 0 || filterReviews.length !== 0 ? (
         <div id="noReviewContainer">

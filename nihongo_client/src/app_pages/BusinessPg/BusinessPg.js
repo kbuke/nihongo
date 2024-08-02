@@ -31,6 +31,10 @@ function BusinessPg() {
 
     // Set states
     const [specificBusinessInfo, setSpecificBusinessInfo] = useState(null);
+    const [allCheckIns, setAllCheckIns] = useState([]) 
+    const [allWishLists, setAllWishLists] = useState([])
+    const [allBusinessReviews, setAllBusinessReviews] = useState([])
+
 
     // Get all businesses listed on app
     const allBusinesses = appData.allBusinesses || [];
@@ -43,12 +47,55 @@ function BusinessPg() {
     //Get specific logged in user
     const loggedUser = appData.loggedUser
     const loggedUserId = loggedUser? loggedUser.id : null
+    console.log(loggedUser)
 
     //Show user checkins or user
-    const userCheckIns = loggedUser ? loggedUser.business_visit : null
+    const userCheckIns = loggedUser ? loggedUser.business_visit : []
+    
+    const userWishList = loggedUser ? loggedUser.business_wishlist : []
 
-    //Show user wishlists
-    const userWishList = loggedUser? loggedUser.business_wishlist : null
+    // const userReviews = loggedUser ? loggedUser.business_reviews : []
+
+    //FETCH all check ins
+    useEffect(() => {
+        fetch('/businesscheckin')
+            .then(r => {
+                if(r.ok) {
+                    return r.json()
+                }
+                throw r 
+            })
+            .then(checkIns => setAllCheckIns(checkIns))
+            .catch(error => console.error("Error fetching check-ins", error))
+    }, [userCheckIns])
+    console.log(userCheckIns)
+    
+    //FETCH all wishlists
+    useEffect(() => {
+        fetch('/businesswishlist')
+            .then(r => {
+                if(r.ok) {
+                    return r.json()
+                }
+                throw r 
+            })
+            .then(wishlists => setAllWishLists(wishlists))
+            .catch(error => console.error("Error fetching wishlists", error))
+    }, [userWishList])
+
+    //FETCH all business reviews
+    useEffect(() => {
+        fetch('/businessreviews')
+            .then(r => {
+                if(r.ok) {
+                    return r.json()
+                }
+                throw r
+            })
+            .then(reviews => setAllBusinessReviews(reviews))
+            .catch(error => console.error("Business reviews not found", error))
+    }, [])
+    console.log(allBusinessReviews)
 
     // Add additional elements to calculate average review rating
     useEffect(() => {
@@ -61,13 +108,6 @@ function BusinessPg() {
                     throw r;
                 })
                 .then((specificBusinessInfo) => {
-                    const reviewRatings = specificBusinessInfo.business_reviews.map((ratings) => ratings.review_rating);
-                    const totalSum = reviewRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-                    const averageRating = reviewRatings.length ? (totalSum / reviewRatings.length).toFixed(1) : "N/A";
-
-                    specificBusinessInfo.numberReviews = reviewRatings.length;
-                    specificBusinessInfo.averageRating = averageRating;
-
                     setSpecificBusinessInfo(specificBusinessInfo);
                 })
                 .catch((error) => {
@@ -85,12 +125,6 @@ function BusinessPg() {
 
     //Set prefecturePicture
     const businessPicture = specificBusinessInfo ? specificBusinessInfo.profile_picture : null
-    
-    //Set up the average review of business
-    const averageReview = specificBusinessInfo? specificBusinessInfo.averageRating : null
-
-    //Set up the number of reviews
-    const reviewNumbers = specificBusinessInfo? specificBusinessInfo.business_reviews.length : null
 
     //Set up business phone number
     const businessNumber = specificBusinessInfo? specificBusinessInfo.contact_number : null 
@@ -114,9 +148,6 @@ function BusinessPg() {
     const businessClosingTime = specificBusinessInfo ? specificBusinessInfo.closing_time : null
     const businessOperatingHours = `${businessOpeningTime} - ${businessClosingTime}`
 
-    //Set up current business reviews
-    const currentBusinessReviews = specificBusinessInfo? specificBusinessInfo.business_reviews : null 
-
     return (
         <div id="businessPgContainer" style={businessPgContainerStyle}>
             <div id="renderedBusinessInfoContainer">
@@ -131,8 +162,8 @@ function BusinessPg() {
                 />
 
                 <BusinessIntroAvReview 
-                    averageReview={averageReview}
-                    reviewNumbers={reviewNumbers}
+                    specificBusinessId={specificBusinessId}
+                    allBusinessReviews={allBusinessReviews}
                 />
 
                 <BusinessCheckInWishList 
@@ -141,6 +172,10 @@ function BusinessPg() {
                     userCheckIns={userCheckIns}
                     businessName={businessName}
                     userWishList={userWishList}
+                    allCheckIns={allCheckIns}
+                    setAllCheckIns={setAllCheckIns}
+                    allWishLists={allWishLists}
+                    setAllWishLists={setAllWishLists}
                 />
             </div>
 
@@ -154,9 +189,12 @@ function BusinessPg() {
                 />
 
                 <BusinessFeed 
-                    currentBusinessReviews={currentBusinessReviews}
+                    // currentBusinessReviews={currentBusinessReviews}
                     loggedUser={loggedUser}
                     specificBusinessId={specificBusinessId}
+                    allCheckIns={allCheckIns}
+                    allBusinessReviews={allBusinessReviews}
+                    setAllBusinessReviews={setAllBusinessReviews}
                 />
             </div>
         </div>
