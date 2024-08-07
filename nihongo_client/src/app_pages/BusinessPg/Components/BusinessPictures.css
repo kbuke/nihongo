@@ -1,0 +1,45 @@
+#businessPictureGrid{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#businessPictureOptionsGrid{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    grid-template-columns: 50% 50%;
+}
+
+#selectedPhotoOption{
+    text-decoration: underline;
+    font-weight: 400;
+}
+
+.photoOption{
+    font-weight: 100;
+    font-size: 200%;
+}
+
+#specificBusinessPictureGrid{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+#businessesPictureContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    height: 200px;
+    width: 300px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+#businessPictureRender{
+    height: 100%;
+    width: 100%;
+}

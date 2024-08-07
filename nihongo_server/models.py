@@ -413,6 +413,7 @@ class PrefecturePhotos(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
 
     picture_route = db.Column(db.String, nullable=False)
+    upload_date=db.Column(db.DateTime, server_default=db.func.now())
 
     #Add relations
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)

@@ -2,6 +2,7 @@ import { useState } from "react"
 import "./BusinessFeed.css"
 
 import BusinessReviews from "./BusinessReviews"
+import BusinessPictures from "./BusinessPictures"
 
 function BusinessFeed({
     loggedUser,
@@ -39,6 +40,14 @@ function BusinessFeed({
                         allCheckIns={allCheckIns}
                         allBusinessReviews={allBusinessReviews}
                         setAllBusinessReviews={setAllBusinessReviews}
+                    />
+                    :
+                    null
+                }
+
+                {selectedCategory === "Pictures" ?
+                    <BusinessPictures 
+                        specificBusinessId={specificBusinessId}
                     />
                     :
                     null

@@ -14,3 +14,20 @@
 .selectedPrefecture{
     background-color: pink;
 }
+
+#userOptionsGrid{
+    margin-left: 10px;
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    text-align: center;
+}
+
+.userProfileHeaders{
+    font-size: 300%;
+    font-weight: 100;
+}
+
+#selectedUserProfileHeader{
+    text-decoration: underline;
+    font-weight: 400;
+}

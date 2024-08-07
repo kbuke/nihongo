@@ -39,4 +39,7 @@
 
 #renderedBusinessChoice{
     background-color: #e8f9fd;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }
