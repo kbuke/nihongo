@@ -2,6 +2,8 @@
     display: grid;
     grid-template-columns: 40% 60%;
     background-color: #F4F2F3;
+    height: 100%;
+    position: inherit;
   }
 
   .verticalNavOpen #homePgContainer {

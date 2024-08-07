@@ -1,11 +1,14 @@
 # Remote library imports
-from flask import request, make_response, session, render_template, url_for
+from flask import request, make_response, session, render_template, url_for, send_from_directory
+
 from flask_restful import Resource
 
+from werkzeug.utils import secure_filename
+
 # Local imports
-from config import app, db, api
+from config import app, db, api, os
 # Add your model imports
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, CheckInBusiness, BusinessWishList
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, CheckInBusiness, BusinessWishList, PrefecturePhotos
 from sqlalchemy import event
 
 #Show all available users, and allow frontend to add new ones
@@ -13,42 +16,106 @@ class AllUsers(Resource):
     def get(self):
         users = [user.to_dict(
             rules=(
-                "-user", 
-                "-admins", 
-                "-travelers", 
+                "-admins",
+                "-travelers",
                 "-citizens",
-                "-businesses", 
+                "-businesses",
 
+                #Sort through prefecture visits
+                "-prefecture_visit.user",
+
+                "-prefecture_visit.prefecture.businesses",
+                "-prefecture_visit.prefecture.prefecture_reviews",
+                "-prefecture_visit.prefecture.prefecture_visit",
+                "-prefecture_visit.prefecture.prefecture_wishlist",
+                "-prefecture_visit.prefecture.business_pictures",
+
+                #Sort through prefecture wishlists
+                "-prefecture_wishlist.user",
+                "-prefecture_wishlist.prefecture.businesses",
+                "-prefecture_wishlist.prefecture.prefecture_reviews",
+                "-prefecture_wishlist.prefecture.prefecture_wishlist",
+                "-prefecture_wishlist.prefecture.business_pictures",
+
+                #Sort through business visits
+                "-business_visit.user",
+                "-business_visit.business.prefecture",
+                "-business_visit.business.user",
+
+                "-business_visit.business.business_reviews.user",
+                "-business_visit.business.business_reviews.business",
+
+                "-business_visit.business.business_types",
+                "-business_visit.business.business_visit",
+                "-business_visit.business.business_wishlist",
+                "-business_visit.business.business_pictures",
+                "-business_visit.business.admin",
+                "-business_visit.business.travelers",
+                "-business_visit.business.citizens",
+                "-business_visit.business.businesses",
+                "-business_visit.business.prefecture_visit",
+                "-business_visit.business.prefecture_wishlist",
+
+                #Sort through business wishlists
+                "-business_wishlist.user",
+                "-business_wishlist.business.prefecture",
+                "-business_wishlist.business.user",
+
+                "-business_wishlist.business.business_reviews.user",
+                "-business_wishlist.business.business_reviews.business",
+
+                "-business_wishlist.business.business_types",
+                "-business_wishlist.business.business_visit",
+                "-business_wishlist.business.business_wishlist",
+                "-business_wishlist.business.business_pictures",
+                "-business_wishlist.business.admin",
+                "-business_wishlist.business.travelers",
+                "-business_wishlist.business.citizens",
+                "-business_wishlist.business.businesses",
+                "-business_wishlist.business.prefecture_visit",
+                "-business_wishlist.business.prefecture_wishlist",
+
+                #Sort through business reviews
                 "-business_reviews.user",
-
-                "-business_reviews.business.admins",
-                "-business_reviews.business.travelers",
-                "-business_reviews.business.citizens",
-                "-business_reviews.business.user",
-                "-business_reviews.business.business_reviews",
-                "-business_reviews.business.businesses",
-                "-business_reviews.business._password_hash",
-                "-business_reviews.business.building_numbers",
-                "-business_reviews.business.business_types",
-                "-business_reviews.business.card_info",
-                "-business_reviews.business.city",
-                "-business_reviews.business.closing_time",
-                "-business_reviews.business.contact_number",
-                "-business_reviews.business.date_registered",
-                "-business_reviews.business.email",
-                "-business_reviews.business.neighbourhood",
-                "-business_reviews.business.opening_time",
-                "-business_reviews.business.postal_code",
                 "-business_reviews.business.prefecture",
-                "-business_reviews.business.role",
-                "-business_reviews.business.type",
-                "-business_reviews.business.prefecture_id",
-                "-business_reviews.business.prefecture_visit",
-                "-business_reviews.business.prefecture_wishlist",
-                "-business_reviews.business.user_info",
-                "-business_reviews.business.username",
+                "-business_reviews.business.user",
+
+                "-business_reviews.business.business_reviews.user",
+                "-business_reviews.business.business_reviews.business",
+
+                "-business_reviews.business.business_types",
                 "-business_reviews.business.business_visit",
                 "-business_reviews.business.business_wishlist",
+                "-business_reviews.business.business_pictures",
+                "-business_reviews.business.admin",
+                "-business_reviews.business.travelers",
+                "-business_reviews.business.citizens",
+                "-business_reviews.business.businesses",
+                "-business_reviews.business.prefecture_visit",
+                "-business_reviews.business.prefecture_wishlist",
+
+                #Sort through business pictures
+                "-business_pictures.user",
+                "-business_pictures.prefecture",
+                "-business_pictures.business.prefecture",
+                "-business_pictures.business.user",
+
+                "-business_pictures.business.business_reviews.user",
+                "-business_pictures.business.business_reviews.business",
+
+                "-business_pictures.business..business_types",
+                "-business_pictures.business.business_visit",
+                "-business_pictures.business.business_wishlist",
+                "-business_pictures.business.business_pictures",
+                "-business_pictures.business.admin",
+                "-business_pictures.business.travelers",
+                "-business_pictures.business.citizens",
+                "-business_pictures.business.businesses",
+                "-business_pictures.business.prefecture_visit",
+                "-business_pictures.business.prefecture_wishlist",
+                
+                "-prefecture",
+                "-user",
             )) for user in Users.query.all()]
         return users, 200
     
@@ -110,104 +177,109 @@ class UsersId(Resource):
     def get(self, id):
         user_info = Users.query.filter(Users.id==id).first()
         if user_info:
+            # breakpoint()
             return make_response(user_info.to_dict(
                 rules=(
-                "-_password_hash",
-                "-user", 
-                "-admins", 
-                "-travelers", 
-                "-citizens",
-                "-businesses", 
+                    "-admins",
+                    "-travelers",
+                    "-citizens",
+                    "-businesses",
 
-                "-business_reviews.user",
+                    #Sort through prefecture visits
+                    "-prefecture_visit.user",
 
-                "-business_reviews.business.admins",
-                "-business_reviews.business.travelers",
-                "-business_reviews.business.citizens",
-                "-business_reviews.business.user",
-                "-business_reviews.business.business_reviews.id",
-                "-business_reviews.business.business_reviews.review_comment",
-                "-business_reviews.business.business_reviews.review_date",
-                "-business_reviews.business.business_reviews.business",
-                "-business_reviews.business.business_reviews.user",
-                "-business_reviews.business.businesses",
-                "-business_reviews.business._password_hash",
-                # "-business_reviews.business.building_numbers",
-                # "-business_reviews.business.business_types",
-                "business_reviews.business.business_types.registered_type",
-                # "-business_reviews.business.card_info",
-                # "-business_reviews.business.city",
-                # "-business_reviews.business.closing_time",
-                # "-business_reviews.business.contact_number",
-                "-business_reviews.business.date_registered",
-                # "-business_reviews.business.email",
-                # "-business_reviews.business.neighbourhood",
-                # "-business_reviews.business.opening_time",
-                # "-business_reviews.business.postal_code",
-                "-business_reviews.business.prefecture.capital_city",
-                "-business_reviews.business.prefecture.id",
-                "-business_reviews.business.prefecture.population",
-                "-business_reviews.business.prefecture.prefecture_flag",
-                "-business_reviews.business.prefecture.prefecture_img",
-                "-business_reviews.business.prefecture.prefecture_info",
-                "-business_reviews.business.role",
-                "-business_reviews.business.type",
-                "-business_reviews.business.prefecture_id",
-                "-business_reviews.business.prefecture_visit",
-                "-business_reviews.business.prefecture_wishlist",
-                "-business_reviews.business.user_info",
-                "-business_reviews.business.username",
-                "-business_reviews.business.business_visit",
-                "-business_reviews.business.business_wishlist",
+                    "-prefecture_visit.prefecture.businesses",
+                    "-prefecture_visit.prefecture.prefecture_reviews",
+                    "-prefecture_visit.prefecture.prefecture_visit",
+                    "-prefecture_visit.prefecture.prefecture_wishlist",
+                    "-prefecture_visit.prefecture.business_pictures",
 
-                "-prefecture_wishlist.user",
+                    #Sort through prefecture wishlists
+                    "-prefecture_wishlist.user",
+                    "-prefecture_wishlist.prefecture.businesses",
+                    "-prefecture_wishlist.prefecture.prefecture_reviews",
+                    "-prefecture_wishlist.prefecture.prefecture_wishlist",
+                    "-prefecture_wishlist.prefecture.business_pictures",
 
-                "-prefecture_wishlist.prefecture.businesses",
-                "-prefecture_wishlist.prefecture.prefecture_reviews",
-                "-prefecture_wishlist.prefecture.prefecture_visit",
-                "-prefecture_wishlist.prefecture.prefecture_wishlist",
-                "-prefecture_wishlist.prefecture.capital_city",
-                "-prefecture_wishlist.prefecture.population",
-                "-prefecture_wishlist.prefecture.prefecture_info",
+                    #Sort through business visits
+                    "-business_visit.user",
+                    "-business_visit.business.prefecture",
+                    "-business_visit.business.user",
 
-                "-prefecture_visit.prefecture.capital_city",
-                "-prefecture_visit.prefecture.population",
-                "--prefecture_visit.prefecture.population",
-                "-prefecture_visit.prefecture.prefecture_info",
-                "-prefecture_visit.prefecture.businesses",
-                "-prefecture_visit.prefecture.prefecture_reviews",
-                "-prefecture_visit.prefecture.prefecture_visit",
-                "-prefecture_visit.prefecture.prefecture_wishlist",
+                    "-business_visit.business.business_reviews.user",
+                    "-business_visit.business.business_reviews.business",
 
-                "-prefecture_visit.prefecture_id",
-                "-prefecture_visit.user",
+                    "-business_visit.business.business_types",
+                    "-business_visit.business.business_visit",
+                    "-business_visit.business.business_wishlist",
+                    "-business_visit.business.business_pictures",
+                    "-business_visit.business.admin",
+                    "-business_visit.business.travelers",
+                    "-business_visit.business.citizens",
+                    "-business_visit.business.businesses",
+                    "-business_visit.business.prefecture_visit",
+                    "-business_visit.business.prefecture_wishlist",
 
-                "-business_visit.business.opening_time",
-                "-business_visit.business.closing_time",
-                "-business_visit.business.postal_code",
-                "-business_visit.business.building_numbers",
-                "-business_visit.business.city",
-                "-business_visit.business.neighbourhood",
-                "-business_visit.business.date_registered",
-                "-business_visit.business.card_info",
-                "-business_visit.business.email",
-                "-business_visit.business.contact_number",
-                "-business_visit.business.prefecture",
+                    #Sort through business wishlists
+                    "-business_wishlist.user",
+                    "-business_wishlist.business.prefecture",
+                    "-business_wishlist.business.user",
 
-                "-business_visit.business.business_reviews.user",
-                "-business_visit.business.business_reviews.business",
+                    "-business_wishlist.business.business_reviews.user",
+                    "-business_wishlist.business.business_reviews.business",
 
-                "-business_visit.business.business_types",
-                "-business_visit.business.business_visit",
-                "-business_visit.business.business_wishlist",
-                "-business_visit.business.user",
-                "-business_visit.business.businesses",
-                "-business_visit.business.admins",
-                "-business_visit.business.citizens",
-                "-business_visit.business.prefecture_wishlist",
-                "-business_visit.business.prefecture_visit",
-                "-business_visit.business.travelers",
-                "-business_visit.business._password_hash",
+                    "-business_wishlist.business.business_types",
+                    "-business_wishlist.business.business_visit",
+                    "-business_wishlist.business.business_wishlist",
+                    "-business_wishlist.business.business_pictures",
+                    "-business_wishlist.business.admin",
+                    "-business_wishlist.business.travelers",
+                    "-business_wishlist.business.citizens",
+                    "-business_wishlist.business.businesses",
+                    "-business_wishlist.business.prefecture_visit",
+                    "-business_wishlist.business.prefecture_wishlist",
+
+                    #Sort through business reviews
+                    "-business_reviews.user",
+                    "-business_reviews.business.prefecture",
+                    "-business_reviews.business.user",
+
+                    "-business_reviews.business.business_reviews.user",
+                    "-business_reviews.business.business_reviews.business",
+
+                    "-business_reviews.business.business_types",
+                    "-business_reviews.business.business_visit",
+                    "-business_reviews.business.business_wishlist",
+                    "-business_reviews.business.business_pictures",
+                    "-business_reviews.business.admin",
+                    "-business_reviews.business.travelers",
+                    "-business_reviews.business.citizens",
+                    "-business_reviews.business.businesses",
+                    "-business_reviews.business.prefecture_visit",
+                    "-business_reviews.business.prefecture_wishlist",
+
+                    #Sort through business pictures
+                    "-business_pictures.user",
+                    "-business_pictures.prefecture",
+                    "-business_pictures.business.prefecture",
+                    "-business_pictures.business.user",
+
+                    "-business_pictures.business.business_reviews.user",
+                    "-business_pictures.business.business_reviews.business",
+
+                    "-business_pictures.business..business_types",
+                    "-business_pictures.business.business_visit",
+                    "-business_pictures.business.business_wishlist",
+                    "-business_pictures.business.business_pictures",
+                    "-business_pictures.business.admin",
+                    "-business_pictures.business.travelers",
+                    "-business_pictures.business.citizens",
+                    "-business_pictures.business.businesses",
+                    "-business_pictures.business.prefecture_visit",
+                    "-business_pictures.business.prefecture_wishlist",
+                
+                    "-prefecture",
+                    "-user",
                 )
             ), 201)
         return {
@@ -327,9 +399,15 @@ class Login(Resource):
                 "-admins",
                 "-citizens",
                 "-travelers",
-                "-business_reviews",
                 "-businesses",
+                "-prefecture_visit",
+                "-prefecture_wishlist",
+                "-business_visit",
+                "-business_wishlist",
+                "-business_reviews",
                 "-user",
+                "-business_pictures",
+                "-prefectures",
             )), 200
         
         return {'error': "Invalid username or password"}, 401
@@ -337,18 +415,112 @@ class Login(Resource):
 class CheckSession(Resource):
     def get(self):
         user_id = session.get('user_id')
+        # breakpoint()
         if user_id:
             user = Users.query.filter(Users.id == user_id).first()
             if user:
                 return user.to_dict(
                     rules=(
                         "-admins",
-                        "-citizens",
                         "-travelers",
-                        "-business_reviews.user",
+                        "-citizens",
                         "-businesses",
+
+                        #Sort through prefecture visits
+                        "-prefecture_visit.user",
+
+                        "-prefecture_visit.prefecture.businesses",
+                        "-prefecture_visit.prefecture.prefecture_reviews",
+                        "-prefecture_visit.prefecture.prefecture_visit",
+                        "-prefecture_visit.prefecture.prefecture_wishlist",
+                        "-prefecture_visit.prefecture.business_pictures",
+
+                        #Sort through prefecture wishlists
+                        "-prefecture_wishlist.user",
+                        "-prefecture_wishlist.prefecture.businesses",
+                        "-prefecture_wishlist.prefecture.prefecture_reviews",
+                        "-prefecture_wishlist.prefecture.prefecture_wishlist",
+                        "-prefecture_wishlist.prefecture.business_pictures",
+
+                        #Sort through business visits
+                        "-business_visit.user",
+                        "-business_visit.business.prefecture",
+                        "-business_visit.business.user",
+
+                        "-business_visit.business.business_reviews.user",
+                        "-business_visit.business.business_reviews.business",
+
+                        "-business_visit.business.business_types",
+                        "-business_visit.business.business_visit",
+                        "-business_visit.business.business_wishlist",
+                        "-business_visit.business.business_pictures",
+                        "-business_visit.business.admin",
+                        "-business_visit.business.travelers",
+                        "-business_visit.business.citizens",
+                        "-business_visit.business.businesses",
+                        "-business_visit.business.prefecture_visit",
+                        "-business_visit.business.prefecture_wishlist",
+
+                        #Sort through business wishlists
+                        "-business_wishlist.user",
+                        "-business_wishlist.business.prefecture",
+                        "-business_wishlist.business.user",
+
+                        "-business_wishlist.business.business_reviews.user",
+                        "-business_wishlist.business.business_reviews.business",
+
+                        "-business_wishlist.business.business_types",
+                        "-business_wishlist.business.business_visit",
+                        "-business_wishlist.business.business_wishlist",
+                        "-business_wishlist.business.business_pictures",
+                        "-business_wishlist.business.admin",
+                        "-business_wishlist.business.travelers",
+                        "-business_wishlist.business.citizens",
+                        "-business_wishlist.business.businesses",
+                        "-business_wishlist.business.prefecture_visit",
+                        "-business_wishlist.business.prefecture_wishlist",
+
+                        #Sort through business reviews
+                        "-business_reviews.user",
+                        "-business_reviews.business.prefecture",
+                        "-business_reviews.business.user",
+
+                        "-business_reviews.business.business_reviews.user",
+                        "-business_reviews.business.business_reviews.business",
+
+                        "-business_reviews.business.business_types",
+                        "-business_reviews.business.business_visit",
+                        "-business_reviews.business.business_wishlist",
+                        "-business_reviews.business.business_pictures",
+                        "-business_reviews.business.admin",
+                        "-business_reviews.business.travelers",
+                        "-business_reviews.business.citizens",
+                        "-business_reviews.business.businesses",
+                        "-business_reviews.business.prefecture_visit",
+                        "-business_reviews.business.prefecture_wishlist",
+
+                        #Sort through business pictures
+                        "-business_pictures.user",
+                        "-business_pictures.prefecture",
+                        "-business_pictures.business.prefecture",
+                        "-business_pictures.business.user",
+
+                        "-business_pictures.business.business_reviews.user",
+                        "-business_pictures.business.business_reviews.business",
+
+                        "-business_pictures.business..business_types",
+                        "-business_pictures.business.business_visit",
+                        "-business_pictures.business.business_wishlist",
+                        "-business_pictures.business.business_pictures",
+                        "-business_pictures.business.admin",
+                        "-business_pictures.business.travelers",
+                        "-business_pictures.business.citizens",
+                        "-business_pictures.business.businesses",
+                        "-business_pictures.business.prefecture_visit",
+                        "-business_pictures.business.prefecture_wishlist",
+                
+                        "-prefecture",
                         "-user",
-                        "-prefectures",
                     )
                 ), 200
         return {"message": "Unauthorized user"}, 401
@@ -364,7 +536,40 @@ class LogOut(Resource):
 class AllPrefectures(Resource):
     def get(self):
         prefectures = [prefecture.to_dict(rules=(
-            "-businesses",
+            "-businesses.prefecture",
+            "-businesses.user",
+
+            "-businesses.business_reviews.business",
+            "-businesses.business_reviews.user",
+            "-businesses.business_reviews.id",
+            "-businesses.business_reviews.review_comment",
+            "-businesses.business_reviews.review_date",
+            "-businesses.business_reviews.traveler_id",
+
+            "-businesses.business_types.business",
+            "businesses.business_types.registered_type",
+
+            "-businesses.business_visit",
+
+            "-businesses.business_wishlist",
+
+            "-businesses.business_pictures",
+
+            "-businesses.admins",
+
+            "-businesses.travelers",
+
+            "-businesses.citizens",
+
+            "-businesses.businesses",
+
+            "-businesses.prefecture_visit",
+
+            "-businesses.prefecture_wishlist",
+
+            "-business_pictures.prefecture",
+            "-business_pictures.user",
+            "-business_pictures.business",
         )) for prefecture in Prefecture.query.all()]
         return prefectures, 200
 
@@ -372,15 +577,11 @@ class PrefectureId(Resource):
     def get(self, id):
         prefecture_info = Prefecture.query.filter(Prefecture.id==id).first()
         if prefecture_info:
+            # breakpoint()
             return make_response(prefecture_info.to_dict(
                 rules=(
                     "-businesses.prefecture",
-                    "-businesses.admins",
-                    "-businesses.travelers",
-                    "-businesses.citizens",
-                    "-businesses.businesses",
                     "-businesses.user",
-                    "-businesses._password_hash",
 
                     "-businesses.business_reviews.business",
                     "-businesses.business_reviews.user",
@@ -391,14 +592,28 @@ class PrefectureId(Resource):
 
                     "-businesses.business_types.business",
                     "businesses.business_types.registered_type",
-                    "-businesses.building_numbers",
-                    "-businesses.closing_time",
-                    "-businesses.opening_time",
-                    "-businesses.role",
-                    "-businesses.type",
-                    "-businesses.user_info",
-                    "-businesses.username",
-                    "-businesses.postal_code",
+
+                    "-businesses.business_visit",
+
+                    "-businesses.business_wishlist",
+
+                    "-businesses.business_pictures",
+
+                    "-businesses.admins",
+
+                    "-businesses.travelers",
+
+                    "-businesses.citizens",
+
+                    "-businesses.businesses",
+
+                    "-businesses.prefecture_visit",
+
+                    "-businesses.prefecture_wishlist",
+
+                    "-business_pictures.prefecture",
+                    "-business_pictures.user",
+                    "-business_pictures.business",
                 )
             ), 201)
         return {
@@ -451,9 +666,10 @@ class Businesses(Resource):
                 "-traveler",
                 "-citizen",
                 "-businesses",
-                # "-prefecture",
+                "-prefecture",
 
                 "-business_reviews.business",
+                "-business_reviews.user",
 
                 "-business_reviews.user.admins",
                 "-business_reviews.user.travelers",
@@ -465,9 +681,10 @@ class Businesses(Resource):
                 "-business_reviews.user.business_wishlist",
                 "-business_reviews.user.business_reviews",
                 "-business_reviews.user.user",
+                "-business_reviews.user.business_pictures",
 
                 "-business_types.business",
-                "business_types.registered_type",
+                "business_types.registered_type.business_type",
 
                 "-business_visit.business",
 
@@ -490,9 +707,18 @@ class Businesses(Resource):
                 "-business_visit.user.role",
                 "-business_visit.user.type",
                 "-business_visit.user.user_info",
+                "-business_visit.user.business_pictures",
 
                 "-business_wishlist",
                 "-prefecture_id",
+
+                "-business_pictures",
+
+                "-prefecture.business_pictures",
+                "-prefecture.businesses",
+                "-prefecture.prefecture_reviews",
+                "-prefecture.prefecture_visit",
+                "-prefecture.prefecture_wishlist",
             )) for business in LocalBusinessSites.query.all()]
         return businesses, 200
 
@@ -500,55 +726,67 @@ class BusinessesId(Resource):
     def get(self, id):
         business_info = LocalBusinessSites.query.filter(LocalBusinessSites.id==id).first()
         if business_info:
+            # breakpoint()
             return make_response(business_info.to_dict(
                 rules=(
-                "-user",
-                "-admin",
-                "-traveler",
-                "-citizen",
-                "-businesses",
+                    "-user",
+                    "-admin",
+                    "-traveler",
+                    "-citizen",
+                    "-businesses",
+                    "-prefecture",
 
+                    "-business_reviews.business",
+                    "-business_reviews.user",
 
-                "-business_reviews.business",
+                    "-business_reviews.user.admins",
+                    "-business_reviews.user.travelers",
+                    "-business_reviews.user.citizens",
+                    "-business_reviews.user.businesses",
+                    "-business_reviews.user.prefecture_visit",
+                    "-business_reviews.user.prefecture_wishlist",
+                    "-business_reviews.user.business_visit",
+                    "-business_reviews.user.business_wishlist",
+                    "-business_reviews.user.business_reviews",
+                    "-business_reviews.user.user",
+                    "-business_reviews.user.business_pictures",
 
-                "-business_reviews.user.admins",
-                "-business_reviews.user.travelers",
-                "-business_reviews.user.citizens",
-                "-business_reviews.user.businesses",
-                "-business_reviews.user.prefecture_visit",
-                "-business_reviews.user.prefecture_wishlist",
-                "-business_reviews.user.business_visit",
-                "-business_reviews.user.business_wishlist",
-                "-business_reviews.user.business_reviews",
-                "-business_reviews.user.user",
+                    "-business_types.business",
+                    "-business_types.registered_type",
 
-                "-business_types.business",
-                "business_types.registered_type",
+                    "-business_visit.business",
 
-                "-business_visit.business",
+                    "-business_visit.user.admins",
+                    "-business_visit.user.travelers",
+                    "-business_visit.user.citizens",
+                    "-business_visit.user.prefecture_visit",
+                    "-business_visit.user.prefecture_wishlist",
+                    "-business_visit.user.business_visit",
+                    "-business_visit.user.business_wishlist",
+                    "-business_visit.user.business_reviews",
+                    "-business_visit.user.user",
+                    "-business_visit.user.current_country",
+                    "-business_visit.user.user_info",
+                    "-business_visit.user.prefecture_reviews",
+                    "-business_visit.user.hometown",
+                    "-business_visit.user.home_country",
+                    "-business_visit.user.current_town",
+                    "-business_visit.user._password_hash",
+                    "-business_visit.user.role",
+                    "-business_visit.user.type",
+                    "-business_visit.user.user_info",
+                    "-business_visit.user.business_pictures",
 
-                "-business_visit.user.admins",
-                "-business_visit.user.travelers",
-                "-business_visit.user.citizens",
-                "-business_visit.user.prefecture_visit",
-                "-business_visit.user.prefecture_wishlist",
-                "-business_visit.user.business_visit",
-                "-business_visit.user.business_wishlist",
-                "-business_visit.user.business_reviews",
-                "-business_visit.user.user",
-                "-business_visit.user.current_country",
-                "-business_visit.user.user_info",
-                "-business_visit.user.prefecture_reviews",
-                "-business_visit.user.hometown",
-                "-business_visit.user.home_country",
-                "-business_visit.user.current_town",
-                "-business_visit.user._password_hash",
-                "-business_visit.user.role",
-                "-business_visit.user.type",
-                "-business_visit.user.user_info",
+                    "-business_wishlist",
+                    "-prefecture_id",
 
-                "-business_wishlist",
-                "-prefecture_id",
+                    "-business_pictures",
+
+                    "-prefecture.business_pictures",
+                    "-prefecture.businesses",
+                    "-prefecture.prefecture_reviews",
+                    "-prefecture.prefecture_visit",
+                    "-prefecture.prefecture_wishlist",
                 )
             ), 201)
         return {"error": "Business not found"}
@@ -565,16 +803,10 @@ class AllBusinessReviews(Resource):
             "-user.business_visit",
             "-user.business_wishlist",
             "-user.business_reviews",
+            "-user.business_pictures",
             "-user.user",
 
-            "-business.prefecture_id",
-            "-business.prefecture",
-            "-business.business_reviews",
-            "-business.business_types",
-            "-business.business_visit",
-            "-business.business_wishlist",
-            "-business.businesses",
-            "-business.user",
+            "-business",
         )) for business_review in BusinessReviews.query.all()]
         return business_reviews, 200
     
@@ -600,16 +832,10 @@ class AllBusinessReviews(Resource):
                 "-user.business_visit",
                 "-user.business_wishlist",
                 "-user.business_reviews",
+                "-user.business_pictures",
                 "-user.user",
 
-                "-business.prefecture_id",
-                "-business.prefecture",
-                "-business.business_reviews",
-                "-business.business_types",
-                "-business.business_visit",
-                "-business.business_wishlist",
-                "-business.businesses",
-                "-business.user",
+                "-business",
             )), 201 
         except ValueError as e:
             return{
@@ -631,16 +857,10 @@ class BusinessReviewId(Resource):
                 "-user.business_visit",
                 "-user.business_wishlist",
                 "-user.business_reviews",
+                "-user.business_pictures",
                 "-user.user",
 
-                "-business.prefecture_id",
-                "-business.prefecture",
-                "-business.business_reviews",
-                "-business.business_types",
-                "-business.business_visit",
-                "-business.business_wishlist",
-                "-business.businesses",
-                "-business.user",
+                "-business",
             )), 201)
         return {"error": "Business Review Not Found"}
     
@@ -1003,6 +1223,103 @@ class BusinessWishListsId(Resource):
             "error": "Business wishlist not found"
         }
 
+# Define allowed_file function
+def allowed_file(filename):
+    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+class PrefecturePhotographs(Resource):
+    def get(self):
+        prefecture_pic_info = [prefecture_pic.to_dict(rules=(
+            "-user.id",
+            "-user.user_info",
+            "-user.role",
+            "-user._password_hash",
+            "-user.admins",
+            "-user.travelers",
+            "-user.citizens",
+            "-user.businesses",
+            "-user.prefecture_visit",
+            "-user.prefecture_wishlist",
+            "-user.prefecture_reviews",
+            "-user.business_visit",
+            "-user.business_wishlist",
+            "-user.business_reviews",
+            "-user.business_pictures",
+            "-user.user",
+            "-user.prefecture",
+            "-user.current_country",
+            "-user.current_town",
+            "-user.type",
+            "-user.hometown",
+            "-user.home_country",
+            "-prefecture",
+            "-business",
+        )) for prefecture_pic in PrefecturePhotos.query.all()]
+        return prefecture_pic_info, 200
+    
+    def post(self):
+        if "image" not in request.files:
+            return {"message": "No file part"}, 400
+
+        file = request.files["image"]
+
+        if file.filename == "":
+            return {"message": "No selected file"}, 400
+
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(file_path)
+
+            # Generate the file URL
+            file_url = url_for('uploaded_file', filename=filename, _external=True)
+
+            new_picture = PrefecturePhotos(
+                picture_route=file_url,  # Save the URL instead of the path
+                user_id=request.form.get("userId"),
+                prefecture_id=request.form.get("prefectureId"),
+                business_id=request.form.get("businessId")
+            )
+            db.session.add(new_picture)
+            db.session.commit()
+
+            return new_picture.to_dict(
+                rules=(
+                    "-user.id",
+                    "-user.user_info",
+                    "-user.role",
+                    "-user._password_hash",
+                    "-user.admins",
+                    "-user.travelers",
+                    "-user.citizens",
+                    "-user.businesses",
+                    "-user.prefecture_visit",
+                    "-user.prefecture_wishlist",
+                    "-user.prefecture_reviews",
+                    "-user.business_visit",
+                    "-user.business_wishlist",
+                    "-user.business_reviews",
+                    "-user.business_pictures",
+                    "-user.user",
+                    "-user.prefecture",
+                    "-user.current_country",
+                    "-user.current_town",
+                    "-user.type",
+                    "-user.hometown",
+                    "-user.home_country",
+                    "-prefecture",
+                    "-business",
+                )
+            ), 201
+        else:
+            return {"message": "File type not allowed"}, 400
+    
+# Add the route to serve the uploaded files
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 api.add_resource(AllUsers, '/users')
 api.add_resource(UsersId, '/users/<int:id>')
@@ -1034,6 +1351,7 @@ api.add_resource(BusinessCheckIn, '/businesscheckin')
 api.add_resource(BusinessCheckInId, '/businesscheckin/<int:id>')
 api.add_resource(BusinessWishLists, '/businesswishlist')
 api.add_resource(BusinessWishListsId, '/businesswishlist/<int:id>')
+api.add_resource(PrefecturePhotographs, '/prefecturepics')
 
 
 if __name__ == '__main__':

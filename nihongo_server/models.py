@@ -27,6 +27,7 @@ class Users(db.Model, SerializerMixin):
     business_visit = db.relationship("CheckInBusiness", backref="user", lazy=True)
     business_wishlist = db.relationship("BusinessWishList", backref="user", lazy=True)
     business_reviews = db.relationship("BusinessReviews", backref="user", lazy=True)
+    business_pictures = db.relationship("PrefecturePhotos", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -180,6 +181,7 @@ class Prefecture(db.Model, SerializerMixin):
     prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="prefecture", lazy=True)
     prefecture_visit = db.relationship("CheckInPrefecture", backref="prefecture", lazy=True)
     prefecture_wishlist = db.relationship("PrefectureWishList", backref="prefecture", lazy=True)
+    business_pictures = db.relationship("PrefecturePhotos", backref="prefecture", lazy=True)
     
 
     serialize_rules = (
@@ -212,6 +214,7 @@ class LocalBusinessSites(Users):
     business_types = db.relationship("BusinessTypes", backref="business", lazy=True)
     business_visit = db.relationship("CheckInBusiness", backref="business", lazy=True)
     business_wishlist = db.relationship("BusinessWishList", backref="business", lazy=True)
+    business_pictures = db.relationship("PrefecturePhotos", backref="business", lazy=True)
 
     #Add validations
     @validates("card_info")
@@ -345,7 +348,6 @@ class CheckInPrefecture(db.Model, SerializerMixin):
     __tablename__ = "prefecture_checkin"
 
     id=db.Column(db.Integer, primary_key=True)
-    # visited = db.Column(db.Boolean, default=False)
 
     #Add relations
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
@@ -363,7 +365,6 @@ class CheckInBusiness(db.Model, SerializerMixin):
     __tablename__ = "business_checkin"
 
     id=db.Column(db.Integer, primary_key=True)
-    # visited = db.Column(db.Boolean, default=False)
 
     #add relations
     business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"))
@@ -380,7 +381,6 @@ class PrefectureWishList(db.Model, SerializerMixin):
     __tablename__ = "prefecture_wishlist"
 
     id=db.Column(db.Integer, primary_key=True)
-    # wish_list = db.Column(db.Boolean, default=False)
 
     #Add relations
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
@@ -396,7 +396,6 @@ class BusinessWishList(db.Model, SerializerMixin):
     __tablename__ = "business_wishlist"
 
     id = db.Column(db.Integer, primary_key=True)
-    # wish_list = db.Column(db.Boolean)
 
     #Add relations
     business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"))
@@ -407,6 +406,20 @@ class BusinessWishList(db.Model, SerializerMixin):
         "-user",
         "-business",
     )
+
+class PrefecturePhotos(db.Model, SerializerMixin):
+    __tablename__ = "prefecture_photos"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    picture_route = db.Column(db.String, nullable=False)
+
+    #Add relations
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
+    business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"), nullable=True)
+
+
 
 
     

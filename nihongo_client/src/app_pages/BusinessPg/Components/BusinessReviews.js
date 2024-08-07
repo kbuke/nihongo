@@ -53,6 +53,8 @@ function BusinessReviews({
     // const reviewDates = currentBusinessReviews.sort((a, b) => new Date(b.review_date) - new Date(a.review_date));
     const filterBusinessReviews = allBusinessReviews.filter(reviewInfo => reviewInfo.business_id === specificBusinessId)
 
+    console.log(allBusinessReviews)
+
     const reviewDates = filterBusinessReviews.sort((a, b) => new Date(b.review_date) - new Date(a.review_date))
 
     const renderReviews = reviewDates.map((reviewInfo, index) => (

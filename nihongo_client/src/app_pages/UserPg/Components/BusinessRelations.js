@@ -1,6 +1,7 @@
 import "./BusinessRelations.css";
 import BusinessReview from "./BusinessReview";
 import BusinessInfoRelation from "./BusinessInfoRelation";
+import BusinessPhotos from "./BusinessPhotos";
 
 import { useState } from "react";
 
@@ -45,6 +46,12 @@ function BusinessRelations({
             {selectedCategory === "Business Info" && (
                 <BusinessInfoRelation 
                     businessInfo = {specificBusinessInfo.business}
+                />
+            )}
+            {selectedCategory === "Photos" && (
+                <BusinessPhotos 
+                    businessInfo = {specificBusinessInfo.business}
+                    specificUserInfo = {specificUserInfo}
                 />
             )}
         </div>

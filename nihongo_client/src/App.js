@@ -102,6 +102,8 @@ function App() {
       .then(wishlists => setAllPrefectureWishLists(wishlists))
   }, [])
 
+  console.log(allBusinesses)
+
   return(
     <div>
       <HorizontalNavBar 

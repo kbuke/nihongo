@@ -4,6 +4,8 @@
     transition: margin-left 0.3s ease;
     width: calc(100% - 50px); /* Default width when nav is closed */
     margin-left: 10px;
-    background-color: #FAF9F6
+    background-color: #FAF9F6;
+    height: 100%;
+    position: relative;
 }
 

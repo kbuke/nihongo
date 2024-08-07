@@ -1,4 +1,4 @@
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList,CheckInBusiness, BusinessWishList
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList,CheckInBusiness, BusinessWishList, PrefecturePhotos
 
 from datetime import time
 
@@ -557,6 +557,16 @@ if __name__ == '__main__':
             user_id=2
         )
         db.session.add_all([kyotoMorrisWishList])
+        db.session.commit()
+
+        print("Seeding business Pics")
+        business5Pic = PrefecturePhotos(
+            picture_route = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWBJz3yXslUdTK_M6JhC_-cAnpp8muuh-AAYv4S-fyKA_wSH5a",
+            user_id = 1,
+            prefecture_id=2,
+            business_id=5
+        )
+        db.session.add_all([business5Pic])
         db.session.commit()
 
 

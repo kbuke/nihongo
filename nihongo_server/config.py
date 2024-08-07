@@ -22,7 +22,14 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 app.secret_key = b'Fb\x83\xfd\xa3\xe1\x1b\x9a\x0b\xec\x9b\xcc\x84\xe9X\x87'
 
-#Create a secret key
+# Add upload folder configuration
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'uploads')
+
+
+# Create the upload folder if it doesn't exist
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
 
 # Define metadata, instantiate db
 metadata = MetaData(naming_convention={
@@ -39,5 +46,3 @@ bcrypt = Bcrypt(app)
 api = Api(app)
 
 
-
-# Instanti
