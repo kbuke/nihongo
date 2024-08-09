@@ -18,6 +18,9 @@ function LoggedInHome() {
 
   const loggedInUserImg = loggedInUser.profile_picture;
 
+  const loggedUserRole = loggedInUser.role 
+  console.log(loggedUserRole)
+
   // const [verticalNavHover, setVerticalNavHover] = useState(false);
   const verticalNavHover = appData.verticalNavHover
 
@@ -35,7 +38,7 @@ function LoggedInHome() {
   const allPrefectures = appData.prefectures 
 
   return (
-    <div>
+    <div id="loggedHomePg">
       <div
         style={homePgContainerStyle}
         id="pgContainer"
@@ -111,6 +114,17 @@ function LoggedInHome() {
               >
                 <h2>Sites</h2>
               </div>
+            </div>
+            <div>
+                {loggedUserRole === "Admin" ? 
+                  <Link
+                    to="/addprefecture"
+                  >
+                    Add New Prefecture
+                  </Link>
+                  :
+                  null
+                }
             </div>
         </div>
       </div>

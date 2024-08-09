@@ -4,6 +4,7 @@ import "./PrefectureBusinessVisits.css";
 
 import UserBusinessCheckIns from "./UserBusinessCheckIns";
 import BusinessRelations from "./BusinessRelations";
+import PrefecturePhotos from "./PrefecturePhotos";
 
 function PrefectureBusinessVisits({
     selectedPrefectureFlag,
@@ -13,7 +14,8 @@ function PrefectureBusinessVisits({
     filterBusinessPrefecture,
     specificUserInfo,
     selectedBusiness,
-    setSelectedBusiness
+    setSelectedBusiness,
+    allPictures
 }) {
     const [selectCategory, setSelectCategory] = useState('Photos');
     const [selectedBusinessId, setSelectedBusinessId] = useState()
@@ -74,16 +76,29 @@ function PrefectureBusinessVisits({
                     }
                 </div>
             </div>
-            {selectedBusiness ? (
-                <BusinessRelations 
-                    specificBusinessInfo={specificBusinessInfo}
-                    specificUserInfo={specificUserInfo}
-                    selectedBusinessId={selectedBusinessId}
-                />
-            )
+
+            <>
+                {selectCategory === "Photos" ?
+                    <PrefecturePhotos 
+                        selectedPrefectureId={selectedPrefectureId}
+                        specificUserInfo={specificUserInfo}
+                        allPictures={allPictures}
+                    />
+                    :
+                    null
+                }           
+                
+                {selectedBusiness ? (
+                    <BusinessRelations 
+                        specificBusinessInfo={specificBusinessInfo}
+                        specificUserInfo={specificUserInfo}
+                        selectedBusinessId={selectedBusinessId}
+                    />
+                )
                 :
                 null
-            }
+                }
+            </>
         </div>
     );
 }

@@ -6,8 +6,6 @@ function UserPictures({
     specificUserInfo,
     allPictures
 }){
-    console.log(specificUserInfo)
-    console.log(allPictures)
     const [filterPictures, setFilterPictures] = useState([])
 
     const userId = specificUserInfo.id 
@@ -16,7 +14,6 @@ function UserPictures({
         setFilterPictures(allPictures.filter(picture => (picture.user_id) === (userId)))
     ), [allPictures])
 
-    console.log(filterPictures)
 
     const renderedPictureContainer = filterPictures.map((picture, index) => (
         <div 

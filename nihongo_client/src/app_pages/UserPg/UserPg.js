@@ -13,6 +13,9 @@ function UserPg(){
     const [specificUserInfo, setSpecificUserInfo] = useState([])
     const [changeUserPic, setChangeUserPic] = useState(false)
 
+    //Get the current logged in user
+    const loggedUser = appData.loggedUser
+
     //Get all prefecture wishlists
     const allUsers = appData.users
 
@@ -33,7 +36,6 @@ function UserPg(){
                 .then(specificUserInfo => setSpecificUserInfo(specificUserInfo))
             }
     }, [allUsers])
-    console.log(specificUserInfo)
 
     //Check if vertical nav hover is on
     const userHomeStyle = appData.verticalNavHover ? 
@@ -78,12 +80,15 @@ function UserPg(){
                     homeTown={homeTown}
                     currentCountry={currentCountry}
                     currentTown={currentTown}
+                    loggedUser={loggedUser}
+                    specificUserInfo={specificUserInfo}
                 />
             </>
 
             <div id="mainInfoGrid">
                 <UserInfo 
                     specificUserInfo={specificUserInfo}
+                    loggedUser={loggedUser}
                 />
             </div>
         </div>

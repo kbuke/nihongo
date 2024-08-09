@@ -6,8 +6,12 @@ import { useEffect } from "react";
 import PrefectureBusinessVisits from "./PrefectureBusinessVisits";
 import UserUploadPictures from "./UserUploadPictures";
 import UserPictures from "./UserPictures";
+import { all } from "axios";
 
-function UserInfo({ specificUserInfo }) {
+function UserInfo({ 
+    specificUserInfo,
+    loggedUser
+}) {
     const [selectedPrefecture, setSelectedPrefecture] = useState(null);
     const [selectedPrefectureId, setSelectedPrefectureId] = useState(null);
     const [selectedPrefectureFlag, setSelectedPrefectureFlag] = useState(null);
@@ -15,6 +19,9 @@ function UserInfo({ specificUserInfo }) {
     const [selectedBusiness, setSelectedBusiness] = useState("");
     const [selectedUserOption, setSelectedUserOption] = useState("Pictures");
     const [allPictures, setAllPictures] = useState([])
+
+    const loggedUserId = specificUserInfo? specificUserInfo.id : null 
+    const userPgId = loggedUser ? loggedUser.id : null
 
     //Get all pictures
     useEffect(() => {
@@ -95,17 +102,19 @@ function UserInfo({ specificUserInfo }) {
                     specificUserInfo={specificUserInfo}
                     selectedBusiness={selectedBusiness}
                     setSelectedBusiness={setSelectedBusiness}
+                    allPictures={allPictures}
                 />
             : null }
 
             {selectedUserOption === "Pictures" ? 
                 <div>
-                    <UserUploadPictures 
-                        specificUserInfo={specificUserInfo}
-                        allPictures={allPictures}
-                        setAllPictures={setAllPictures}
-                    />
-
+                    {loggedUserId === userPgId && (
+                        <UserUploadPictures 
+                            specificUserInfo={specificUserInfo}
+                            allPictures={allPictures}
+                            setAllPictures={setAllPictures}
+                        />
+                    )}
                     <UserPictures 
                         specificUserInfo={specificUserInfo}
                         allPictures={allPictures}

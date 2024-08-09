@@ -127,6 +127,9 @@ function UserHome() {
               width: "calc(100% - 50px)",
           };
     
+    //Get user images
+    console.log(userAccounts)
+    
     //Create the business cards
     const userCards = (userAccounts) => {
         console.log(userAccounts)
@@ -139,7 +142,7 @@ function UserHome() {
                 <div id="userImgCardContainer">
                     <img 
                         id="userCardImg"
-                        src={userInfo.profile_picture}
+                        src={userInfo.profile_picture.length > 0 ? userInfo.profile_picture[0].picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"}
                         alt={`${userInfo.username} Picture`}
                     />
                 </div>

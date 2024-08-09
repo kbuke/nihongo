@@ -116,7 +116,7 @@ function BusinessPg() {
         }
     }, [specificBusinessId]);
 
-
+    console.log(specificBusinessInfo)
     //Set up business name
     const businessName = specificBusinessInfo ? specificBusinessInfo.name : null
 
@@ -124,7 +124,11 @@ function BusinessPg() {
     const businessInfo = specificBusinessInfo? specificBusiness.user_info : null
 
     //Set prefecturePicture
-    const businessPicture = specificBusinessInfo ? specificBusinessInfo.profile_picture : null
+    // Set prefecturePicture
+    const businessPicture = specificBusinessInfo && specificBusinessInfo.profile_picture?.length > 0 
+        ? specificBusinessInfo.profile_picture[0].picture_route 
+        : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg";
+
 
     //Set up business phone number
     const businessNumber = specificBusinessInfo? specificBusinessInfo.contact_number : null 

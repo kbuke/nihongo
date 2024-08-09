@@ -1,5 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./UserImgInfo.css"
+import { useOutletContext, useParams } from "react-router-dom"
+
+import UpdateProfilePic from "./UpdateProfilePic"
 
 function UserImgInfo({
     userName,
@@ -13,20 +16,65 @@ function UserImgInfo({
     homeCountry,
     homeTown,
     currentCountry,
-    currentTown
+    currentTown,
+    loggedUser,
+    specificUserInfo
 }){
+    const appData = useOutletContext()
+    const params = useParams()
+
+    const [specificUserPic, setSpecificUserPic] = useState([])
+    const [updateProfilePic, setUpdateProfilePic] = useState(false)
+
+
+    const allProfilePics = appData.allProfilePics
+
+    const specificProfilePic = allProfilePics.find(picture => picture.user_id === parseInt(params.id))
+
+    const specificProfilePicId = specificProfilePic ? specificProfilePic.id : null;
+
+    const userProfilePic = specificUserPic.picture_route? specificUserPic.picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
+
+    useEffect(() => {
+
+        if(specificProfilePicId){
+            fetch(`/profilepics/${specificProfilePicId}`)
+                .then(r => {
+                    if(r.ok) {
+                        return r.json()
+                    }
+                    throw r 
+                })
+                .then(specificPicInfo => setSpecificUserPic(specificPicInfo))
+        }
+    }, [allProfilePics])
+
+
     return(
         <div id="userPicIntroGrid">
+            {updateProfilePic ?
+                <UpdateProfilePic 
+                    setUpdateProfilePic={setUpdateProfilePic}
+                    specificProfilePicId={specificProfilePicId}
+                />
+                :
+                null
+            }
             <div id="userImgBlock">
                 <img 
                     id="userImg"
-                    src={userPic}
+                    src={userProfilePic}
                     alt={`${userName} Img`}
                     onClick={() => setChangeUserPic(!changeUserPic)}
                 />
-                {changeUserPic ? 
+                {changeUserPic && specificUserInfo.id === loggedUser.id ? 
                     <div id="userImgOptions">
-                        <button id="changeImgButton">Change Profile Picture</button>
+                        <button 
+                            id="changeImgButton"
+                            onClick={() => setUpdateProfilePic(true)}
+                        >
+                            Change Profile Picture
+                        </button>
                         <button 
                             id="cancelButton"
                             onClick={() => setChangeUserPic(false)}

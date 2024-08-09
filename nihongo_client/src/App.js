@@ -17,6 +17,7 @@ function App() {
   const [allBusinessReviews, setAllBusinessReviews] = useState([]);
   const [allPrefectureCheckIns, setAllPrefectureCheckIns] = useState([])
   const [allPrefectureWishLists, setAllPrefectureWishLists] = useState([])
+  const [allProfilePics, setAllProfilePics] = useState([])
 
   //Get all users
   useEffect(() => {
@@ -102,7 +103,18 @@ function App() {
       .then(wishlists => setAllPrefectureWishLists(wishlists))
   }, [])
 
-  console.log(allBusinesses)
+  //fetch all profile pictures
+  useEffect(() => {
+    fetch('/profilepics')
+      .then(r => {
+        if(r.ok) {
+          return r.json()
+        }
+        throw r
+      })
+      .then(profilePics => setAllProfilePics(profilePics))
+  }, [])
+
 
   return(
     <div>
@@ -140,7 +152,10 @@ function App() {
           setAllPrefectureCheckIns: setAllPrefectureCheckIns,
 
           allPrefectureWishLists: allPrefectureWishLists,
-          setAllPrefectureWishLists, setAllPrefectureWishLists
+          setAllPrefectureWishLists, setAllPrefectureWishLists,
+
+          allProfilePics: allProfilePics,
+          setAllProfilePics: setAllProfilePics,
         }
       }/>
     </div>

@@ -40,13 +40,14 @@ function BusinessAccounts({
     const filterSearch = filterPrefectureBusinesses.filter(business => 
         business.name.toLowerCase().includes(filterBar.toLowerCase())
     );
+    console.log(filterSearch)
 
     const businessCard = filterSearch.map((businessInfo, index) => (
         <Link key={index} id="userCard" to={`/business/${businessInfo.id}`}>
             <div id="userImgCardContainer">
                 <img 
                     id="userCardImg"
-                    src={businessInfo.profile_picture}
+                    src={businessInfo.profile_picture.length > 0 ? businessInfo.profile_picture[0].picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"}
                     alt={`${businessInfo.name}`}
                 />
             </div>

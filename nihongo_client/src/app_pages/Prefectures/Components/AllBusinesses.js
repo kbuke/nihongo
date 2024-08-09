@@ -4,7 +4,8 @@ import "./AllBusinesses.css"
 
 function AllBusinesses({
     copyPrefectureBusinesses,
-    prefectureName
+    prefectureName,
+    prefectureBusinesses
 }){
     const numberOfBusinesses = copyPrefectureBusinesses.length
 
@@ -32,32 +33,72 @@ function AllBusinesses({
         setBusinessNumber(businessNumber - numberBusinessPerPg)
     }
 
-    const eachBusiness = slicedBusinesses.map((business, index) => (
-        <div
+    console.log(prefectureBusinesses)
+
+    const eachBusiness = prefectureBusinesses.map((business, index) => (
+        <div 
             key={index}
             className="prefectureBusinessCard"
         >
             <img 
                 className="prefectureBusinessesImg"
-                alt="prefecture businesses image"
-                src={business.profile_picture}
+                //fill out soon
+                src={business.profile_picture.length > 0 ? business.profile_picture[0].picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"}
             />
-            <h3 className="businessName">{business.name}</h3>
-            <div id='businessInfoGrid'>
-                <div id='leftBusinessInfo'>
-                    <h5 id="businessPrefectureInfo">{business.card_info}</h5>
+            <h3 className="businessName">
+                {business.name}
+            </h3>
+            <div id="businessInfoGrid">
+                <div id="leftBusinessInfo">
+                    <h5 id="businessPrefectureInfo">
+                        {business.card_info}
+                    </h5>
                 </div>
 
-                <div id='rightBusinessInfo'>
-                    <div id='reviewGrid'>
-                        <h4>{business.averageRating} ⭐️ </h4>
-                        <h4 className="numberReviews">({business.numberReviews})</h4>
+                <div id="rightBusinessInfo">
+                    <div id="reviewGrid">
+                        <h4>
+                            {(business.business_reviews.reduce((accumulator, review) => (
+                                accumulator + review.review_rating
+                            ), 0) / business.business_reviews.length).toFixed(1)} ⭐️
+                        </h4>
+
+                        <h4 className="numberReviews">
+                            {business.business_reviews.length}
+                        </h4>
                     </div>
                 </div>
             </div>
-            <h5 id="businessRegisterDate">Registered: {business.date_registered.slice(0, 10)}</h5>
+            <h5>Registered: {business.date_registered}</h5>
         </div>
     ))
+
+    // const eachBusiness = slicedBusinesses.map((business, index) => (
+    //     <div
+    //         key={index}
+    //         className="prefectureBusinessCard"
+    //     >
+    //         <img 
+    //             className="prefectureBusinessesImg"
+    //             alt="prefecture businesses image"
+    //             src={business.profile_picture}
+    //         />
+    //         <h3 className="businessName">{business.name}</h3>
+    //         <div id='businessInfoGrid'>
+    //             <div id='leftBusinessInfo'>
+    //                 <h5 id="businessPrefectureInfo">{business.card_info}</h5>
+    //             </div>
+
+    //             <div id='rightBusinessInfo'>
+    //                 <div id='reviewGrid'>
+    //                     <h4>{business.averageRating} ⭐️ </h4>
+    //                     <h4 className="numberReviews">({business.numberReviews})</h4>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //         <h5 id="businessRegisterDate">Registered: {business.date_registered.slice(0, 10)}</h5>
+    //     </div>
+    // ))
     return(
         <div>
             <h2>{`Businesses in ${prefectureName}`}</h2>

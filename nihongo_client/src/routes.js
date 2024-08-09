@@ -5,6 +5,7 @@ import Prefectures from "./app_pages/Prefectures/Prefectures";
 import UserHome from "./app_pages/UserHomePg/UserHome";
 import UserPg from "./app_pages/UserPg/UserPg";
 import BusinessPg from "./app_pages/BusinessPg/BusinessPg";
+import AddPrefecture from "./app_pages/AddPrefecture/AddPrefecture";
 
 const routes = [
     {
@@ -36,8 +37,12 @@ const routes = [
                 element: <BusinessPg />
             },
             {
-                path: "users/:id",
+                path: "/users/:id",
                 element: <UserPg />
+            },
+            {
+                path: "/addprefecture",
+                element: <AddPrefecture />
             }
         ]
     }

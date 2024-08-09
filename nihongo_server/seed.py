@@ -1,4 +1,4 @@
-from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList,CheckInBusiness, BusinessWishList, PrefecturePhotos
+from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, PrefectureWishList,CheckInBusiness, BusinessWishList, PrefecturePhotos, UserProfilePicture
 
 from datetime import time
 
@@ -19,7 +19,7 @@ if __name__ == '__main__':
         kbuke13 = Admin(
             username = "kbuke13",
             user_info = "Creating a web applicaation to make travelling around the country of Japan easier.",
-            profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+            # profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "London",
             home_country = "UK",
             role="Admin",
@@ -35,7 +35,7 @@ if __name__ == '__main__':
         zhirji15 = Traveler(
             username = "zhirji15",
             user_info = "Hoping to plan a trip to Japan for my boyfriend and I. Looking for recommendations.",
-            profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+            # profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "London",
             home_country = "UK",
             role = "Traveller",
@@ -47,7 +47,7 @@ if __name__ == '__main__':
         gbuke02 = Traveler(
             username = "gbuke02",
             user_info = "Have always wanted to go to Japan, making it a reality now",
-            profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+            # profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "Armagh",
             home_country = "Ireland",
             role = "Traveller"
@@ -61,7 +61,7 @@ if __name__ == '__main__':
         rNishiyama29 = Citizen(
             username = "rNishiyama29",
             user_info = "Living in Osaka Japan. Hoping to show people more of my beautiful country",
-            profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+            # profile_picture = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             hometown = "Kyoto",
             home_country = "Japan",
             current_town = "Osaka",
@@ -116,7 +116,7 @@ if __name__ == '__main__':
         kyotoMorris = LocalBusinessSites(
             username = "kyotoMorris",
             user_info = "A nice little hostel in the heart of Kyoto city",
-            profile_picture = "https://i.travelapi.com/hotels/36000000/35530000/35524100/35524021/5ef16a39_z.jpg",
+            # profile_picture = "https://i.travelapi.com/hotels/36000000/35530000/35524100/35524021/5ef16a39_z.jpg",
             role = "Local Business",
             name = "Kyoto Morris",
             opening_time = time(12, 0),
@@ -135,7 +135,7 @@ if __name__ == '__main__':
         sapparoBeerMuseum = LocalBusinessSites(
             username = "Sapparo Beer Museum",
             user_info = "Come and see how one of Japans most famous beer is created, and learn its rich history",
-            profile_picture = "https://i0.wp.com/obsessedwithjapan.com/wp-content/uploads/2020/02/Sapporo-Beer-Museum-Beer-Hall-Photo-by-Obsessed-with-Japan.png?fit=1938%2C1454&ssl=1",
+            # profile_picture = "https://i0.wp.com/obsessedwithjapan.com/wp-content/uploads/2020/02/Sapporo-Beer-Museum-Beer-Hall-Photo-by-Obsessed-with-Japan.png?fit=1938%2C1454&ssl=1",
             role = "Local Business",
             name = "Sapparo Beer Museum",
             opening_time = time(9, 0),
@@ -152,7 +152,7 @@ if __name__ == '__main__':
         taitoHokkaido = LocalBusinessSites(
             username = "Taito Station Arcade Sapparo",
             user_info = "Biggest arcade in Hokkaido",
-            profile_picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lJpmCa3nVda4iwI9C07LIR0c6TDTlQOdhw&s",
+            # profile_picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1lJpmCa3nVda4iwI9C07LIR0c6TDTlQOdhw&s",
             role = "Local Business",
             name = "Taito Station Arcade Sapparo",
             opening_time = time(10, 0),
@@ -168,7 +168,7 @@ if __name__ == '__main__':
         goldenTemple = LocalBusinessSites(
             username = "Golden Temple",
             user_info = "The most famous temple in Kyoto, and possibly all of Japan.",
-            profile_picture="https://japaneseplus.org/wp-content/uploads/2021/05/kinkaku-ji-kyoto.jpeg?w=1024",
+            # profile_picture="https://japaneseplus.org/wp-content/uploads/2021/05/kinkaku-ji-kyoto.jpeg?w=1024",
             role="Local Business",
             name="Golden Temple",
             opening_time = time(7, 0),
@@ -185,7 +185,7 @@ if __name__ == '__main__':
         kyotoMonkeyPark = LocalBusinessSites(
             username = "Arashiyama Monkey Park Iwatayama",
             user_info = "Come and see monkeys in Kyoto",
-            profile_picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM3JuFIsBikiMZvKBspT3z57GNG7qN20Usyg&s",
+            # profile_picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM3JuFIsBikiMZvKBspT3z57GNG7qN20Usyg&s",
             role="Local Business",
             name="Arashiyama Monkey Park Iwatayama",
             opening_time = time(8, 0),
@@ -201,7 +201,7 @@ if __name__ == '__main__':
         kyotoBambooForest = LocalBusinessSites(
             username = "Arashiyama Bamboo Forest",
             user_info = "The most beautifule bamboo forest in the world. Come and see it for yourself.",
-            profile_picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGS3pzLfCXr0di0Mrgd_R56tYy4DrwNF-Blw&s",
+            # profile_picture="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGS3pzLfCXr0di0Mrgd_R56tYy4DrwNF-Blw&s",
             role = "Local Business",
             name = "Arashiyama Bamboo Forest",
             opening_time = time(8, 0),
@@ -217,7 +217,7 @@ if __name__ == '__main__':
         fushimiShrines = LocalBusinessSites(
             username = "Fushimi Inari Taisha",
             user_info = "The most famous route of shrines in the world.",
-            profile_picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIB-kHxGfZOAbqrhhMUJiaZ5A59-T4GqWnyw&s",
+            # profile_picture = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIB-kHxGfZOAbqrhhMUJiaZ5A59-T4GqWnyw&s",
             role = "Local Business",
             name = "Fushimi Inari Taisha",
             opening_time = time(00, 0),
@@ -233,7 +233,7 @@ if __name__ == '__main__':
         daigoJi = LocalBusinessSites(
             username = "Daigo-ji Temple",
             user_info = "Really pretty Temple, especially in Autumn",
-            profile_picture = "https://i0.wp.com/travellatte.net/wp-content/uploads/2015/10/Daigo-ji-Temple-Garden-01a.png?resize=672%2C372&ssl=1",
+            # profile_picture = "https://i0.wp.com/travellatte.net/wp-content/uploads/2015/10/Daigo-ji-Temple-Garden-01a.png?resize=672%2C372&ssl=1",
             role = "Local Business",
             name = "Daigo-ji Temple",
             opening_time = time(8, 0),
@@ -567,6 +567,19 @@ if __name__ == '__main__':
             business_id=5
         )
         db.session.add_all([business5Pic])
+        db.session.commit()
+
+        print("Seeding profile pictures")
+        kyotoMorrisPic = UserProfilePicture(
+            picture_route = "https://i.travelapi.com/hotels/36000000/35530000/35524100/35524021/5ef16a39_z.jpg",
+            user_id = 5
+        )
+
+        kbuke13Pic = UserProfilePicture(
+            picture_route = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
+            user_id = 1
+        )
+        db.session.add_all([kyotoMorrisPic, kbuke13Pic])
         db.session.commit()
 
 

@@ -7,6 +7,7 @@ function HorizontalNavBar({
     loggedUser,
     loggedInUserImg
 }){
+    console.log(loggedUser)
     return(
         loggedUser? 
             <div id="horizontalNav">
@@ -28,11 +29,15 @@ function HorizontalNavBar({
                     id="loggedUserImgContainer"
                     to={`user/${loggedUser.id}`}
                 >
-                    <img 
-                        id="loggedUserImg"
-                        src={loggedInUserImg}
-                        alt="loggedUserImg"
-                    />
+                    {loggedUser ? 
+                        <img 
+                            id="loggedUserImg"
+                            src={loggedUser.profile_picture[0].picture_route}
+                            alt="loggedUserImg"
+                        />
+                        :
+                        null
+                    }
                 </NavLink>
             </div>
             :

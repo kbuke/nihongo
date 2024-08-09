@@ -13,7 +13,7 @@ class Users(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
     user_info = db.Column(db.String, nullable=False)
-    profile_picture = db.Column(db.String, nullable=True)
+    # profile_picture = db.Column(db.String, nullable=True)
     role = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
 
@@ -28,6 +28,7 @@ class Users(db.Model, SerializerMixin):
     business_wishlist = db.relationship("BusinessWishList", backref="user", lazy=True)
     business_reviews = db.relationship("BusinessReviews", backref="user", lazy=True)
     business_pictures = db.relationship("PrefecturePhotos", backref="user", lazy=True)
+    profile_picture = db.relationship("UserProfilePicture", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -419,6 +420,16 @@ class PrefecturePhotos(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"), nullable=False)
     business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"), nullable=True)
+
+class UserProfilePicture(db.Model, SerializerMixin):
+    __tablename__ = "userProfilePics"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    picture_route = db.Column(db.String, nullable=False, server_default="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg")
+
+    #Add relations
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
 
 

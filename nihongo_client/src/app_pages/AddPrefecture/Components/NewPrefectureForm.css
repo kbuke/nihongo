@@ -1,0 +1,11 @@
+#newPrefectureForm{
+    margin-top: 10px;
+    border: solid;
+    width: 80%;
+    overflow: hidden;
+}
+
+.newPrefectureInput{
+    display: grid;
+    grid-template-columns: 50% 50%;
+}

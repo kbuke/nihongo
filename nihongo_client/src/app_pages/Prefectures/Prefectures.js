@@ -81,6 +81,9 @@ function Prefectures() {
 
     //Show all prefecture businesses
     const prefectureBusinesses = specificPrefectureInfo.businesses || [];
+    console.log(prefectureBusinesses)
+    const businessReviews = prefectureBusinesses.map(business => business.business_reviews)
+    console.log(businessReviews)
 
     //Make a copt of businesses in the prefecture
     const copyPrefectureBusinesses = [...prefectureBusinesses];
@@ -215,6 +218,7 @@ function Prefectures() {
                     <AllBusinesses 
                         copyPrefectureBusinesses={copyPrefectureBusinesses}
                         prefectureName={prefectureName}
+                        prefectureBusinesses={prefectureBusinesses}
                     />
                     :
                     <SpecificBusinesses
