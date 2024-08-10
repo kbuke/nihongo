@@ -579,7 +579,45 @@ if __name__ == '__main__':
             picture_route = "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg",
             user_id = 1
         )
-        db.session.add_all([kyotoMorrisPic, kbuke13Pic])
+
+        sapparoBeerMuseumPic = UserProfilePicture(
+            picture_route = "https://www.japan-guide.com/g18/5300_01.jpg",
+            user_id=6
+        )
+
+        monkeyParkPic = UserProfilePicture(
+            picture_route="https://a2.cdn.japantravel.com/photo/20734-230849/1440x960!/kyoto-kyoto-s-wild-monkey-park-230849.jpg",
+            user_id=9,
+        )
+
+        goldenTemplePic = UserProfilePicture(
+            picture_route="https://japaneseplus.org/wp-content/uploads/2021/05/kinkaku-ji-kyoto.jpeg",
+            user_id=8,
+        )
+
+        fushimiInariPic = UserProfilePicture(
+            picture_route="https://www.japan-guide.com/g18/3915_top.jpg",
+            user_id=11,
+        )
+
+        bambooForestPic = UserProfilePicture(
+            picture_route="https://img.veenaworld.com/wp-content/uploads/2023/06/All-You-Need-to-Know-about-the-Arashiyama-Bamboo-Forest-in-Kyoto-Japan.jpg",
+            user_id=10
+        )
+
+        daigojiPic = UserProfilePicture(
+            picture_route="https://www.japan-guide.com/g18/3916_top.jpg",
+            user_id=12
+        )
+
+        taitoArcade = UserProfilePicture(
+            picture_route="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/ef/b9/e6/taito-station.jpg?w=2400&h=-1&s=1",
+            user_id=7
+        )
+        db.session.add_all([
+            kyotoMorrisPic, kbuke13Pic, sapparoBeerMuseumPic, monkeyParkPic, goldenTemplePic, fushimiInariPic,
+            bambooForestPic, daigojiPic, taitoArcade
+        ])
         db.session.commit()
 
 

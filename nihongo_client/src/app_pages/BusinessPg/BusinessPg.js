@@ -32,8 +32,12 @@ function BusinessPg() {
     // Set states
     const [specificBusinessInfo, setSpecificBusinessInfo] = useState(null);
     const [allCheckIns, setAllCheckIns] = useState([]) 
-    const [allWishLists, setAllWishLists] = useState([])
+    // const [allWishLists, setAllWishLists] = useState([])
     const [allBusinessReviews, setAllBusinessReviews] = useState([])
+
+    //import business wishlists from app.py
+    const allWishLists = appData.businessWishlist
+    const setAllWishLists = appData.setBusinessWishlist
 
 
     // Get all businesses listed on app
@@ -47,7 +51,7 @@ function BusinessPg() {
     //Get specific logged in user
     const loggedUser = appData.loggedUser
     const loggedUserId = loggedUser? loggedUser.id : null
-    console.log(loggedUser)
+ 
 
     //Show user checkins or user
     const userCheckIns = loggedUser ? loggedUser.business_visit : []
@@ -68,20 +72,21 @@ function BusinessPg() {
             .then(checkIns => setAllCheckIns(checkIns))
             .catch(error => console.error("Error fetching check-ins", error))
     }, [userCheckIns])
-    console.log(userCheckIns)
+
     
-    //FETCH all wishlists
-    useEffect(() => {
-        fetch('/businesswishlist')
-            .then(r => {
-                if(r.ok) {
-                    return r.json()
-                }
-                throw r 
-            })
-            .then(wishlists => setAllWishLists(wishlists))
-            .catch(error => console.error("Error fetching wishlists", error))
-    }, [userWishList])
+    // //FETCH all wishlists
+    // useEffect(() => {
+    //     fetch('/businesswishlist')
+    //         .then(r => {
+    //             if(r.ok) {
+    //                 return r.json()
+    //             }
+    //             throw r 
+    //         })
+    //         .then(wishlists => setAllWishLists(wishlists))
+    //         .catch(error => console.error("Error fetching wishlists", error))
+    // }, [])
+    // console.log(allWishLists)
 
     //FETCH all business reviews
     useEffect(() => {
@@ -95,7 +100,7 @@ function BusinessPg() {
             .then(reviews => setAllBusinessReviews(reviews))
             .catch(error => console.error("Business reviews not found", error))
     }, [])
-    console.log(allBusinessReviews)
+
 
     // Add additional elements to calculate average review rating
     useEffect(() => {
@@ -116,7 +121,7 @@ function BusinessPg() {
         }
     }, [specificBusinessId]);
 
-    console.log(specificBusinessInfo)
+
     //Set up business name
     const businessName = specificBusinessInfo ? specificBusinessInfo.name : null
 

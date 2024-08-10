@@ -19,6 +19,7 @@ function BusinessCheckInWishList({
     const filterUserCheckIns = allCheckIns? allCheckIns.filter(user => user.business_id === specificBusinessId && user.user_id === loggedUserId) : null
     const filterUserWishList = allWishLists? allWishLists.filter(user => user.business_id === specificBusinessId && user.user_id === loggedUserId) : null 
 
+
     //Handle logic for creating new wishlist or checkin
     const checkInUrl = "/businesscheckin"
     const wishListUrl = '/businesswishlist'

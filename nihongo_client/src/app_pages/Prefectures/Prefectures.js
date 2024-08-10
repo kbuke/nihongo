@@ -32,11 +32,9 @@ function Prefectures() {
 
     //Show all check ins
     const prefectureCheckIn = loggedUser ? loggedUser.prefecture_visit : []
-    console.log(prefectureCheckIn)
 
     const allPrefectureCheckIns = appData.allPrefectureCheckIns
     const setAllPrefectureCheckIns = appData.setAllPrefectureCheckIns
-    console.log(allPrefectureCheckIns)
 
     const allPrefectureWishLists = appData.allPrefectureWishLists
     const setAllPrefectureWishLists = appData.setAllPrefectureWishLists
@@ -81,9 +79,9 @@ function Prefectures() {
 
     //Show all prefecture businesses
     const prefectureBusinesses = specificPrefectureInfo.businesses || [];
-    console.log(prefectureBusinesses)
+
     const businessReviews = prefectureBusinesses.map(business => business.business_reviews)
-    console.log(businessReviews)
+
 
     //Make a copt of businesses in the prefecture
     const copyPrefectureBusinesses = [...prefectureBusinesses];

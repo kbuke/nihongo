@@ -18,7 +18,7 @@ function BusinessAccounts({
         business.averageRating = averageRating;
     });
 
-    console.log(businessArrayCopy);
+
 
     // Filter by business type
     const filterBuisnessTypes = selectedBusiness === "All Businesses" ?
@@ -28,19 +28,18 @@ function BusinessAccounts({
                 typeInfo.registered_type.business_type === selectedBusiness
             )
         );
-    console.log(filterBuisnessTypes);
+
 
     // Filter by prefecture
     const filterPrefectureBusinesses = selectedPrefecture === "All Prefectures" ?
         filterBuisnessTypes :
         filterBuisnessTypes.filter(businessInfo => businessInfo.prefecture.prefecture_name === selectedPrefecture);
-    console.log(filterPrefectureBusinesses);
 
     // Filter by search term
     const filterSearch = filterPrefectureBusinesses.filter(business => 
         business.name.toLowerCase().includes(filterBar.toLowerCase())
     );
-    console.log(filterSearch)
+
 
     const businessCard = filterSearch.map((businessInfo, index) => (
         <Link key={index} id="userCard" to={`/business/${businessInfo.id}`}>

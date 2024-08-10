@@ -21,7 +21,7 @@ function BusinessPictures({
             {option}
         </h4>
     ))
-    console.log(allPictures)
+
 
     //Get all pictures
     useEffect(() => {
@@ -37,10 +37,10 @@ function BusinessPictures({
     }, [])
 
     const taggedPics = allPictures.filter(picture => picture.user_id !== specificBusinessId && picture.business_id === specificBusinessId)
-    console.log(taggedPics)
+
 
     const sortTaggedPics = taggedPics.sort((a, b) => b.upload_date - a.upload_date)
-    console.log(sortTaggedPics)
+
 
     const renderTagPics = sortTaggedPics.map((container, index) => (
         <div id="businessesPictureContainer" key={index}>

@@ -19,7 +19,6 @@ function LoggedInHome() {
   const loggedInUserImg = loggedInUser.profile_picture;
 
   const loggedUserRole = loggedInUser.role 
-  console.log(loggedUserRole)
 
   // const [verticalNavHover, setVerticalNavHover] = useState(false);
   const verticalNavHover = appData.verticalNavHover

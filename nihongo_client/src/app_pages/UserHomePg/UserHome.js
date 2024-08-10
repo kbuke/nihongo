@@ -128,11 +128,9 @@ function UserHome() {
           };
     
     //Get user images
-    console.log(userAccounts)
     
     //Create the business cards
     const userCards = (userAccounts) => {
-        console.log(userAccounts)
         return userAccounts.map((userInfo, index) => (
             <Link 
                 key={index}

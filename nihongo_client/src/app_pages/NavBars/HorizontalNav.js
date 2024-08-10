@@ -7,7 +7,6 @@ function HorizontalNavBar({
     loggedUser,
     loggedInUserImg
 }){
-    console.log(loggedUser)
     return(
         loggedUser? 
             <div id="horizontalNav">

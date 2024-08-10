@@ -29,7 +29,54 @@ user_rules = (
     "-prefecture_visit.prefecture.business_pictures",
 
     #Sort through prefecture wishlists
-    "-prefecture_wishlist.user",
+    "-prefecture_wishlist.user.username",
+    "-prefecture_wishlist.user.user_info",
+    "-prefecture_wishlist.user.role",
+    "-prefecture_wishlist.user._password_hash",
+    "-prefecture_wishlist.user.admins",
+    "-prefecture_wishlist.user.travelers",
+    "-prefecture_wishlist.user.citizens",
+    "-prefecture_wishlist.user.businesses",
+    "-prefecture_wishlist.user.prefecture_visit",
+    "-prefecture_wishlist.user.prefecture_wishlist",
+    "-prefecture_wishlist.user.business_visit",
+    "-prefecture_wishlist.user.business_reviews",
+    "-prefecture_wishlist.user.business_pictures",
+    "-prefecture_wishlist.user.profile_picture",
+    "-prefecture_wishlist.user.user",
+    "-prefecture_wishlist.user.prefecture",
+
+    "-prefecture_wishlist.user.business_wishlist.user",
+
+    "-prefecture_wishlist.user.business_wishlist.business.opening_time",
+    "-prefecture_wishlist.user.business_wishlist.business.closing_time",
+    "-prefecture_wishlist.user.business_wishlist.business.postal_code",
+    "-prefecture_wishlist.user.business_wishlist.business.building_numbers",
+    "-prefecture_wishlist.user.business_wishlist.business.city",
+    "-prefecture_wishlist.user.business_wishlist.business.neighbourhood",
+    "-prefecture_wishlist.user.business_wishlist.business.date_registered",
+    "-prefecture_wishlist.user.business_wishlist.business.card_info",
+    "-prefecture_wishlist.user.business_wishlist.business.email",
+    "-prefecture_wishlist.user.business_wishlist.business.contact_number",
+    "-prefecture_wishlist.user.business_wishlist.business.prefecture",
+    "-prefecture_wishlist.user.business_wishlist.business.user",
+    "-prefecture_wishlist.user.business_wishlist.business.business_reviews",
+    "-prefecture_wishlist.user.business_wishlist.business.business_types",
+    "-prefecture_wishlist.user.business_wishlist.business.business_visit",
+    "-prefecture_wishlist.user.business_wishlist.business.business_wishlist",
+    "-prefecture_wishlist.user.business_wishlist.business.business_pictures",
+    "-prefecture_wishlist.user.business_wishlist.business.admins",
+    "-prefecture_wishlist.user.business_wishlist.business.travelers",
+    "-prefecture_wishlist.user.business_wishlist.business.citizens",
+    "-prefecture_wishlist.user.business_wishlist.business.businesses",
+    "-prefecture_wishlist.user.business_wishlist.business.prefecture_visit",
+    "-prefecture_wishlist.user.business_wishlist.business.prefecture_wishlist",
+    "-prefecture_wishlist.user.business_wishlist.business.business_visit",
+    "-prefecture_wishlist.user.business_wishlist.business.business_wishlist",
+    "-prefecture_wishlist.user.business_wishlist.business.business_reviews",
+    "-prefecture_wishlist.user.business_wishlist.business.business_pictures",
+    "-prefecture_wishlist.user.business_wishlist.business.profile_picture.user",
+
     "-prefecture_wishlist.prefecture.businesses",
     "-prefecture_wishlist.prefecture.prefecture_reviews",
     "-prefecture_wishlist.prefecture.prefecture_wishlist",
@@ -1051,7 +1098,45 @@ class BusinessCheckInId(Resource):
 
 class BusinessWishLists(Resource):
     def get(self):
-        wishlists = [wishlist.to_dict() for wishlist in BusinessWishList.query.all()]
+        wishlists = [wishlist.to_dict(
+            rules=(
+                "-user",
+
+                "-business.user",
+                "-business.prefecture",
+
+                "-business.business_reviews",
+                "-business.business_types",
+                "-business.business_visit",
+                "-business.business_wishlist",
+                "-business.business_pictures",
+
+                "-business.businesses",
+                "-business.admins",
+                "-business.travelers",
+                "-business.citizens",
+                "-business.prefecture_visit",
+                "-business.prefecture_wishlist",
+                "-business.business_visit",
+                "-business.business_wishlist",
+                "-business.business_reviews",
+                "-business.business_pictures",
+                "-business.postal_code",
+                "-business._password_hash",
+                "-business.username",
+                "-business.building_numbers",
+                "-business.type",
+                "-business.closing_time",
+                "-business.opening_time",
+                "-business.email",
+                "-business.city",
+                "-business.contact_number",
+                "-business.role",
+
+                "-business.profile_picture.user",
+                "-business.profile_picture.id",
+            )
+        ) for wishlist in BusinessWishList.query.all()]
         return wishlists, 200 
     
     def post(self):

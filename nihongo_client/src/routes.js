@@ -6,6 +6,7 @@ import UserHome from "./app_pages/UserHomePg/UserHome";
 import UserPg from "./app_pages/UserPg/UserPg";
 import BusinessPg from "./app_pages/BusinessPg/BusinessPg";
 import AddPrefecture from "./app_pages/AddPrefecture/AddPrefecture";
+import Itineraries from "./app_pages/Itineraries/Itieneraries";
 
 const routes = [
     {
@@ -43,6 +44,10 @@ const routes = [
             {
                 path: "/addprefecture",
                 element: <AddPrefecture />
+            },
+            {
+                path: "/itineraries",
+                element: <Itineraries />
             }
         ]
     }

@@ -1,6 +1,8 @@
 import { useState } from "react"
 import "./VerticalNav.css"
 
+import { Link } from "react-router-dom"
+
 import signOuticon from "../../assets/signOutIcon.jpg"
 import itineraryIcon from "../../assets/itineraryIcon.jpg"
 import blogIcon from "../../assets/blogIcon.jpg"
@@ -34,14 +36,17 @@ function VerticalNav({
                     id="verticalNavContainerBig"
                     onMouseLeave={() => setVerticalNavHover(!verticalNavHover)}
                 >
-                    <div className="largeIconContainer">
+                    <Link 
+                        className="largeIconContainer"
+                        to="itineraries"
+                    >
                         <img 
                             className="largeIcon"
                             src={itineraryIcon}
                             alt="itinerary icon"
                         />
                         <h3>Itineraries</h3>
-                    </div>
+                    </Link>
 
                     <div className="largeIconContainer">
                         <img 

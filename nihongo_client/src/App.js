@@ -18,6 +18,7 @@ function App() {
   const [allPrefectureCheckIns, setAllPrefectureCheckIns] = useState([])
   const [allPrefectureWishLists, setAllPrefectureWishLists] = useState([])
   const [allProfilePics, setAllProfilePics] = useState([])
+  const [businessWishlist, setBusinessWishlist] = useState([])
 
   //Get all users
   useEffect(() => {
@@ -65,7 +66,7 @@ function App() {
         .then((loggedUser) => setLoggedUser(loggedUser))
       }
     })
-  }, [])
+  }, [allPrefectureWishLists])
 
   //fetch all business reviews
   useEffect(() => {
@@ -115,6 +116,22 @@ function App() {
       .then(profilePics => setAllProfilePics(profilePics))
   }, [])
 
+  //fetch all business wishlists
+  useEffect(() => {
+    fetch('/businesswishlist')
+        .then(r => {
+            if(r.ok) {
+                return r.json()
+            }
+            throw r 
+        })
+        .then(wishlists => setBusinessWishlist(wishlists))
+        .catch(error => console.error("Error fetching wishlists", error))
+}, [])
+console.log(businessWishlist)
+
+
+
 
   return(
     <div>
@@ -156,6 +173,9 @@ function App() {
 
           allProfilePics: allProfilePics,
           setAllProfilePics: setAllProfilePics,
+
+          businessWishlist,
+          setBusinessWishlist
         }
       }/>
     </div>
