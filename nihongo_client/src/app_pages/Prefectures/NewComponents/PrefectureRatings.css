@@ -1,0 +1,56 @@
+#extendedPrefectureRatingContainer{
+    border-radius: 24px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.85);
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+}
+
+#viewPrefectureRatings{
+    width: 100%;
+}
+
+#prefectureRatingGridOptions{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    width: 100%;
+}
+
+#prefectureRatingHeader{
+    font-size: 300%;
+    text-decoration: underline;
+    font-weight: 200;
+    margin-top: 0px;
+    text-align: center;
+}
+
+#prefectureRatingGrid{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px
+}
+
+#averageRatingRendered{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#averageRatingTitle{
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#prefectureRatingGrid{
+    border-bottom: rgba(1, 1, 1, 1);
+    text-align: center;
+    margin-top: 20px;
+}
+
+#averageRatingButton{
+    margin-top: 0px;
+    margin-bottom: 14px;
+}

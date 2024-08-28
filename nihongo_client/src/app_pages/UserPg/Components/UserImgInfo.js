@@ -25,11 +25,14 @@ function UserImgInfo({
 
     const [specificUserPic, setSpecificUserPic] = useState([])
     const [updateProfilePic, setUpdateProfilePic] = useState(false)
-
+    console.log(specificUserPic)
 
     const allProfilePics = appData.allProfilePics
 
+    console.log(allProfilePics)
+
     const specificProfilePic = allProfilePics.find(picture => picture.user_id === parseInt(params.id))
+    console.log(specificProfilePic)
 
     const specificProfilePicId = specificProfilePic ? specificProfilePic.id : null;
 

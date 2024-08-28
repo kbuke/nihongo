@@ -1,12 +1,12 @@
 import "./LoggedInHome.css";
-import peopleImg from "../../assets/peopleImg.jpg"
-import businessImg from "../../assets/businessImg.jpg"
-import sitesImg from "../../assets/sitesImg.jpg"
+import logo from "../../assets/logo.png"
+import map from "../../assets/map.jpg"
 
 import JapanMap from "./Components/JapanMap";
 
 import { useOutletContext } from "react-router-dom";
 import { Link } from "react-router-dom";
+
 
 function LoggedInHome() {
   // Retrieve data from App.js
@@ -14,9 +14,6 @@ function LoggedInHome() {
 
   // Show logged in user info
   const loggedInUser = appData.loggedUser;
-  const setLoggedUser = appData.setLoggedUser;
-
-  const loggedInUserImg = loggedInUser.profile_picture;
 
   const loggedUserRole = loggedInUser.role 
 
@@ -37,98 +34,151 @@ function LoggedInHome() {
   const allPrefectures = appData.prefectures 
 
   return (
-    <div id="loggedHomePg">
+    <div
+      id="loggedHomePg"
+      style={homePgContainerStyle}
+    >
       <div
-        style={homePgContainerStyle}
         id="pgContainer"
       >
-        <JapanMap allPrefectures={allPrefectures}/>
+        <div
+          id="homePgContentContainer"
+        >
+          <h1
+            id="homePgHeader"
+          >
+            Welcome to Nihongo
+          </h1>
 
-        <div id="homePgTextContainer">
-            <div id="homeTextHeader">
-                <h1 style={{
-                    fontFamily: "cursive", 
-                    color: "red", 
-                    marginBottom: "2px",
-                    fontWeight: "350%"
-                }}>
-                    Welcome to Nihon-Go
-                </h1>
+          <h3
+            id="homePgIntroInfo"
+          >
+            Your go-to for Japanese Travel
+          </h3>
 
-                <h2 style={{
-                    fontFamily: "cursive", 
-                    color: "red",
-                    marginTop: "2px",
-                }}>
-                    Your go-to for Japanese Travel
-                </h2>
-            </div>
+          <h4
+            className="homePgInfoText"
+          >
+            Use Nihongo to meet Japanese locals, and other travelers.
+          </h4>
 
-            <div id="">
-                <h3 style={{fontFamily: "cursive"}}>
-                  Use Nihon-Go to connect with other travellers, and Japanese locals to plan your ideal trip.
-                  <br/>
-                  <br/>
-                  Find local businesses such as restaraunts and craft shops that are off the beaten track. 
-                  <br/>
-                  <br/>
-                  Look at other users' reviews of prefectures, cities, and local business/sites to plan a trip suited to your interests.
-                </h3>
-            </div>
+          <h4
+            className="homePgInfoText"
+          >
+            Search each of Japans 42 prefectures, to find the highest rated sites, and hidden-gems.
+          </h4>
 
-            <div id="optionsContainer">
-              <div 
-                className="options"
-                style={{ 
-                  backgroundImage: `url(${businessImg})`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <h2>Restaraunts</h2>
-              </div>
+          <h4
+            className="homePgInfoText"
+          >
+            Plan your trip, by highlighting your own personal interests.
+          </h4>
 
-              <Link 
-                className="options"
-                to={`/userhome`}
-                style={{
-                  backgroundImage: `url(${peopleImg})`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <h2>Users</h2>
-              </Link>
+          <h4
+            className="homePgInfoText"
+          >
+            Create and read user and businesses blogs to see what is new in the country.
+          </h4>
 
+          <img 
+            id="homePgLogo"
+            src={logo}
+          />
+
+          {loggedUserRole === "Admin" ? 
+            <Link
+              id="adminHomePgAdminOption"
+              style={{
+                backgroundImage: `url(${map})`
+              }}
+              to={"/addprefecture"}
+            >
               <div
-                className="options"
-                style={{
-                  backgroundImage : `url(${sitesImg})`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
+                id="homePgAdminPrefectureContainer"
               >
-                <h2>Sites</h2>
+                <h2
+                  id="homePgAdminAddPrefecture"
+                >
+                  Add a Prefecture
+                </h2>
               </div>
-            </div>
-            <div>
-                {loggedUserRole === "Admin" ? 
-                  <Link
-                    to="/addprefecture"
-                  >
-                    Add New Prefecture
-                  </Link>
-                  :
-                  null
-                }
-            </div>
+            </Link>
+            :
+            null
+          }
+        </div>
+        
+        <div id="homePgContentSecondContainer">
+          <div
+            id="homePgIntroOptionsGrid"
+          >
+            <Link
+              className="homePgIntroAvailableOptions"
+              id="userPgLink"
+              to={'/userhome'}
+              style={{
+                backgroundImage: `url(https://i.pinimg.com/originals/1f/e5/13/1fe5134c9e1d9283a3a9f043a55aedbd.jpg)`
+              }}
+            >
+              <div
+                className="homePgCardTitleContainer"
+              >
+                <h2
+                  className="homePgCardTitle"
+                >
+                  Users
+                </h2>
+              </div>
+            </Link>
+              
+            <Link
+              className="homePgIntroAvailableOptions"
+              id="sitesPgLink"
+              style={{
+                backgroundImage: `url(https://storage.googleapis.com/pod_public/1300/183993.jpg)`
+              }}
+            >
+              <div
+                className="homePgCardTitleContainer"
+              >
+                <h2
+                  className="homePgCardTitle"
+                >
+                  Sites
+                </h2>
+              </div>
+            </Link>
+
+            <Link
+              className="homePgIntroAvailableOptions"
+              id="hotelPgLink"
+              style={{
+                backgroundImage: `url(https://img.freepik.com/premium-photo/watercolor-room-japanese-ryokan-room-traditional-japanese-inn-white-background-scene-art_655090-590933.jpg?w=1060)`
+              }}
+            >
+              <div
+                className="homePgCardTitleContainer"
+              >
+                <h2
+                  className="homePgCardTitle"
+                >
+                  Hotels
+                </h2>
+              </div>
+            </Link>
+          </div>
+          <div id="japanMapContainer">
+            <h1
+              id="japnMapTitle"
+            >
+              Explore Japans Prefectures
+            </h1>
+            <JapanMap allPrefectures={allPrefectures}/>
+          </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default LoggedInHome;

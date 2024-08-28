@@ -1,7 +1,11 @@
 import { useState } from "react";
 import "./UpdateProfilePic.css";
 
-function UpdateProfilePic({ setUpdateProfilePic, specificProfilePicId }) {
+function UpdateProfilePic({ 
+    setChangeProfilePic, 
+    userProfilePicId
+}) {
+    console.log(userProfilePicId)
     const [newPic, setNewPic] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -24,7 +28,7 @@ function UpdateProfilePic({ setUpdateProfilePic, specificProfilePicId }) {
         setLoading(true);
         setError(null);
     
-        fetch(`/profilepics/${specificProfilePicId}`, {
+        fetch(`/profilepics/${userProfilePicId}`, {
             method: "PATCH",
             body: formData,
         })
@@ -34,7 +38,7 @@ function UpdateProfilePic({ setUpdateProfilePic, specificProfilePicId }) {
             if (data.error) {
                 setError("Failed to update profile picture.");
             } else {
-                setUpdateProfilePic(false);
+                setChangeProfilePic(false);
                 window.location.reload(); // Reload the page
             }
         })
@@ -60,7 +64,7 @@ function UpdateProfilePic({ setUpdateProfilePic, specificProfilePicId }) {
                 <button type="submit" disabled={loading}>
                     {loading ? "Uploading..." : "Change Profile Picture"}
                 </button>
-                <button type="button" onClick={() => setUpdateProfilePic(false)}>Cancel</button>
+                <button type="button" onClick={() => setChangeProfilePic(false)}>Cancel</button>
             </form>
         </div>
     );

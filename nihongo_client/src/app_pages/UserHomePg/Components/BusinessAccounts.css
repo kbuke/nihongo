@@ -1,15 +1,50 @@
-#allBusinessInfoGrid{
+#businessCardHomePgGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#userCardTypesGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+#businessCardTypeContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(63, 218, 63, 0.8);
+    border-radius: 24px;
+    height: 40px;
+}
+
+#businessCardTypeText{
+    color: white;
+    font-weight: 300;
+}
+
+#businessNameOnCard{
+    font-weight: 300;
+}
+
+#businessUserCardLocationGrid{
     display: grid;
     grid-template-columns: 50% 50%;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
 }
 
-#businessInfoCardGrid{
-    margin-left: 20px;
-    display: block;
+#businessUserCardLocationImgContainer{
+    height: 50px;
+    overflow: hidden;
 }
 
+#businessUserCardLocationImg{
+    max-height: 100%;
+    max-width: 100%;
+}
 
-
-h6{
-    text-decoration: none;
+#businessUserCardAddress{
+    font-weight: 200;
 }

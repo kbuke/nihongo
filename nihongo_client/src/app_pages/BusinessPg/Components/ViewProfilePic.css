@@ -1,0 +1,40 @@
+#profilePictureModal {
+    z-index: 1000; /* Ensure it's on top */
+    border-radius: 24px;
+    background-color: white;
+    width: 60%; /* Adjust width as needed */
+    height: 80%; /* Adjust height as needed */
+    position: fixed; /* Fix the modal's position relative to the viewport */
+    top: 50%; /* Position in the center */
+    left: 50%; /* Position in the center */
+    transform: translate(-50%, -50%); /* Adjust position to center the modal */
+    display: grid;
+    grid-template-columns: 60% 40%;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
+    padding: 20px; /* Optional: Add padding for content inside */
+}
+
+
+#profilePictureModalPictureContainer{
+    height: 100%;
+    width: 100%;
+    border: solid;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#profilePictureModalPicture{
+    max-width: 100%;
+    max-height: 100%;
+}
+
+#profilePictureButtonGrid{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 10px;
+}

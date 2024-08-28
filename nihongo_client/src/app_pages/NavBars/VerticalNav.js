@@ -10,6 +10,8 @@ import hotelIcon from "../../assets/hotelIcon.jpg"
 import userIcon from "../../assets/userIcon.jpg"
 import sitesIcon from "../../assets/sitesIcon.jpg"
 
+import { Navigate } from "react-router-dom"
+
 function VerticalNav({
     verticalNavHover,
     setVerticalNavHover,
@@ -84,9 +86,10 @@ function VerticalNav({
                         <h3>Sites</h3>
                     </div>
 
-                    <div 
+                    <Link 
                         className="largeIconContainer"
                         onClick={logOut}
+                        to={"/"}
                     >
                         <img 
                             className="largeIcon"
@@ -94,7 +97,7 @@ function VerticalNav({
                             alt="sign out icon"
                         />
                         <h3>Sign Out</h3>
-                    </div>
+                    </Link>
                 </div>
 
                 :

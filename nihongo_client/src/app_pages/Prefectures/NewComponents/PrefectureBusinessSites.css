@@ -1,0 +1,110 @@
+#specificPrefectureBusinessGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+#specificPrefectureBusinessCard{
+    border: solid;
+    height: 600px;
+    border-radius: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+#specificPrefectureBusinessCard:hover{
+    transform: translateY(-10px); /* Move the card up */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.specificPrefectureSpecificName{
+    height: 200px;
+    width: 90%;
+    border-radius: 24px;
+    background-color: rgba(1, 1, 1, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.extendedSpecificPrefectureSpecificName{
+    height: 90%;
+    background-color: rgba(1, 1, 1, 0.6);
+    width: 90%;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+#specificPrefectureSpecificBusinessName{
+    color: white;
+    text-decoration: none;
+    font-weight: 180;
+}
+
+#specificPrefectureSpecificBusinessAvRating{
+    color: white;
+    font-weight: 150;
+}
+
+#specificPrefectureSpecificBusinessNumberRatings{
+    margin-top: 0px;
+    color: white;
+    font-weight: 80;
+}
+
+#specificPrefectureSpecificBusinessTypesGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+#specificPrefectureSpecificBusinessTypesContainer{
+    background-color: green;
+    border-radius: 24px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#specificPrefectureSpecificBusinessTypes{
+    color: white;
+    font-weight: 180;
+}
+
+#specificPrefectureSpecificBusinessInfo{
+    color: white;
+    font-weight: 180;
+}
+
+#renderBusinessTypeButtonGrid{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    margin-bottom: 20px;
+}
+
+            
+.prefectureBusinessTypeButtons{
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+
+#selectedPrefectureBusinessTypeButton{
+    background-color: black;
+    color: white;
+    text-decoration: underline;
+}

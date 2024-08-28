@@ -1,0 +1,16 @@
+#newReviewModal{
+    z-index: 1;
+    position: fixed;
+    border: solid;
+    height: 400px;
+    width: 800px;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    margin-left: 330px;
+}
+
+#newReviewBlock{
+    display: block;
+}

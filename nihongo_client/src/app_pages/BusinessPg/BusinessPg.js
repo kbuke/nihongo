@@ -2,65 +2,83 @@ import { useOutletContext, useParams } from "react-router-dom";
 import "./BusinessPg.css";
 import { useEffect, useState } from "react";
 
-import BusinessPicture from "./Components/BusinessPicture";
-import BusinessNameInfo from "./Components/BusinessNameInfo";
-import BusinessIntroAvReview from "./Components/BusinessIntroAvReview";
-import BusinessCheckInWishList from "./Components/BusinessCheckInWishList";
-import BusinessInfoContainer from "./Components/BusinessInfoContainer";
-import BusinessFeed from "./Components/BusinessFeed";
+
+import BusinessIntro from "./Components/BusinessIntro";
+import NewReview from "./Components/NewReview";
+import ConfirmReviewDeletion from "./Components/ConfirmReviewDeletion";
+import BusinessPictureBlogs from "./Components/BusinessPictureBlogs";
 
 function BusinessPg() {
-    const appData = useOutletContext();
+    const appData = useOutletContext()
+    const allBusinesses=appData.allBusinesses
+    console.log(allBusinesses)
 
-    // Set up useParams
-    const params = useParams();
-
-    // Check if vertical nav is open
-    const verticalNavHover = appData.verticalNavHover;
-
-    // Set style dependent on if nav bar is open
-    const businessPgContainerStyle = verticalNavHover
-        ? {
-              marginLeft: "220px",
-              width: "calc(100% - 220px)",
-          }
-        : {
-              marginLeft: "50px",
-              width: "calc(100% - 50px)",
-          };
-
-    // Set states
+    //Set states
     const [specificBusinessInfo, setSpecificBusinessInfo] = useState(null);
     const [allCheckIns, setAllCheckIns] = useState([]) 
-    // const [allWishLists, setAllWishLists] = useState([])
-    const [allBusinessReviews, setAllBusinessReviews] = useState([])
+    const [deleteReview, setDeleteReview] = useState(false)
+    const [reviewId, setReviewId] = useState()
+    const [newReview, setNewReview] = useState(false)
+    const [filterProfilePic, setFilterProfilePic] = useState()
+    const [businessesBio, setBusinessesBio] = useState()
+    const [businessesCoverPhoto, setBusinessesCoverPhoto] = useState()
 
-    //import business wishlists from app.py
-    const allWishLists = appData.businessWishlist
-    const setAllWishLists = appData.setBusinessWishlist
+    //Set up params
+    const params = useParams()
 
+    const specificBusinessProfile = allBusinesses.find(business => business.id === parseInt(params.id))
+    console.log(specificBusinessProfile)
 
-    // Get all businesses listed on app
-    const allBusinesses = appData.allBusinesses || [];
+    const specificBusinessId = specificBusinessProfile?.id
 
-    // Get the specific business
-    const specificBusiness = allBusinesses.find((business) => business.id === parseInt(params.id));
-  
-    const specificBusinessId = specificBusiness ? specificBusiness.id : null;
+    useEffect(() => {
+        if(specificBusinessId) {
+            fetch(`/businesses/${specificBusinessId}`)
+                .then(r => {
+                    if(r.ok) {
+                        return r.json()
+                    }
+                    throw r 
+                })
+                .then(specificBusinessInfo => setSpecificBusinessInfo(specificBusinessInfo))
+        }
+    }, [allBusinesses])
 
-    //Get specific logged in user
-    const loggedUser = appData.loggedUser
-    const loggedUserId = loggedUser? loggedUser.id : null
- 
+    console.log(specificBusinessInfo)
 
-    //Show user checkins or user
-    const userCheckIns = loggedUser ? loggedUser.business_visit : []
+    //Get businesses profile pic
+    const businessPictureInfo = specificBusinessInfo?.profile_picture
+    const businessPicture = businessPictureInfo?.picture_route
+    console.log(businessPicture)
+
+    //check if vertical nav is open
+    const verticalNavHover = appData.verticalNavHover
+
+    const businessPgContainerStyle = verticalNavHover ?
+        {
+            marginLeft: "220px",
+            width: "calc(100% - 220px)"
+        }
+        :
+        {
+            marginLeft: "50px",
+            width: "calc(100% - 50px"
+        }
     
-    const userWishList = loggedUser ? loggedUser.business_wishlist : []
+    //Get logged user info
+    const loggedUser = appData.loggedUser
+    const loggedUserId = loggedUser?.id 
 
-    // const userReviews = loggedUser ? loggedUser.business_reviews : []
+    //Show all business check ins 
+    const businessCheckIn = appData.businessCheckIn 
+    const setBusinessCheckIn = appData.setBusinessCheckIn 
 
-    //FETCH all check ins
+    const prefectureId = specificBusinessInfo?.prefecture?.id
+    
+    //Show logged users check ins
+    const userCheckIns = loggedUser?.business_reviews 
+
+    //Show all busimess check ins 
     useEffect(() => {
         fetch('/businesscheckin')
             .then(r => {
@@ -73,139 +91,225 @@ function BusinessPg() {
             .catch(error => console.error("Error fetching check-ins", error))
     }, [userCheckIns])
 
+    //Show logged users reviews
+    const userReviews = loggedUser?.business_reviews
+
+    //Set up business name
+    const businessName = specificBusinessInfo?.name 
+
+    //Set up businesses cover photo
+    useEffect(() => {
+        if (specificBusinessInfo && specificBusinessInfo.cover_photo) {
+            setBusinessesCoverPhoto(specificBusinessInfo.cover_photo);
+        }
+    }, [specificBusinessInfo]);
+
+    // const appData = useOutletContext();
+
+    // // Set up useParams
+    // const params = useParams();
+
+    // // Check if vertical nav is open
+    // const verticalNavHover = appData.verticalNavHover;
+
+    // // Set style dependent on if nav bar is open
+    // const businessPgContainerStyle = verticalNavHover
+    //     ? {
+    //           marginLeft: "220px",
+    //           width: "calc(100% - 220px)",
+    //       }
+    //     : {
+    //           marginLeft: "50px",
+    //           width: "calc(100% - 50px)",
+    //       };
+
+    // // Set states
+    // const [specificBusinessInfo, setSpecificBusinessInfo] = useState(null);
+    // const [allCheckIns, setAllCheckIns] = useState([]) 
+    // const [deleteReview, setDeleteReview] = useState(false)
+    // const [reviewId, setReviewId] = useState()
+    // const [newReview, setNewReview] = useState(false)
+    // const [filterProfilePic, setFilterProfilePic] = useState()
+    // const [businessesBio, setBusinessesBio] = useState()
+    // const [businessesCoverPhoto, setBusinessesCoverPhoto] = useState()
+
+    //import business wishlists from app.py
+    const allWishLists = appData.businessWishlist
+    const setAllWishLists = appData.setBusinessWishlist
+
+
+    // // Get all businesses listed on app
+    // const allBusinesses = appData.allBusinesses || [];
+    const setAllBusinesses = appData.setAllBusinesses
+
+    // // Get the specific business
+    // const specificBusiness = allBusinesses.find((business) => business.id === parseInt(params.id));
+  
+    // const specificBusinessId = specificBusiness ? specificBusiness.id : null;
+
+    // // const allProfilePics = appData.allProfilePics
+    // // console.log(allProfilePics)
+
+    // // const filteredPics = allProfilePics.filter(picture => picture.user_id === specificBusinessId)
+    // // console.log(filteredPics)
+
+    // // useEffect(() => (
+    // //     setFilterProfilePic(allProfilePics.filter(picture => picture.user_id === specificBusinessId))
+    // // ), [allProfilePics])
+    // // console.log(`The profile picture is ${filterProfilePic}`)
+
+
+    // //Get specific logged in user
+    // const loggedUser = appData.loggedUser
+    // const loggedUserId = loggedUser? loggedUser.id : null
+
+    // console.log(`logged user is id ${loggedUserId}`)
+
+    // //Show all check ins to businesses
+    // const businessCheckIn = appData.businessCheckIn
+    // const setBusinessCheckIn = appData.setBusinessCheckIn
+
+    // console.log(specificBusiness)
+    // const prefectureId = specificBusiness?.prefecture?.id
+    // console.log(prefectureId)
+ 
+
+    // //Show user checkins or user
+    // const userCheckIns = loggedUser ? loggedUser.business_visit : []
     
-    // //FETCH all wishlists
+
+    // // const userReviews = loggedUser ? loggedUser.business_reviews : []
+
+    // //FETCH all check ins
     // useEffect(() => {
-    //     fetch('/businesswishlist')
+    //     fetch('/businesscheckin')
     //         .then(r => {
     //             if(r.ok) {
     //                 return r.json()
     //             }
     //             throw r 
     //         })
-    //         .then(wishlists => setAllWishLists(wishlists))
-    //         .catch(error => console.error("Error fetching wishlists", error))
-    // }, [])
-    // console.log(allWishLists)
+    //         .then(checkIns => setAllCheckIns(checkIns))
+    //         .catch(error => console.error("Error fetching check-ins", error))
+    // }, [userCheckIns])
 
-    //FETCH all business reviews
-    useEffect(() => {
-        fetch('/businessreviews')
-            .then(r => {
-                if(r.ok) {
-                    return r.json()
-                }
-                throw r
-            })
-            .then(reviews => setAllBusinessReviews(reviews))
-            .catch(error => console.error("Business reviews not found", error))
-    }, [])
+    
 
 
-    // Add additional elements to calculate average review rating
-    useEffect(() => {
-        if (specificBusinessId) {
-            fetch(`/businesses/${specificBusinessId}`)
-                .then((r) => {
-                    if (r.ok) {
-                        return r.json();
-                    }
-                    throw r;
-                })
-                .then((specificBusinessInfo) => {
-                    setSpecificBusinessInfo(specificBusinessInfo);
-                })
-                .catch((error) => {
-                    console.error("Error fetching business info:", error);
-                });
-        }
-    }, [specificBusinessId]);
+    // // Add additional elements to calculate average review rating
+    // useEffect(() => {
+    //     if (specificBusinessId) {
+    //         fetch(`/businesses/${specificBusinessId}`)
+    //             .then((r) => {
+    //                 if (r.ok) {
+    //                     return r.json();
+    //                 }
+    //                 throw r;
+    //             })
+    //             .then((specificBusinessInfo) => {
+    //                 setSpecificBusinessInfo(specificBusinessInfo);
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error fetching business info:", error);
+    //             });
+    //     }
+    // }, [specificBusinessId]);
+
+    // console.log(specificBusinessInfo)
 
 
-    //Set up business name
-    const businessName = specificBusinessInfo ? specificBusinessInfo.name : null
+    // //Set up business name
+    // const businessName = specificBusinessInfo ? specificBusinessInfo.name : null
+
+    // //Set up business cover photo
+    // // const businessCoverPhoto = specificBusinessInfo?.cover_photo 
+    // useEffect(() => {
+    //     if (specificBusinessInfo && specificBusinessInfo.cover_photo) {
+    //         setBusinessesCoverPhoto(specificBusinessInfo.cover_photo);
+    //     }
+    // }, [specificBusinessInfo]);
+    
 
     //Set up business intro
-    const businessInfo = specificBusinessInfo? specificBusiness.user_info : null
+    // const businessInfo = specificBusinessInfo?.user_info
+    useEffect(() => {
+        if (specificBusinessInfo) {
+            setBusinessesBio(specificBusinessInfo.user_info);
+        }
+    }, [specificBusinessInfo]);
+    
 
-    //Set prefecturePicture
-    // Set prefecturePicture
-    const businessPicture = specificBusinessInfo && specificBusinessInfo.profile_picture?.length > 0 
-        ? specificBusinessInfo.profile_picture[0].picture_route 
-        : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg";
 
 
-    //Set up business phone number
-    const businessNumber = specificBusinessInfo? specificBusinessInfo.contact_number : null 
 
-    //Set up business email
-    const businessEmail = specificBusinessInfo? specificBusinessInfo.email : null 
+    // const businessPicture = filterProfilePic && filterProfilePic.length > 0 ? filterProfilePic[0] : null;
 
-    //Set up business register date
-    const businessRegistered = specificBusinessInfo ? specificBusinessInfo.date_registered : null 
 
-    //Set up business address
-    const businessBuildingNumber = specificBusinessInfo ? specificBusinessInfo.building_numbers : null
-    const businessNeighbourHood = specificBusinessInfo ? specificBusinessInfo.neighbourhood : null 
-    const businessCity = specificBusinessInfo ? specificBusinessInfo.city : null 
-    const businessPrefecture = specificBusinessInfo ? specificBusinessInfo.prefecture.prefecture_name : null
-    const businessPostCode = specificBusinessInfo ? specificBusinessInfo.postal_code : null 
-    const businessAddress = `${businessBuildingNumber}, ${businessNeighbourHood}, ${businessCity}, ${businessPrefecture}, ${businessPostCode}`
 
-    //Set up business operation times
-    const businessOpeningTime = specificBusinessInfo ? specificBusinessInfo.opening_time : null
-    const businessClosingTime = specificBusinessInfo ? specificBusinessInfo.closing_time : null
-    const businessOperatingHours = `${businessOpeningTime} - ${businessClosingTime}`
+    
+
+    //Get all reviews for all businesses
+    const allBusinessReviews = appData.allBusinessReviews
+    const setAllBusinessReviews =  appData.setAllBusinessReviews
+
 
     return (
         <div id="businessPgContainer" style={businessPgContainerStyle}>
-            <div id="renderedBusinessInfoContainer">
-                <BusinessPicture 
-                    businessPicture={businessPicture} 
-                    businessName = {businessName}
-                />
+                {deleteReview ? 
+                    <ConfirmReviewDeletion 
+                        setDeleteReview={setDeleteReview}
+                        reviewId={reviewId}
+                        setAllBusinessReviews={setAllBusinessReviews}
+                    />
+                    :
+                    null
+                }
 
-                <BusinessNameInfo 
+                {newReview ?
+                    <NewReview 
+                        allBusinessReviews={allBusinessReviews}
+                        setAllBusinessReviews={setAllBusinessReviews}
+                        setNewReview={setNewReview}
+                        loggedUserId={loggedUserId}
+                        specificBusinessId={specificBusinessId}
+                    />
+                    :
+                    null
+                }
+
+               <BusinessIntro
+                    specificBusiness={specificBusinessProfile}
+                    // businessCoverPhoto={businessCoverPhoto}
+                    businessesCoverPhoto={businessesCoverPhoto}
+                    setBusinessesCoverPhoto={setBusinessesCoverPhoto}
+                    businessPicture={businessPicture}
                     businessName={businessName}
-                    businessInfo={businessInfo}
-                />
-
-                <BusinessIntroAvReview 
-                    specificBusinessId={specificBusinessId}
-                    allBusinessReviews={allBusinessReviews}
-                />
-
-                <BusinessCheckInWishList 
-                    specificBusinessId={specificBusinessId}
-                    loggedUserId={loggedUserId}
-                    userCheckIns={userCheckIns}
-                    businessName={businessName}
-                    userWishList={userWishList}
+                    // businessInfo={businessInfo}
+                    businessesBio={businessesBio}
+                    setBusinessesBio={setBusinessesBio}
                     allCheckIns={allCheckIns}
                     setAllCheckIns={setAllCheckIns}
+                    loggedUserId={loggedUserId}
+                    businessCheckIn={businessCheckIn}
+                    setBusinessCheckIn={setBusinessCheckIn}
                     allWishLists={allWishLists}
                     setAllWishLists={setAllWishLists}
-                />
-            </div>
-
-            <div id="renderedPrefectureGrid">
-                <BusinessInfoContainer 
-                    businessNumber={businessNumber}
-                    businessEmail={businessEmail}
-                    businessRegistered={businessRegistered}
-                    businessAddress={businessAddress}
-                    businessOperatingHours={businessOperatingHours}
-                />
-
-                <BusinessFeed 
-                    // currentBusinessReviews={currentBusinessReviews}
-                    loggedUser={loggedUser}
-                    specificBusinessId={specificBusinessId}
-                    allCheckIns={allCheckIns}
                     allBusinessReviews={allBusinessReviews}
                     setAllBusinessReviews={setAllBusinessReviews}
+                    setDeleteReview={setDeleteReview}
+                    setReviewId={setReviewId}
+                    setNewReview={setNewReview}
+                    allBusinesses={allBusinesses}
+                    setAllBusinesses={setAllBusinesses}
+                    businessPictureInfo={businessPictureInfo}
                 />
-            </div>
+
+                <BusinessPictureBlogs 
+                    specificBusinessId={specificBusinessId}
+                    loggedUserId={loggedUserId}
+                    appData={appData}
+                    prefectureId={prefectureId}
+                />
         </div>
     );
 }

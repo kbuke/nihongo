@@ -13,6 +13,7 @@ import homeIcon from "../../assets/homeIcon.png";
 import currentIcon from "../../assets/visitedMark.png";
 import roleIcon from "../../assets/userIcon.jpg";
 
+
 function UserHome() {
     const appData = useOutletContext();
 
@@ -23,6 +24,7 @@ function UserHome() {
     const [prefectureFilter, setPrefectureFilter] = useState(false)
     const [selectedBusiness, setSelectedBusiness] = useState("All Businesses")
     const [businessFilter, setBusinessFilter] = useState(false)
+    const [hoverCard, setHoverCard] = useState(" ")
 
 
     useEffect(() => {
@@ -128,28 +130,77 @@ function UserHome() {
           };
     
     //Get user images
+    console.log(userAccounts)
     
     //Create the business cards
     const userCards = (userAccounts) => {
         return userAccounts.map((userInfo, index) => (
             <Link 
+                style={{backgroundImage: `url(${userInfo.profile_picture?.picture_route })`}}
                 key={index}
-                id="userCard"
+                className="userCard"
                 to={`/users/${userInfo.id}`}
+                onMouseEnter={() => setHoverCard(userInfo.username)}
+                onMouseLeave={() => setHoverCard("")}
             >
-                <div id="userImgCardContainer">
-                    <img 
-                        id="userCardImg"
-                        src={userInfo.profile_picture.length > 0 ? userInfo.profile_picture[0].picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"}
-                        alt={`${userInfo.username} Picture`}
-                    />
-                </div>
 
                 <div id="userNameCardContainer">
-                    <h3>{userInfo.username}</h3>
+                    <h1
+                        id="userNameCard"
+                    >
+                        {userInfo.username}
+                    </h1>
+
+                    {userInfo.username === hoverCard ?
+                        <div
+                            id="userInfoUserCardContainer"
+                        >
+                            <div
+                                id="userInfoUserCardGrids"
+                            >
+                                <div
+                                    id="userInfoUserCardImgContainer"
+                                >
+                                    <img 
+                                        id="userInfoUserCardImg"
+                                        src={currentIcon}
+                                    />
+                                </div>
+                                <h3
+                                    id="userInfoUserCardInfo"
+                                >
+                                    {userInfo.current_town}, {userInfo.current_country}
+                                </h3>
+                            </div>
+
+                            <div
+                                id="userInfoUserCardGrids"
+                            >
+                                <div
+                                    id="userInfoUserCardImgContainer"
+                                >
+                                    <img 
+                                        id="userInfoUserCardImg"
+                                        src={homeIcon}
+                                    />
+                                </div>
+                                <h3
+                                    id="userInfoUserCardInfo"
+                                >
+                                    {userInfo.hometown}, {userInfo.home_country}
+                                </h3>
+                            </div>
+                        </div>
+                        :
+                        null
+                    }
                 </div>
 
-                <div id="userInfoGrid">
+                <div id="userProfileCardRoleContainer">
+                    <h3 id="userProfileCardRole">{userInfo.role}</h3>
+                </div>
+
+                {/* <div id="userInfoGrid">
                     <div id="userHomeInfoGrid">
                         <div className="userCardIconInfo">
                             <img 
@@ -183,7 +234,7 @@ function UserHome() {
                         </div>
                         <h6>{userInfo.role}</h6>
                     </div>
-                </div>
+                </div> */}
             </Link>
         ))
     }

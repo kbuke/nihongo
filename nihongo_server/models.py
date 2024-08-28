@@ -13,11 +13,11 @@ class Users(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
     user_info = db.Column(db.String, nullable=False)
-    # profile_picture = db.Column(db.String, nullable=True)
     role = db.Column(db.String, nullable=False)
     _password_hash = db.Column(db.String, nullable=False)
+    cover_photo = db.Column(db.String, nullable=False, server_default="")
 
-    #Add relationships
+    # Add relationships
     admins = db.relationship("Admin", backref="user", lazy=True)
     travelers = db.relationship("Traveler", backref="user", lazy=True)
     citizens = db.relationship("Citizen", backref="user", lazy=True)
@@ -28,7 +28,8 @@ class Users(db.Model, SerializerMixin):
     business_wishlist = db.relationship("BusinessWishList", backref="user", lazy=True)
     business_reviews = db.relationship("BusinessReviews", backref="user", lazy=True)
     business_pictures = db.relationship("PrefecturePhotos", backref="user", lazy=True)
-    profile_picture = db.relationship("UserProfilePicture", backref="user", lazy=True)
+    profile_picture = db.relationship("UserProfilePicture", backref="user", lazy=True, uselist=False)
+    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="user", lazy=True)
 
     type = db.Column(db.String(50))
 
@@ -37,7 +38,7 @@ class Users(db.Model, SerializerMixin):
         'polymorphic_identity': 'user',
     }
 
-    #Add serialization rules
+    # Add serialization rules
     serialize_rules = (
         "-_password_hash",
         "-user", 
@@ -65,20 +66,29 @@ class Users(db.Model, SerializerMixin):
 
     # Password hashing and authentication
     @hybrid_property
-    def password(self):
+    #never password always password_hash
+    def password_hash(self):
         raise AttributeError("password: write-only attribute")
 
-    @password.setter
-    def password(self, password):
+    @password_hash.setter
+    def password_hash(self, password):
         self._password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def authenticate(self, password):
         return bcrypt.check_password_hash(self._password_hash, password)
 
+    # Automatically assign a default profile picture
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        if not self.profile_picture:
+            self.profile_picture = UserProfilePicture(
+                picture_route="https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"
+            )
+
+
 #----------------------------------Model for admins---------------------------------------------
 class Admin(Users):
     __tablename__ = 'admins'
-
     @declared_attr
     def id(cls):
         return db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
@@ -89,7 +99,7 @@ class Admin(Users):
     current_country = db.Column(db.String, nullable=True)
 
     # Add relationship
-    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="admin", lazy=True)
+   
 
     # Add serialize rules
     serialize_rules = (
@@ -119,7 +129,7 @@ class Traveler(Users):
     current_country = db.Column(db.String, nullable=True)
 
     #Add relationship
-    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="traveler", lazy=True)
+    
 
     # Add serialize rules
     serialize_rules = (
@@ -149,7 +159,7 @@ class Citizen(Users):
     current_country = db.Column(db.String, nullable=True, server_default="Japan")
 
     #Add relationships
-    prefecture_reviews = db.relationship("PrefectureCategoryReviews", backref="citizen", lazy=True)
+    
 
     # Add serialize rules
     serialize_rules = (
@@ -332,9 +342,10 @@ class PrefectureCategoryReviews(db.Model, SerializerMixin):
     #add relationships
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
     prefecture_type_id = db.Column(db.Integer, db.ForeignKey("prefecture_categories.id"))
-    admin_id = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
-    citizen_id = db.Column(db.Integer, db.ForeignKey("citizens.id"), nullable=True)
-    traveler_id = db.Column(db.Integer, db.ForeignKey("travelers.id"), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # admin_id = db.Column(db.Integer, db.ForeignKey("admins.id"), nullable=True)
+    # citizen_id = db.Column(db.Integer, db.ForeignKey("citizens.id"), nullable=True)
+    # traveler_id = db.Column(db.Integer, db.ForeignKey("travelers.id"), nullable=True)
 
     #Add serialization rules
     serialize_rules=(
@@ -370,6 +381,7 @@ class CheckInBusiness(db.Model, SerializerMixin):
     #add relations
     business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    check_in_date = db.Column(db.DateTime, server_default=db.func.now())
 
     #add serialize rules
     serialize_rules = (
@@ -386,6 +398,7 @@ class PrefectureWishList(db.Model, SerializerMixin):
     #Add relations
     prefecture_id = db.Column(db.Integer, db.ForeignKey("prefectures.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+    wishlist_date = db.Column(db.DateTime, server_default=db.func.now())
 
     #Add serialize rules
     serialize_rules = (
@@ -401,6 +414,7 @@ class BusinessWishList(db.Model, SerializerMixin):
     #Add relations
     business_id = db.Column(db.Integer, db.ForeignKey("businesses.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    wishlist_date = db.Column(db.DateTime, server_default=db.func.now())
 
     #Add serialize rules
     serialize_rules = (

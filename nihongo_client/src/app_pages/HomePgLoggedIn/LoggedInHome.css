@@ -5,7 +5,93 @@
     grid-template-columns: 40% 60%;
     background-color: #F4F2F3;
     height: 100%;
-    position: inherit;
+  }
+
+  #homePgContentContainer{
+    margin-top: 100px;
+    text-align: center;
+  }
+
+  #homePgContentSecondContainer{
+    margin-top: 120px;
+    text-align: center;
+  }
+
+  #japnMapTitle{
+    font-weight: 200;
+    text-decoration: underline;
+  }
+
+  #japanMapContainer{
+    margin-top: 20px;
+  }
+
+  #homePgHeader{
+    font-weight: 180;
+    font-size: 300%;
+    text-decoration: underline;
+    margin-bottom: 0px;
+  }
+
+  #prefectureMapText{
+    font-weight: 180;
+    font-size: 300%;
+    text-decoration: underline;
+  }
+
+  #homePgIntroInfo{
+    font-weight: 180;
+    font-size: 200%;
+    margin-top: 5.5px;
+  }
+
+  .homePgInfoText{
+    font-weight: 180;
+    margin-top: 40px;
+  }
+
+  #homePgLogo{
+    height: 300px;
+  }
+
+  #homePgIntroOptionsGrid{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-left: 10px;
+    margin-right: 8px;
+    width: 90%;
+    margin-top: 0px;
+    background-color: #F4F2F3;
+    margin-left: 60px;
+    margin-right: 40px;
+  }
+
+  .homePgIntroAvailableOptions{
+    height: 300px;
+    border: solid;
+    border-radius: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: black;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .homePgCardTitleContainer{
+    background-color: rgba(1, 1, 1, 0.8);
+    width: 100%;
+    border-radius: 24px;
+  }
+
+  .homePgCardTitle{
+    color: white;
+    text-decoration: none;
   }
 
   .verticalNavOpen #homePgContainer {
@@ -78,4 +164,18 @@
   
   .options:hover h2 {
     opacity: 0;
+  }
+
+
+  #homePgAdminPrefectureContainer{
+    background-color: rgba(1, 1, 1, 0.8);
+  }
+
+  #homePgAdminAddPrefecture{
+    color: white;
+    text-decoration: underline;
+  }
+
+  #adminHomePgAdminOption{
+    height: 400px;
   }

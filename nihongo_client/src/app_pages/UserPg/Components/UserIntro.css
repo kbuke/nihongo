@@ -1,0 +1,146 @@
+#userIntroContainer{
+    width: 100%;
+    height: 700px;
+    background-size: cover;
+    align-items: center;
+    display: flex;
+}
+
+.userInfoContainer{
+    border: solid;
+    border-radius: 24px;
+    height: 90%;
+    width: 40%;
+    background-color: rgba(0, 0, 0, 0.8);
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+#expandedUserInfoContainer{
+    width: 80%;
+    display: grid;
+    grid-template-columns: 40% 60%; /* This makes two equal columns */
+    gap: 10px; /* Optional: Add space between the columns */
+}
+
+#userProfileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+}
+
+#userOtherContent {
+    display: flex;
+    justify-content: center;
+    color: white;
+    flex-direction: column;
+    margin-left: 25px;
+}
+
+
+#userProfileImgContainer{
+    display: flex;
+    height: 120px;
+    width: 120px;
+    border: solid;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+#renderUsersName{
+    color: white;
+    font-weight: 80;
+    font-size: 250%;
+    text-decoration: underline;
+    margin-bottom: 5px;
+}
+
+#renderUserOptionsGrid{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    width: 100%;
+    margin-left: 8px;
+    margin-right: 5px;
+}
+
+.userOptionButtons{
+    border: none;
+    border-top-right-radius: 24px;
+    border-top-left-radius: 24px;
+    height: 40px;
+}
+
+#userRoleRenderedContainer{
+    background-color: green;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    border-radius: 24px;
+    width: 150px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#userRoleRendered{
+    color: white;
+    font-weight: 80;
+}
+
+#selectedUserOptionButton{
+    background-color: pink;
+    text-decoration: underline;
+}
+
+#userInfoText{
+    color: white;
+    text-align: center;
+    font-weight: 80;
+    margin-top: 20px;
+}
+
+#userLocations{
+    font-weight: 190;
+    color: white;
+    text-align: center;
+}
+
+#hi{
+    color: white;
+    border-left: solid;
+}
+
+#userIntroInfo{
+    justify-content: center;
+    align-items: center;
+}
+
+.aboutUserProfileInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    text-align: center;
+    width: fit-content;
+}
+
+#userProfileImg{
+    width: 100%;
+    height: 100%;
+}
+
+#updateUserInfoButton{
+    height: 40px;
+    width: 100px;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    border: none;
+}

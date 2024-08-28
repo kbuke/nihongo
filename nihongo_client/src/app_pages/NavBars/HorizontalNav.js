@@ -7,6 +7,7 @@ function HorizontalNavBar({
     loggedUser,
     loggedInUserImg
 }){
+    const userRole = loggedUser?.role
     return(
         loggedUser? 
             <div id="horizontalNav">
@@ -26,12 +27,17 @@ function HorizontalNavBar({
 
                 <NavLink 
                     id="loggedUserImgContainer"
-                    to={`user/${loggedUser.id}`}
+                    // to={`user/${loggedUser.id}`}
+                    to={userRole === "Local Business" ?
+                        `business/${loggedUser.id}`
+                        :
+                        `user/${loggedUser.id}`
+                    }
                 >
                     {loggedUser ? 
                         <img 
                             id="loggedUserImg"
-                            src={loggedUser.profile_picture[0].picture_route}
+                            src={loggedUser.profile_picture?.picture_route}
                             alt="loggedUserImg"
                         />
                         :

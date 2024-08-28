@@ -1,0 +1,44 @@
+#checkInGrid{
+    display: grid;
+    grid-template-columns: 14% 76%;
+    margin-left: 140px;
+    margin-top: 20px;
+    align-items: center;
+    margin-top: 30px;
+    justify-content: center;
+    border-bottom: rgba(1, 1, 1, 0.8);
+}
+
+#renderedCheckInImgContainer{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#renderedCheckInImg{
+    width: 100%;
+    height: 100%;
+}
+
+#checkInInfoBlock{
+    display: block;
+    text-align: left;
+}
+
+#checkInInfo{
+    font-weight: 280;
+    font-size: 120%;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+#checkInInfoDate{
+    font-weight: 200;
+    font-size: 100%;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

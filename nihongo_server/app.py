@@ -11,6 +11,8 @@ from config import app, db, api, os
 from models import Users, Admin, Traveler, Citizen, Prefecture, LocalBusinessSites, BusinessReviews, RegisteredBusinessTypes, BusinessTypes, PrefectureCategories, PrefectureCategoryReviews, CheckInPrefecture, PrefectureWishList, CheckInBusiness, BusinessWishList, PrefecturePhotos, UserProfilePicture
 from sqlalchemy import event
 
+from datetime import datetime
+
 user_rules = (
     "-admins",
     "-travelers",
@@ -18,6 +20,8 @@ user_rules = (
     "-businesses",
 
     "-profile_picture.user",
+
+    "-prefecture_reviews",
 
     #Sort through prefecture visits
     "-prefecture_visit.user",
@@ -27,6 +31,7 @@ user_rules = (
     "-prefecture_visit.prefecture.prefecture_visit",
     "-prefecture_visit.prefecture.prefecture_wishlist",
     "-prefecture_visit.prefecture.business_pictures",
+    "-prefecture_visit.prefecture.prefecture_visit",
 
     #Sort through prefecture wishlists
     "-prefecture_wishlist.user.username",
@@ -45,6 +50,8 @@ user_rules = (
     "-prefecture_wishlist.user.profile_picture",
     "-prefecture_wishlist.user.user",
     "-prefecture_wishlist.user.prefecture",
+    "-prefecture_wishlist.user.prefecture_visit",
+    "-prefecture_wishlist.user.prefecture_reviews",
 
     "-prefecture_wishlist.user.business_wishlist.user",
 
@@ -76,12 +83,14 @@ user_rules = (
     "-prefecture_wishlist.user.business_wishlist.business.business_reviews",
     "-prefecture_wishlist.user.business_wishlist.business.business_pictures",
     "-prefecture_wishlist.user.business_wishlist.business.profile_picture.user",
+    "-prefecture_wishlist.user.business_wishlist.business.prefecture_visit",
 
     "-prefecture_wishlist.prefecture.businesses",
     "-prefecture_wishlist.prefecture.prefecture_reviews",
     "-prefecture_wishlist.prefecture.prefecture_wishlist",
     "-prefecture_wishlist.prefecture.business_pictures",
     "-prefecture_wishlist.prefecture.profile_picture",
+    "-prefecture_wishlist.prefecture.prefecture_visit",
 
     #Sort through business visits
     "-business_visit.user",
@@ -101,7 +110,9 @@ user_rules = (
     "-business_visit.business.businesses",
     "-business_visit.business.prefecture_visit",
     "-business_visit.business.prefecture_wishlist",
-    "-business_visit.business.profile_picture",
+    "-business_visit.business.profile_picture.user",
+    "-business_visit.business.prefecture_visit",
+    "-business_visit.business.prefecture_reviews",
 
     #Sort through business wishlists
     "-business_wishlist.user",
@@ -122,6 +133,7 @@ user_rules = (
     "-business_wishlist.business.prefecture_visit",
     "-business_wishlist.business.prefecture_wishlist",
     "-business_wishlist.business.profile_picture",
+    "-business_wishlist.business.prefecture_visit",
 
     #Sort through business reviews
     "-business_reviews.user",
@@ -141,7 +153,8 @@ user_rules = (
     "-business_reviews.business.businesses",
     "-business_reviews.business.prefecture_visit",
     "-business_reviews.business.prefecture_wishlist",
-    "-business_reviews.business.profile_picture",
+    "-business_reviews.business.profile_picture.user",
+    "-business_reviews.business.prefecture_visit",
 
     #Sort through business pictures
     "-business_pictures.user",
@@ -151,8 +164,9 @@ user_rules = (
 
     "-business_pictures.business.business_reviews.user",
     "-business_pictures.business.business_reviews.business",
+    "-business_pictures.business.prefecture_visit",
 
-    "-business_pictures.business..business_types",
+    "-business_pictures.business.business_types",
     "-business_pictures.business.business_visit",
     "-business_pictures.business.business_wishlist",
     "-business_pictures.business.business_pictures",
@@ -163,6 +177,7 @@ user_rules = (
     "-business_pictures.business.prefecture_visit",
     "-business_pictures.business.prefecture_wishlist",
     "-business_pictures.business.profile_picture",
+    "-business_pictures.business.prefecture_visit",
                 
     "-prefecture",
     "-user",
@@ -172,6 +187,7 @@ profile_pic_rules = (
     "-user.user_info",
     "-user.role",
     "-user._password_hash",
+    "-user.prefecture_reviews",
     "-user.admins",
     "-user.travelers",
     "-user.citizens",
@@ -205,6 +221,191 @@ profile_pic_rules = (
     "-user.current_town",
 )
 
+prefecture_rules = (
+    "-businesses.prefecture",
+    "-businesses.user",
+    "-prefecture_reviews",
+
+    "-businesses.business_reviews.business",
+    "-businesses.business_reviews.user",
+    "-businesses.business_reviews.id",
+    "-businesses.business_reviews.review_comment",
+    "-businesses.business_reviews.review_date",
+    "-businesses.business_reviews.traveler_id",
+
+    "-businesses.business_types.business",
+    "businesses.business_types.registered_type",
+
+    "-businesses.business_visit",
+
+    "-businesses.prefecture_reviews",
+
+    "-businesses.business_wishlist",
+
+    "-businesses.business_pictures",
+
+    "-businesses.admins",
+
+    "-businesses.travelers",
+
+    "-businesses.citizens",
+
+    "-businesses.businesses",
+
+    "-businesses.prefecture_visit",
+
+    "-businesses.prefecture_wishlist",
+
+    "-businesses.profile_picture",
+
+    "-business_pictures.prefecture",
+    "-business_pictures.user",
+    "-business_pictures.business",
+)
+
+business_rules = (
+    "-user",
+    "-admin",
+    "-traveler",
+    "-citizen",
+    "-businesses",
+    "-prefecture",
+    "-prefecture_reviews",
+
+    "-profile_picture.user",
+
+
+    "-business_reviews.business",
+    "-business_reviews.user",
+
+    "-business_reviews.user.admins",
+    "-business_reviews.user.travelers",
+    "-business_reviews.user.citizens",
+    "-business_reviews.user.businesses",
+    "-business_reviews.user.prefecture_visit",
+    "-business_reviews.user.prefecture_wishlist",
+    "-business_reviews.user.business_visit",
+    "-business_reviews.user.business_wishlist",
+    "-business_reviews.user.business_reviews",
+    "-business_reviews.user.user",
+    "-business_reviews.user.business_pictures",
+    "-business_reviews.user.profile_picture",
+    "-business_reviews.user.prefecture_reviews",
+
+    "-business_types.business",
+    "business_types.registered_type.business_type",
+
+    "-business_visit.business",
+
+    "-business_visit.user.admins",
+    "-business_visit.user.travelers",
+    "-business_visit.user.citizens",
+    "-business_visit.user.prefecture_visit",
+    "-business_visit.user.prefecture_wishlist",
+    "-business_visit.user.business_visit",
+    "-business_visit.user.business_wishlist",
+    "-business_visit.user.business_reviews",
+    "-business_visit.user.user",
+    "-business_visit.user.current_country",
+    "-business_visit.user.user_info",
+    "-business_visit.user.prefecture_reviews",
+    "-business_visit.user.hometown",
+    "-business_visit.user.home_country",
+    "-business_visit.user.current_town",
+    "-business_visit.user._password_hash",
+    "-business_visit.user.role",
+    "-business_visit.user.type",
+    "-business_visit.user.user_info",
+    "-business_visit.user.business_pictures",
+    "-business_visit.user.profile_picture",
+    "-business_visit.user.prefecture_reviews",
+
+    "-business_wishlist",
+    "-prefecture_id",
+
+    "-business_pictures",
+
+    "-prefecture.business_pictures",
+    "-prefecture.businesses",
+    "-prefecture.prefecture_reviews",
+    "-prefecture.prefecture_visit",
+    "-prefecture.prefecture_wishlist",
+    "-prefecture.prefecture_reviews",
+)
+
+picture_rules = (
+    "-user.id",
+    "-user.user_info",
+    "-user.role",
+    "-user._password_hash",
+    "-user.admins",
+    "-user.travelers",
+    "-user.citizens",
+    "-user.businesses",
+    "-user.prefecture_visit",
+    "-user.prefecture_wishlist",
+    "-user.prefecture_reviews",
+    "-user.business_visit",
+    "-user.business_wishlist",
+    "-user.business_reviews",
+    "-user.business_pictures",
+    "-user.user",
+    "-user.prefecture",
+    "-user.current_country",
+    "-user.current_town",
+    "-user.type",
+    "-user.hometown",
+    "-user.home_country",
+    "-user.profile_picture.user",
+
+    "-prefecture.businesses",
+    "-prefecture.prefecture_reviews",
+    "-prefecture.prefecture_visit",
+    "-prefecture.prefecture_wishlist",
+    "-prefecture.business_pictures",
+    "-prefecture.capital_city",
+    "-prefecture.population",
+    "-prefecture.prefecture_info",
+    "-prefecture.prefecture_flag",
+
+    "-business.prefecture",
+    "-business.prefecture_id",
+    "-business.business_reviews",
+    "-business.business_types",
+    "-business.business_visit",
+    "-business.business_wishlist",
+    "-business.business_pictures",
+    "-business.opening_time",
+    "-business.closing_time",
+    "-business.postal_code",
+    "-business.building_numbers",
+    "-business.city",
+    "-business.neighbourhood",
+    "-business.date_registered",
+    "-business.card_info",
+    "-business.email",
+    "-business.contact_number",
+
+    "-business.user",
+    "-business.admins",
+    "-business.travelers",
+    "-business.citizens",
+    "-business.businesses",
+    "-business.prefecture_visit",
+    "-business.prefecture_wishlist",
+    "-business.business_visit",
+    "-business.business_wishlist",
+    "-business.business_reviews",
+    "-business.business_pictures",
+    "-business.profile_picture.user",
+    "-business.prefecture_reviews",
+    "-business.cover_photo",
+    "-business.role",
+    "-business.type",
+    "-business.user_info",
+    "-business._password_hash",
+)
+
 #Show all available users, and allow frontend to add new ones
 class AllUsers(Resource):
     def get(self):
@@ -214,56 +415,82 @@ class AllUsers(Resource):
     
     def post(self):
         json = request.get_json()
-        role = json.get("newUserRole")
-        # breakpoint()
+        role = json.get("newUserRole") 
+        
         try:
-            if role == "Admin":
-                new_user = Admin(
-                    username = json.get("newUserName"),
-                    user_info = json.get("newUserInfo"),
-                    profile_picture = json.get("newUserPic"),
-                    role = role,
-                    hometown = json.get("newUserHomeTown"),
-                    home_country = json.get("newUserHomeCountry")
-                )
-
-            elif role == "Traveller":
+            if role == "Traveller":
                 new_user = Traveler(
-                    username = json.get("newUserName"),
-                    user_info = json.get("newUserInfo"),
-                    profile_picture = json.get("newUserPic"),
-                    role = role,
-                    hometown = json.get("newUserHomeTown"),
-                    home_country = json.get("newUserHomeCountry")
+                    username=json.get("newUserName"),
+                    user_info=json.get("newUserInfo"),
+                    role=role,
+                    cover_photo=json.get("newUserPic"),
+                    home_country=json.get("newUserHomeCountry"),
+                    hometown=json.get("newUserHomeTown"),
+                    current_town=json.get("newUserCurrentTown"),
+                    current_country=json.get("newUserCurrentCountry")
                 )
-            
             elif role == "Citizen":
                 new_user = Citizen(
-                    username = json.get("newUserName"),
-                    user_info = json.get("newUserInfo"),
-                    profile_picture = json.get("newUserPic"),
-                    role = role,
-                    hometown = json.get("newUserHomeTown"),
-                    home_country = json.get("newUserHomeCountry"),
-                    current_town = json.get("newUserCurrentTown")
+                    username=json.get("newUserName"),
+                    user_info=json.get("newUserInfo"),
+                    role=role,
+                    cover_photo=json.get("newUserPic"),
+                    home_country=json.get("newUserHomeCountry"),
+                    hometown=json.get("newUserHomeTown"),
+                    current_town=json.get("newUserCurrentTown"),
+                    current_country=json.get("newUserCurrentCountry")
                 )
+            elif role == "Local Business":
+                new_user = LocalBusinessSites(
+                    username=json.get("newUserName"),
+                    user_info=json.get("newUserInfo"),
+                    role=role,
+                    cover_photo=json.get("newUserPic"),
 
-            new_user.password = json.get("newUserPassword")
+                    name=json.get("businessName"),
+                    email=json.get("email"),
+                    contact_number=json.get("contactNumber"),
+                    prefecture_id=json.get("businessPrefectureId"),
+                    building_numbers=json.get("buildingNumber"),
+                    neighbourhood=json.get("neighbourhood"),
+                    city=json.get("city"),
+                    postal_code=json.get("postalCode"),
+                    opening_time = datetime.strptime(json.get("openingTime"), "%H:%M").time(),
+                    closing_time = datetime.strptime(json.get("closingTime"), "%H:%M").time(),
+                    card_info=json.get("newUserInfo")
+                )
+            else:
+                return {"error": "Invalid role"}, 400
+            
+           
+
+            new_user.password_hash=json.get("newUserPassword")
             db.session.add(new_user)
             db.session.commit()
+
             return new_user.to_dict(rules=(
-                "-_password_hash",
-                "-user", 
-                "-admins", 
-                "-travelers", 
+                "-admins",
+                "-travelers",
                 "-citizens",
                 "-businesses",
+                "-prefecture_visit",
+                "-prefecture_wishlist",
+                "-business_visit",
+                "-business_wishlist",
+                "-business_reviews",
+                "-business_pictures",
+                "-profile_picture",
+                "-prefecture_reviews",
+                "-users",
+                "-user",
                 "-prefecture",
             )), 201
-        except ValueError as e:
-            return{
-                "error": [str(e)]
-            }, 400
+            
+
+        except Exception as e:
+            db.session.rollback()
+            return {"error": f"Failed to create user: {str(e)}"}, 400
+
 
 #Show Users based on their id
 class UsersId(Resource):
@@ -276,6 +503,27 @@ class UsersId(Resource):
         return {
             "error": "user not found"
         }
+    
+    def patch(self, id):
+        data=request.get_json()
+        # breakpoint()
+        user_info = Users.query.filter(Users.id==id).first()
+        if user_info:
+            try:
+                for attr in data:
+                    setattr(user_info, attr, data[attr])
+                db.session.add(user_info)
+                db.session.commit()
+                return make_response(user_info.to_dict(rules=(
+                    user_rules 
+                )), 202)
+            except ValueError:
+                return{
+                    "error": ["Validation Error"]
+                }, 400
+        return{
+            "error": "User not found"
+        }, 404
 
 #Show all registered admins
 class AllAdministrators(Resource):
@@ -399,7 +647,9 @@ class Login(Resource):
                 "-user",
                 "-business_pictures",
                 "-prefectures",
-                "-profile_picture",
+                "-profile_picture.user",
+                "-prefecture",
+                "-prefecture_reviews",
             )), 200
         
         return {'error': "Invalid username or password"}, 401
@@ -425,44 +675,7 @@ class LogOut(Resource):
 
 class AllPrefectures(Resource):
     def get(self):
-        prefectures = [prefecture.to_dict(rules=(
-            "-businesses.prefecture",
-            "-businesses.user",
-
-            "-businesses.business_reviews.business",
-            "-businesses.business_reviews.user",
-            "-businesses.business_reviews.id",
-            "-businesses.business_reviews.review_comment",
-            "-businesses.business_reviews.review_date",
-            "-businesses.business_reviews.traveler_id",
-
-            "-businesses.business_types.business",
-            "businesses.business_types.registered_type",
-
-            "-businesses.business_visit",
-
-            "-businesses.business_wishlist",
-
-            "-businesses.business_pictures",
-
-            "-businesses.admins",
-
-            "-businesses.travelers",
-
-            "-businesses.citizens",
-
-            "-businesses.businesses",
-
-            "-businesses.prefecture_visit",
-
-            "-businesses.prefecture_wishlist",
-
-            "-businesses.profile_picture",
-
-            "-business_pictures.prefecture",
-            "-business_pictures.user",
-            "-business_pictures.business",
-        )) for prefecture in Prefecture.query.all()]
+        prefectures = [prefecture.to_dict(rules=(prefecture_rules)) for prefecture in Prefecture.query.all()]
         return prefectures, 200
 
     def post(self):
@@ -479,47 +692,7 @@ class AllPrefectures(Resource):
             )
             db.session.add(new_prefecture)
             db.session.commit()
-            return new_prefecture.to_dict(
-                rules=(
-                    "-businesses.prefecture",
-                    "-businesses.user",
-
-                    "-businesses.business_reviews.business",
-                    "-businesses.business_reviews.user",
-                    "-businesses.business_reviews.id",
-                    "-businesses.business_reviews.review_comment",
-                    "-businesses.business_reviews.review_date",
-                    "-businesses.business_reviews.traveler_id",
-
-                    "-businesses.business_types.business",
-                    "businesses.business_types.registered_type",
-
-                    "-businesses.business_visit",
-
-                    "-businesses.business_wishlist",
-
-                    "-businesses.business_pictures",
-
-                    "-businesses.admins",
-
-                    "-businesses.travelers",
-
-                    "-businesses.citizens",
-
-                    "-businesses.businesses",
-
-                    "-businesses.prefecture_visit",
-
-                    "-businesses.prefecture_wishlist",
-
-                    "-businesses.profile_picture.user",
-                    
-
-                    "-business_pictures.prefecture",
-                    "-business_pictures.user",
-                    "-business_pictures.business",
-                )
-            ), 201
+            return new_prefecture.to_dict(rules=(prefecture_rules)), 201
         except ValueError as e:
             return{
                 "error": [str(e)]
@@ -531,50 +704,10 @@ class PrefectureId(Resource):
         if prefecture_info:
             # breakpoint()
             return make_response(prefecture_info.to_dict(
-                rules=(
-                    "-businesses.prefecture",
-                    "-businesses.user",
-
-                    "-businesses.business_reviews.business",
-                    "-businesses.business_reviews.user",
-                    "-businesses.business_reviews.id",
-                    "-businesses.business_reviews.review_comment",
-                    "-businesses.business_reviews.review_date",
-                    "-businesses.business_reviews.traveler_id",
-
-                    "-businesses.business_types.business",
-                    "businesses.business_types.registered_type",
-
-                    "-businesses.business_visit",
-
-                    "-businesses.business_wishlist",
-
-                    "-businesses.business_pictures",
-
-                    "-businesses.admins",
-
-                    "-businesses.travelers",
-
-                    "-businesses.citizens",
-
-                    "-businesses.businesses",
-
-                    "-businesses.profile_picture.user",
-
-                    "-businesses.prefecture_visit",
-
-                    "-businesses.prefecture_wishlist",
-
-                    "-business_pictures.prefecture",
-                    "-business_pictures.user",
-                    "-business_pictures.business",
-                )
-            ), 201)
+                rules=(prefecture_rules)), 201)
         return {
             "errors": "prefecture not found"
         }
-    
-
     
     def patch(self, id):
         data=request.get_json()
@@ -585,27 +718,7 @@ class PrefectureId(Resource):
                     setattr(prefecture_info, attr, data[attr])
                 db.session.add(prefecture_info)
                 db.session.commit()
-                return make_response(prefecture_info.to_dict(rules=(
-                    "-businesses.prefecture",
-                    "-businesses.admins",
-                    "-businesses.travelers",
-                    "-businesses.citizens",
-                    "-businesses.businesses",
-                    "-businesses.profile_picture",
-                    "-businesses.user",
-                    "-businesses._password_hash",
-                    "-businesses.business_reviews",
-                    "-businesses.business_types.business",
-                    "businesses.business_types.registered_type",
-                    "-businesses.building_numbers",
-                    "-businesses.closing_time",
-                    "-businesses.opening_time",
-                    "-businesses.role",
-                    "-businesses.type",
-                    "-businesses.user_info",
-                    "-businesses.username",
-                    "-businesses.postal_code",
-                )), 202)
+                return make_response(prefecture_info.to_dict(rules=(prefecture_rules)), 202)
             except ValueError:
                 return{
                     "error": ["Validation Error"]
@@ -616,72 +729,7 @@ class PrefectureId(Resource):
 
 class Businesses(Resource):
     def get(self):
-        businesses = [business.to_dict(
-            rules=(
-                "-user",
-                "-admin",
-                "-traveler",
-                "-citizen",
-                "-businesses",
-                "-prefecture",
-
-                "-profile_picture.user",
-
-
-                "-business_reviews.business",
-                "-business_reviews.user",
-
-                "-business_reviews.user.admins",
-                "-business_reviews.user.travelers",
-                "-business_reviews.user.citizens",
-                "-business_reviews.user.businesses",
-                "-business_reviews.user.prefecture_visit",
-                "-business_reviews.user.prefecture_wishlist",
-                "-business_reviews.user.business_visit",
-                "-business_reviews.user.business_wishlist",
-                "-business_reviews.user.business_reviews",
-                "-business_reviews.user.user",
-                "-business_reviews.user.business_pictures",
-                "-business_reviews.user.profile_picture",
-
-                "-business_types.business",
-                "business_types.registered_type.business_type",
-
-                "-business_visit.business",
-
-                "-business_visit.user.admins",
-                "-business_visit.user.travelers",
-                "-business_visit.user.citizens",
-                "-business_visit.user.prefecture_visit",
-                "-business_visit.user.prefecture_wishlist",
-                "-business_visit.user.business_visit",
-                "-business_visit.user.business_wishlist",
-                "-business_visit.user.business_reviews",
-                "-business_visit.user.user",
-                "-business_visit.user.current_country",
-                "-business_visit.user.user_info",
-                "-business_visit.user.prefecture_reviews",
-                "-business_visit.user.hometown",
-                "-business_visit.user.home_country",
-                "-business_visit.user.current_town",
-                "-business_visit.user._password_hash",
-                "-business_visit.user.role",
-                "-business_visit.user.type",
-                "-business_visit.user.user_info",
-                "-business_visit.user.business_pictures",
-                "-business_visit.user.profile_picture",
-
-                "-business_wishlist",
-                "-prefecture_id",
-
-                "-business_pictures",
-
-                "-prefecture.business_pictures",
-                "-prefecture.businesses",
-                "-prefecture.prefecture_reviews",
-                "-prefecture.prefecture_visit",
-                "-prefecture.prefecture_wishlist",
-            )) for business in LocalBusinessSites.query.all()]
+        businesses = [business.to_dict(rules=(business_rules)) for business in LocalBusinessSites.query.all()]
         return businesses, 200
 
 class BusinessesId(Resource):
@@ -689,72 +737,7 @@ class BusinessesId(Resource):
         business_info = LocalBusinessSites.query.filter(LocalBusinessSites.id==id).first()
         if business_info:
             # breakpoint()
-            return make_response(business_info.to_dict(
-                rules=(
-                    "-user",
-                    "-admin",
-                    "-traveler",
-                    "-citizen",
-                    "-businesses",
-                    "-prefecture",
-
-                    "-business_reviews.business",
-                    "-business_reviews.user",
-
-                    "-profile_picture.user",
-
-                    "-business_reviews.user.admins",
-                    "-business_reviews.user.travelers",
-                    "-business_reviews.user.citizens",
-                    "-business_reviews.user.businesses",
-                    "-business_reviews.user.prefecture_visit",
-                    "-business_reviews.user.prefecture_wishlist",
-                    "-business_reviews.user.business_visit",
-                    "-business_reviews.user.business_wishlist",
-                    "-business_reviews.user.business_reviews",
-                    "-business_reviews.user.user",
-                    "-business_reviews.user.business_pictures",
-                    "-business_reviews.user.profile_picture",
-
-                    "-business_types.business",
-                    "-business_types.registered_type",
-
-                    "-business_visit.business",
-
-                    "-business_visit.user.admins",
-                    "-business_visit.user.travelers",
-                    "-business_visit.user.citizens",
-                    "-business_visit.user.prefecture_visit",
-                    "-business_visit.user.prefecture_wishlist",
-                    "-business_visit.user.business_visit",
-                    "-business_visit.user.business_wishlist",
-                    "-business_visit.user.business_reviews",
-                    "-business_visit.user.user",
-                    "-business_visit.user.current_country",
-                    "-business_visit.user.user_info",
-                    "-business_visit.user.prefecture_reviews",
-                    "-business_visit.user.hometown",
-                    "-business_visit.user.home_country",
-                    "-business_visit.user.current_town",
-                    "-business_visit.user._password_hash",
-                    "-business_visit.user.role",
-                    "-business_visit.user.type",
-                    "-business_visit.user.user_info",
-                    "-business_visit.user.business_pictures",
-                    "-business_visit.user.profile_picture",
-
-                    "-business_wishlist",
-                    "-prefecture_id",
-
-                    "-business_pictures",
-
-                    "-prefecture.business_pictures",
-                    "-prefecture.businesses",
-                    "-prefecture.prefecture_reviews",
-                    "-prefecture.prefecture_visit",
-                    "-prefecture.prefecture_wishlist",
-                )
-            ), 201)
+            return make_response(business_info.to_dict(rules=(business_rules)), 201)
         return {"error": "Business not found"}
 
 class AllBusinessReviews(Resource):
@@ -770,8 +753,9 @@ class AllBusinessReviews(Resource):
             "-user.business_wishlist",
             "-user.business_reviews",
             "-user.business_pictures",
-            "-user.profile_picture",
+            "-user.profile_picture.user",
             "-user.user",
+            "-user.prefecture_reviews",
 
             "-business",
         )) for business_review in BusinessReviews.query.all()]
@@ -782,10 +766,10 @@ class AllBusinessReviews(Resource):
         # breakpoint()
         try:
             new_business_review = BusinessReviews(
-                review_rating = json.get("rating"),
-                review_comment = json.get("comment"),
-                business_id = json.get("business_id"),
-                user_id = json.get("user_id")
+                review_rating = json.get("newReviewRating"),
+                review_comment = json.get("newReviewComment"),
+                business_id = json.get("newBusinessId"),
+                user_id = json.get("newUserId")
             )
             db.session.add(new_business_review)
             db.session.commit()
@@ -800,8 +784,9 @@ class AllBusinessReviews(Resource):
                 "-user.business_wishlist",
                 "-user.business_reviews",
                 "-user.business_pictures",
-                "-user.profile_picture",
+                "-user.profile_picture.user",
                 "-user.user",
+                "-user.prefecture_reviews",
 
                 "-business",
             )), 201 
@@ -828,6 +813,7 @@ class BusinessReviewId(Resource):
                 "-user.business_pictures",
                 "-user.profile_picture",
                 "-user.user",
+                "-user.prefecture_reviews",
 
                 "-business",
             )), 201)
@@ -884,7 +870,39 @@ class AllPrefectureCategories(Resource):
 
 class AllPrefectureRatings(Resource):
     def get(self):
-        ratings = [rating.to_dict() for rating in PrefectureCategoryReviews.query.all()]
+        ratings = [rating.to_dict(rules=(
+            "-prefecture",
+
+            "-review_category.prefecture_category_ratings",
+
+            "-user.id",
+            "-user.user_info",
+            "-user.role",
+            "-user._password_hash",
+            "-user.cover_photo",
+
+            "-user.hometown",
+            "-user.home_country",
+            "-user.current_country",
+            "-user.current_town",
+
+            "-user.admins",
+            "-user.travelers",
+            "-user.citizens",
+            "-user.businesses",
+            "-user.prefecture_visit",
+            "-user.prefecture_wishlist",
+            "-user.business_visit",
+            "-user.business_wishlist",
+            "-user.business_reviews",
+            "-user.business_pictures",
+            "-user.profile_picture.user",
+            "-user.profile_picture.id",
+            "-user.profile_picture.user",
+            "-user.prefecture_reviews",
+            "-user.user",
+            "-user.prefecture",
+        )) for rating in PrefectureCategoryReviews.query.all()]
         return ratings, 200
     
     def post(self):
@@ -894,13 +912,43 @@ class AllPrefectureRatings(Resource):
                 rating = json.get("rating"),
                 prefecture_id = json.get("prefectureId"),
                 prefecture_type_id = json.get("categoryId"),
-                admin_id = json.get("adminId"),
-                citizen_id = json.get("citizenId"),
-                traveler_id = json.get("travelerId")
+                user_id = json.get("userId")
             )
             db.session.add(new_rating)
             db.session.commit()
-            return new_rating.to_dict(), 201
+            return new_rating.to_dict(rules=(
+                "-prefecture",
+
+                "-review_category.prefecture_category_ratings",
+
+                "-user.id",
+                "-user.user_info",
+                "-user.role",
+                "-user._password_hash",
+                "-user.cover_photo",
+
+                "-user.hometown",
+                "-user.home_country",
+                "-user.current_country",
+                "-user.current_town",
+
+                "-user.admins",
+                "-user.travelers",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.business_visit",
+                "-user.business_wishlist",
+                "-user.business_reviews",
+                "-user.business_pictures",
+                "-user.profile_picture.user",
+                "-user.profile_picture.id",
+                "-user.profile_picture.user",
+                "-user.prefecture_reviews",
+                "-user.user",
+                "-user.prefecture",
+            )), 201
         except ValueError as e:
             return{
                 "error": [str(e)]
@@ -916,7 +964,7 @@ class prefectureCheckIn(Resource):
         try:
             new_checkin = CheckInPrefecture(
                 # visited = json.get("visited"),
-                prefecture_id = json.get("prefectureId"),
+                prefecture_id = json.get("specificPrefectureId"),
                 user_id=json.get("userId")
             )
             db.session.add(new_checkin)
@@ -965,7 +1013,7 @@ class PrefectureWishLists(Resource):
         try:
             new_wishlist = PrefectureWishList(
                 # wish_list = json.get("inBag"),
-                prefecture_id = json.get("prefectureId"),
+                prefecture_id = json.get("specificPrefectureId"),
                 user_id = json.get("userId")
             )
             db.session.add(new_wishlist)
@@ -999,7 +1047,35 @@ class PrefectureWishListId(Resource):
 
 class BusinessCheckIn(Resource):
     def get(self):
-        checkIns = [checkIn.to_dict() for checkIn in CheckInBusiness.query.all()]
+        checkIns = [checkIn.to_dict(rules=(
+            "-business",
+
+            "-user.id",
+            "-user.user_info",
+            "-user._password_hash",
+            "-user.cover_photo",
+
+            "-user.admins",
+            "-user.travelers",
+            "-user.citizens",
+            "-user.businesses",
+            "-user.prefecture_visit",
+            "-user.prefecture_wishlist",
+            "-user.business_visit",
+            "-user.business_wishlist",
+            "-user.business_reviews",
+            "-user.business_pictures",
+            "-user.prefecture",
+            "-user.user",
+            "-user.current_country",
+            "-user.current_town",
+            "-user.home_country",
+            "-user.hometown",
+            "-user.prefecture_reviews",
+            "-user.role",
+
+            "-user.profile_picture.user",
+        )) for checkIn in CheckInBusiness.query.all()]
         return checkIns, 200
 
     def post(self):
@@ -1012,7 +1088,35 @@ class BusinessCheckIn(Resource):
             )
             db.session.add(new_checkin)
             db.session.commit()
-            return new_checkin.to_dict(), 201
+            return new_checkin.to_dict(rules=(
+                "-business",
+
+                "-user.id",
+                "-user.user_info",
+                "-user._password_hash",
+                "-user.cover_photo",
+
+                "-user.admins",
+                "-user.travelers",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.business_visit",
+                "-user.business_wishlist",
+                "-user.business_reviews",
+                "-user.business_pictures",
+                "-user.prefecture",
+                "-user.user",
+                "-user.current_country",
+                "-user.current_town",
+                "-user.home_country",
+                "-user.hometown",
+                "-user.prefecture_reviews",
+                "-user.role",
+
+                "-user.profile_picture.user",
+            )), 201
         except ValueError as e:
             return{
                 "error": [str(e)]
@@ -1024,61 +1128,33 @@ class BusinessCheckInId(Resource):
         if check_in_info:
             # breakpoint()
             return make_response(check_in_info.to_dict(rules=(
-                #Stop recursion error
-                "-business.prefecture_id",
-                "-business.business_reviews",
-                "-business.business_types",
-                "-business.business_visit",
-                "-business.user",
-                "-business.admins",
-                "-business.citizens",
-                "-business.travelers",
-                "-business.businesses",
+                "-business",
 
-                "-business.prefecture.businesses",
-                "-business.prefecture.prefecture_reviews",
-                "-business.prefecture.prefecture_visit",
-                "-business.prefecture.prefecture_wishlist",
+                "-user.id",
+                "-user.user_info",
+                "-user._password_hash",
+                "-user.cover_photo",
 
                 "-user.admins",
-                "-user.user",
+                "-user.travelers",
                 "-user.citizens",
                 "-user.businesses",
-                "-user.travelers",
                 "-user.prefecture_visit",
                 "-user.prefecture_wishlist",
                 "-user.business_visit",
+                "-user.business_wishlist",
                 "-user.business_reviews",
-                "-user.prefecture_reviews",
-                "-user.business_visit",
-                "-user.business_types",
-                "-user.profile_picture",
-
-                #Make it more readable
-                "-business._password_hash",
-                "-business.building_numbers",
-                "-buisiness.city",
-                "-business.closing_time",
-                "-business.date_registered",
-                "-business.neighbourhood",
-                "-business.opening_time",
-                "-business.postal_code",
-                "-business.prefecture.population",
-                "-business.prefecture.prefecture_img",
-                "-business.prefecture.capital_city",
-                "-business.prefecture_visit",
-                "-business.prefecture_wishlist",
-                "-business.role",
-                "-business.type",
-                "-business.username",
-                "-business_id",
-                "-user._password_hash",
+                "-user.business_pictures",
+                "-user.prefecture",
+                "-user.user",
                 "-user.current_country",
                 "-user.current_town",
                 "-user.home_country",
                 "-user.hometown",
+                "-user.prefecture_reviews",
                 "-user.role",
-                "-user.type",
+
+                "-user.profile_picture.user",
             )), 201)
         return {
             "error": "check in not found"
@@ -1100,9 +1176,33 @@ class BusinessWishLists(Resource):
     def get(self):
         wishlists = [wishlist.to_dict(
             rules=(
-                "-user",
+                "-user.user",
+                "-user.prefecture",
+                "-user.user_info",
+                "-user._password_hash",
+                "-user.cover_photo",
+
+                "-user.admins",
+                "-user.travelers",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.prefecture_reviews",
+                "-user.business_visit",
+                "-user.business_wishlist",
+                "-user.business_reviews",
+                "-user.business_pictures",
+
+                "-user.current_country",
+                "-user.current_town",
+                "-user.home_country",
+                "-user.hometown",
+
+                "-user.profile_picture.user",
 
                 "-business.user",
+                
                 "-business.prefecture",
 
                 "-business.business_reviews",
@@ -1149,7 +1249,67 @@ class BusinessWishLists(Resource):
             )
             db.session.add(new_wishlist)
             db.session.commit()
-            return new_wishlist.to_dict(), 201 
+            return new_wishlist.to_dict(rules=(
+                "-user.user",
+                "-user.prefecture",
+                "-user.user_info",
+                "-user._password_hash",
+                "-user.cover_photo",
+
+                "-user.admins",
+                "-user.travelers",
+                "-user.citizens",
+                "-user.businesses",
+                "-user.prefecture_visit",
+                "-user.prefecture_wishlist",
+                "-user.prefecture_reviews",
+                "-user.business_visit",
+                "-user.business_wishlist",
+                "-user.business_reviews",
+                "-user.business_pictures",
+
+                "-user.current_country",
+                "-user.current_town",
+                "-user.home_country",
+                "-user.hometown",
+
+                "-user.profile_picture.user",
+
+                "-business.user",
+                
+                "-business.prefecture",
+
+                "-business.business_reviews",
+                "-business.business_types",
+                "-business.business_visit",
+                "-business.business_wishlist",
+                "-business.business_pictures",
+
+                "-business.businesses",
+                "-business.admins",
+                "-business.travelers",
+                "-business.citizens",
+                "-business.prefecture_visit",
+                "-business.prefecture_wishlist",
+                "-business.business_visit",
+                "-business.business_wishlist",
+                "-business.business_reviews",
+                "-business.business_pictures",
+                "-business.postal_code",
+                "-business._password_hash",
+                "-business.username",
+                "-business.building_numbers",
+                "-business.type",
+                "-business.closing_time",
+                "-business.opening_time",
+                "-business.email",
+                "-business.city",
+                "-business.contact_number",
+                "-business.role",
+
+                "-business.profile_picture.user",
+                "-business.profile_picture.id",
+            )), 201 
         except ValueError as e:
             return {
                 "error": [str(e)]
@@ -1239,33 +1399,7 @@ def allowed_file(filename):
 
 class PrefecturePhotographs(Resource):
     def get(self):
-        prefecture_pic_info = [prefecture_pic.to_dict(rules=(
-            "-user.id",
-            "-user.user_info",
-            "-user.role",
-            "-user._password_hash",
-            "-user.admins",
-            "-user.travelers",
-            "-user.citizens",
-            "-user.businesses",
-            "-user.prefecture_visit",
-            "-user.prefecture_wishlist",
-            "-user.prefecture_reviews",
-            "-user.business_visit",
-            "-user.business_wishlist",
-            "-user.business_reviews",
-            "-user.business_pictures",
-            "-user.user",
-            "-user.prefecture",
-            "-user.current_country",
-            "-user.current_town",
-            "-user.type",
-            "-user.hometown",
-            "-user.home_country",
-            "-user.profile_picture",
-            "-prefecture",
-            "-business",
-        )) for prefecture_pic in PrefecturePhotos.query.all()]
+        prefecture_pic_info = [prefecture_pic.to_dict(rules=(picture_rules)) for prefecture_pic in PrefecturePhotos.query.all()]
         return prefecture_pic_info, 200
     
     def post(self):
@@ -1294,37 +1428,30 @@ class PrefecturePhotographs(Resource):
             db.session.add(new_picture)
             db.session.commit()
 
-            return new_picture.to_dict(
-                rules=(
-                    "-user.id",
-                    "-user.user_info",
-                    "-user.role",
-                    "-user._password_hash",
-                    "-user.admins",
-                    "-user.travelers",
-                    "-user.citizens",
-                    "-user.businesses",
-                    "-user.prefecture_visit",
-                    "-user.prefecture_wishlist",
-                    "-user.prefecture_reviews",
-                    "-user.business_visit",
-                    "-user.business_wishlist",
-                    "-user.business_reviews",
-                    "-user.business_pictures",
-                    "-user.user",
-                    "-user.prefecture",
-                    "-user.current_country",
-                    "-user.current_town",
-                    "-user.type",
-                    "-user.hometown",
-                    "-user.home_country",
-                    "-user.profile_picture",
-                    "-prefecture",
-                    "-business",
-                )
-            ), 201
+            return new_picture.to_dict(rules=(picture_rules)), 201
         else:
             return {"message": "File type not allowed"}, 400
+
+class PrefecturePhotosId(Resource):
+    def get(self, id):
+        photo_info = PrefecturePhotos.query.filter(PrefecturePhotos.id==id).first()
+        if photo_info:
+            return make_response(photo_info.to_dict(rules=(picture_rules)), 201)
+        return {
+            "error": "photo not found"
+        }, 404
+
+    def delete(self, id):
+        photo = PrefecturePhotos.query.filter(PrefecturePhotos.id==id).first()
+        if photo:
+            db.session.delete(photo)
+            db.session.commit()
+            return{
+                "message": "Photo deleted"
+            }, 200
+        return{
+            "error": "Picture not found"
+        }, 404
 
 class AllProfilePictures(Resource):
     def get(self):
@@ -1439,6 +1566,7 @@ api.add_resource(BusinessCheckInId, '/businesscheckin/<int:id>')
 api.add_resource(BusinessWishLists, '/businesswishlist')
 api.add_resource(BusinessWishListsId, '/businesswishlist/<int:id>')
 api.add_resource(PrefecturePhotographs, '/prefecturepics')
+api.add_resource(PrefecturePhotosId, '/prefecturepics/<int:id>')
 api.add_resource(AllProfilePictures, '/profilepics')
 api.add_resource(ProfilePicsId, '/profilepics/<int:id>')
 

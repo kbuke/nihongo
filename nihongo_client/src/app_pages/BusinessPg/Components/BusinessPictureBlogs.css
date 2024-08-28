@@ -1,0 +1,25 @@
+#pictureBlogContainer{
+    margin-left: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.businessCategoriesOption{
+    font-weight: 80;
+    font-size: 250%;
+}
+
+#selectedBusinessCategoryOption{
+    font-weight: 400;
+    text-decoration: underline;
+}
+
+#pictureBlogChoiceGrid{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 100%;
+    text-align: center;
+}
+

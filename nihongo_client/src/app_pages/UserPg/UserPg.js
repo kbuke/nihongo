@@ -3,7 +3,13 @@ import "./UserPg.css"
 import { useEffect, useState } from "react";
 
 import UserImgInfo from "./Components/UserImgInfo";
-import UserInfo from "./Components/UserInfo";
+// import UserInfo from "./Components/UserInfo";
+import UserIntro from "./Components/UserIntro";
+import ViewProfilePic from "./Components/ViewProfilePic";
+import UpdateProfilePic from "./Components/UpdateProfilePic";
+import UserOptions from "./Components/UserOptions";
+import UpdateUserInfo from "./Components/UpdateUserInfo";
+
 
 function UserPg(){
  
@@ -11,18 +17,27 @@ function UserPg(){
     const params = useParams()
 
     const [specificUserInfo, setSpecificUserInfo] = useState([])
-    const [changeUserPic, setChangeUserPic] = useState(false)
+    const [viewUserPic, setViewUserPic] = useState(false)
+    const [changeProfilePic, setChangeProfilePic] = useState(false)
+    const [updateInfo, setUpdateInfo] = useState(false)
+
+
+
 
     //Get the current logged in user
     const loggedUser = appData.loggedUser
 
     //Get all prefecture wishlists
     const allUsers = appData.users
+    const setAllUsers = appData.setUsers 
 
     //Show specific user profile
     const specificUserProfile = allUsers.find(user => user.id === parseInt(params.id))
+    console.log(specificUserInfo)
+    
 
-    const specificUserProfileId = specificUserProfile? specificUserProfile.id : null
+    const specificUserProfileId = specificUserProfile?.id
+
 
     useEffect(() => {
         if(specificUserProfileId) {
@@ -50,47 +65,80 @@ function UserPg(){
         };
     
     //Get user INTRO information
-    const userName = specificUserInfo? specificUserInfo.username : null 
-    const userInfo = specificUserInfo? specificUserInfo.user_info : null
-    const userPic = specificUserInfo? specificUserInfo.profile_picture : null
-    const userRole = specificUserInfo? specificUserInfo.role : null
-    const numberReviews = specificUserInfo.business_reviews? specificUserInfo.business_reviews.length : 0
-    const numberCheckIns = specificUserInfo.business_visit ? specificUserInfo.business_visit.length : 0
-    const homeTown = specificUserInfo? specificUserInfo.hometown : null 
-    const homeCountry = specificUserInfo? specificUserInfo.home_country : null 
-    const currentTown = specificUserInfo? specificUserInfo.current_town : null 
-    const currentCountry = specificUserInfo? specificUserInfo.current_country : null
+    const userProfilePicId = specificUserInfo.profile_picture?.id? specificUserInfo.profile_picture.id : null
+    const coverPhoto = specificUserInfo?.cover_photo
+    const userInfo = specificUserInfo?.user_info
+    const userHomeTown = specificUserInfo?.hometown
+    const userHomeCountry = specificUserInfo?.home_country
+    const userCurrentTown = specificUserInfo?.current_town
+    const userCurrentCountry = specificUserInfo?.current_country
+    const userCoverPhoto = specificUserInfo?.cover_photo
+    const userProfilePics = specificUserInfo.profile_picture?.picture_route
+
     
+
+    console.log(`i am ${userInfo} from ${userHomeTown}, ${userHomeCountry} living ${userCurrentTown}, ${userCurrentCountry}`)
+
+
     return (
         <div 
             id="userPgContainer"
             style={userHomeStyle}
         >
-            <>
-                <UserImgInfo 
-                    userName={userName}
+            {updateInfo ?
+                <UpdateUserInfo 
                     userInfo={userInfo}
-                    userPic={userPic}
-                    userRole={userRole}
-                    changeUserPic={changeUserPic}
-                    setChangeUserPic={setChangeUserPic}
-                    numberReviews={numberReviews}
-                    numberCheckIns={numberCheckIns}
-                    homeCountry={homeCountry}
-                    homeTown={homeTown}
-                    currentCountry={currentCountry}
-                    currentTown={currentTown}
-                    loggedUser={loggedUser}
+                    userHomeTown={userHomeTown}
+                    userHomeCountry={userHomeCountry}
+                    userCurrentCountry={userCurrentCountry}
+                    userCurrentTown={userCurrentTown}
+                    userCoverPhoto={userCoverPhoto}
+                    specificUserProfileId={specificUserProfileId}
+                    allUsers={allUsers}
+                    setAllUsers={setAllUsers}
+                    setUpdateInfo={setUpdateInfo}
+                />
+                :
+                null
+            }
+
+            {viewUserPic ? 
+                <ViewProfilePic 
+                    setViewUserPic={setViewUserPic}
+                    userProfilePics={userProfilePics}
+                    setChangeProfilePic={setChangeProfilePic}
                     specificUserInfo={specificUserInfo}
+                    changeProfilePic={changeProfilePic}
+                    userProfilePicId={userProfilePicId}
+                />
+                :
+                null
+            }
+            <>
+                <UserIntro 
+                    coverPhoto={coverPhoto}
+                    specificUserInfo={specificUserInfo}
+                    setViewUserPic={setViewUserPic}
+                    viewUserPic={viewUserPic}
+                    userProfilePics={userProfilePics}
+                    loggedUser={loggedUser}
+                    setUpdateInfo={setUpdateInfo}
+                    userInfo={userInfo}
+                    userHomeTown={userHomeTown}
+                    userHomeCountry={userHomeCountry}
+                    userCurrentCountry={userCurrentCountry}
+                    userCurrentTown={userCurrentTown}
+                    userCoverPhoto={userCoverPhoto}
                 />
             </>
 
-            <div id="mainInfoGrid">
-                <UserInfo 
+            <>
+                <UserOptions 
                     specificUserInfo={specificUserInfo}
                     loggedUser={loggedUser}
+                    appData={appData}
                 />
-            </div>
+            </>
         </div>
     )
 }

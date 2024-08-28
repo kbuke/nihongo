@@ -1,0 +1,16 @@
+#renderedUserFeedOptionGrid{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    width: 100%;
+    text-align: center;
+}
+
+.renderedUserFeedOptions{
+    font-weight: 80;
+    font-size: 300%;
+}
+
+#selectedUserOptionFeed{
+    font-weight: 250;
+    text-decoration: underline;
+}

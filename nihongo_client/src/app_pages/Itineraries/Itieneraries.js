@@ -1,7 +1,6 @@
 import { useOutletContext } from "react-router-dom";
 import "./Itineraries.css";
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
 
 function Itineraries() {
@@ -50,64 +49,69 @@ function Itineraries() {
         allBusinessWishLists.filter(
             (business) => business.user_id === loggedUserInfo.id && business.business.prefecture_id === prefectureId
         );
+    console.log(allBusinessWishLists);
 
-    const renderedWishLists = userPrefectureWishList.map((prefecture, index) => {
-        const prefectureId = prefecture.prefecture_id;
+    const renderedWishLists = userPrefectureWishList.map((prefectureWrapper) => {
+        const prefecture = prefectureWrapper.prefecture;
+        const prefectureId = prefectureWrapper.prefecture_id;
         const businesses = filterBusinessWishList(prefectureId);
 
         const page = currentPg[prefectureId] || 0;
         const paginatedBusinesses = businesses.slice(page * wishListNumber, (page + 1) * wishListNumber);
-        console.log(paginatedBusinesses)
+
+        console.log(prefecture);
 
         return (
-            <div key={index} id="wishlistContainer">
-                <div
-                    id="prefectureWishListCover"
-                    style={{
-                        backgroundImage: `url(${prefecture.prefecture.prefecture_img})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        width: "100%",
-                        borderTopLeftRadius: "24px",
-                        borderTopRightRadius: "24px",
-                        marginLeft: "10px",
-                        height: "450px",
-                    }}
-                >
-                    <h1 id="prefectureNameWishlist">
-                        {prefecture.prefecture.prefecture_name}
-                    </h1>
+            <div key={prefectureId} className="itineraryPgContainer">
+                <div className="wishlistContainer">
+                    <div
+                        className="prefectureWishListCover"
+                        style={{
+                            backgroundImage: `url(${prefecture?.prefecture_img})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            width: "100%",
+                            borderTopLeftRadius: "24px",
+                            borderTopRightRadius: "24px",
+                            marginLeft: "10px",
+                            height: "450px",
+                        }}
+                    >
+                        <h1 className="prefectureNameWishlist">
+                            {prefecture.prefecture_name}
+                        </h1>
 
-                    <div id="businessWishList">
-                        {paginatedBusinesses.map((business, index) => (
-                            <Link 
-                                key={index} 
-                                id="businessWishListGrid"
-                                to={`/business/${business.business_id}`}
-                            >
-                                <div id="businessWishListContainer">
-                                    <img
-                                        id="businessWishlistImg"
-                                        src={business.business.profile_picture[0]?.picture_route}
-                                        alt="Business"
-                                    />
-                                </div>
-                                <h4 id="businesWishListTitle">
-                                    {business.business.name}
-                                </h4>
-                            </Link>
-                        ))}
-                        <div id="itineraryButtonGrid">
-                            {page > 0 && (
-                                <button onClick={() => handlePrevPg(prefectureId)}>
-                                    Show Previous
-                                </button>
-                            )}
-                            {businesses.length > (page + 1) * wishListNumber && (
-                                <button onClick={() => handleNextPg(prefectureId)}>
-                                    Show Next
-                                </button>
-                            )}
+                        <div className="businessWishList">
+                            {paginatedBusinesses.map((business) => (
+                                <Link 
+                                    key={business.business_id} 
+                                    className="businessWishListGrid"
+                                    to={`/business/${business.business_id}`}
+                                >
+                                    <div className="businessWishListContainer">
+                                        <img
+                                            className="businessWishlistImg"
+                                            src={business.business.profile_picture?.picture_route}
+                                            alt="Business"
+                                        />
+                                    </div>
+                                    <h4 className="businesWishListTitle">
+                                        {business.business.name}
+                                    </h4>
+                                </Link>
+                            ))}
+                            <div className="itineraryButtonGrid">
+                                {page > 0 && (
+                                    <button onClick={() => handlePrevPg(prefectureId)}>
+                                        Show Previous
+                                    </button>
+                                )}
+                                {businesses.length > (page + 1) * wishListNumber && (
+                                    <button onClick={() => handleNextPg(prefectureId)}>
+                                        Show Next
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,11 +119,16 @@ function Itineraries() {
         );
     });
 
+    console.log(renderedWishLists);
+
+    // Ensure the renderedWishLists are returned in JSX
     return (
-        <div style={itineraryPgContainerStyle} id="itineraryPgContainer">
+        <div style={itineraryPgContainerStyle}>
             {renderedWishLists}
         </div>
     );
 }
 
 export default Itineraries;
+
+

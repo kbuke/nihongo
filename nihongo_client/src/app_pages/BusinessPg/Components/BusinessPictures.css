@@ -1,45 +1,67 @@
-#businessPictureGrid{
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-#businessPictureOptionsGrid{
-    display: grid;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    grid-template-columns: 50% 50%;
-}
-
-#selectedPhotoOption{
-    text-decoration: underline;
-    font-weight: 400;
-}
-
-.photoOption{
-    font-weight: 100;
-    font-size: 200%;
-}
-
-#specificBusinessPictureGrid{
-    display: grid;
-    grid-template-columns: 50% 50%;
-    align-items: center;
-    justify-content: center;
-}
-
-#businessesPictureContainer{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    height: 200px;
-    width: 300px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-}
-
-#businessPictureRender{
-    height: 100%;
+#renderPictureContainer{
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
+
+#renderPictureOptionsGrid{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.businessPictureOptionTitles{
+    font-weight: 80;
+    font-size: 170%;
+}
+
+#selectedBusinessPictureOption{
+    font-weight: 300;
+    text-decoration: underline;
+}
+
+#renderedPictureGrid{
+    display: grid;
+    width: 100%;
+    margin-right: 15px;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.pictureFeedContainer{
+    width: 95%;
+    height: 400px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    margin-left: 15px;
+    border-radius: 24px;
+    background-color: black;
+}
+
+.pictureFeedImg{
+    width: 100%;
+    max-height: 100%;
+}
+
+#addPictureIconButton{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#addPictureIcon{
+    max-width: 100%;
+    max-height: 100%;
+}
+

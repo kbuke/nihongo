@@ -1,74 +1,115 @@
 import { useState } from "react"
-import { useEffect } from "react"
 
 import "./BusinessPictures.css"
+import UploadNewPic from "./UploadNewPic"
+
+import plusIcon from "../../../assets/plus icon.png"
 
 function BusinessPictures({
-    specificBusinessId
+    specificBusinessId,
+    loggedUserId,
+    appData,
+    prefectureId
 }){
-    const [allPictures, setAllPictures] = useState([])
-    const [pictureType, setPictureType] = useState("SELF")
+    const [selectedOption, setSelectedOption] = useState("Uploaded")
+    const [uploadPic, setUploadPic] = useState(false)
 
-    const photoOptions = ["SELF", "TAGGED"]
+    const availableOptions = ["Uploaded", "Tagged"]
 
-    const renderPhotoOptions = photoOptions.map((option, index) => (
-        <h4 
+    const renderOptions = availableOptions.map((option, index) => (
+        <h3 
             key={index}
-            id={pictureType === option ? "selectedPhotoOption" : null}
-            onClick={() => setPictureType(option)}
-            className="photoOption"
+            onClick={() => setSelectedOption(option)}
+            className="businessPictureOptionTitles"
+            id={selectedOption === option ? "selectedBusinessPictureOption" : null}
         >
             {option}
-        </h4>
+        </h3>
     ))
 
+    const allPictures = appData.allPictures
+    console.log(allPictures)
 
-    //Get all pictures
-    useEffect(() => {
-        fetch("/prefecturepics")
-            .then((r) => {
-                if(r.ok) {
-                    return r.json()
-                }
-                throw r 
-            })
-            .then((pics) => setAllPictures(pics))
-            .catch((error) => console.error("Error fetching pictures", error))
-    }, [])
-
-    const taggedPics = allPictures.filter(picture => picture.user_id !== specificBusinessId && picture.business_id === specificBusinessId)
+    //filter Pictures
+    const businessPics = allPictures.filter(picture => picture.business_id === specificBusinessId && picture.user_id === specificBusinessId)
+    console.log(businessPics)
+    const sortPics = businessPics.sort((a, b) => new Date(b.upload_date) - new Date(a.upload_date))
 
 
-    const sortTaggedPics = taggedPics.sort((a, b) => b.upload_date - a.upload_date)
+    const taggedBusinessPics = allPictures.filter(picture => picture.business_id === specificBusinessId && picture.user_id !== specificBusinessId)
+    console.log(taggedBusinessPics)
 
-
-    const renderTagPics = sortTaggedPics.map((container, index) => (
-        <div id="businessesPictureContainer" key={index}>
+    const mapPics = selectedOption === "Uploaded" ? (
+        sortPics.length === 0 ? (
+            <h3>No Pictures Uploaded Yet</h3>
+        )
+        :
+        sortPics.map((picture, index) => (
+            <div 
+                key={index}
+                className="pictureFeedContainer"
+            >
+                <img 
+                    className="pictureFeedImg"
+                    src={picture.picture_route}
+                />
+            </div>
+        ))
+    )
+    :
+    taggedBusinessPics.length === 0? (
+        <h3>No Tagged Pictures</h3>
+    )
+    :
+    taggedBusinessPics.map((picture, index) => (
+        <div
+            key={index}
+            className="pictureFeedContainer"
+        >
             <img 
-                src={container.picture_route}
-                id="businessPictureRender"
+                className="pictureFeedImg"
+                src={picture.picture_route}
             />
         </div>
     ))
+    
 
     return(
-        <div
-            id="businessPictureGrid"
-        >
-            <div id="businessPictureOptionsGrid">
-                {renderPhotoOptions}
+        <div id="renderPictureContainer">
+            <div id="renderPictureOptionsGrid">
+                {renderOptions}
             </div>
 
-            <div id="specificBusinessPictureGrid">
-                {pictureType === "SELF" ? 
-                    null
-                    :
-                    renderTagPics
-                }
+            {loggedUserId === specificBusinessId && selectedOption==="Uploaded" ? 
+                <button
+                    onClick={() => setUploadPic(true)}
+                    id="addPictureIconButton"
+                >
+                    <img 
+                        id="addPictureIcon"
+                        src={plusIcon}
+                    />
+                </button>
+                :
+                null
+            }
+
+            <div id="renderedPictureGrid">
+                {mapPics}
             </div>
+
+            {uploadPic ?
+                <UploadNewPic 
+                    appData={appData}
+                    specificBusinessId={specificBusinessId}
+                    loggedUserId={loggedUserId}
+                    prefectureId={prefectureId}
+                    setUploadPic={setUploadPic}
+                />
+                :
+                null
+            }
         </div>
     )
-
-    
 }
 export default BusinessPictures

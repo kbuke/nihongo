@@ -1,0 +1,18 @@
+#checkInOutIconContainer{
+    height: 90px;
+    width: 30px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#checkInOutIconImg{
+    width: 100%;
+    height: 65%;
+}
+
+#checkInOutIconImg:hover{
+    transform: translateY(-10px);
+    transition: 0.3s;
+}

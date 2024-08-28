@@ -1,0 +1,32 @@
+#specificPrefectureBackground{
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
+#specificPrefectureTitle{
+    margin-left: 15px;
+    font-weight: 200;
+    font-size: 400%;
+    color: white;
+    text-decoration: underline;
+}
+
+#specificPrefectureOptionGrid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+}
+
+.specificPrefectureOption{
+    font-weight: 200;
+}
+
+#specificPrefectureChoice{
+    font-weight: 400;
+    text-decoration: underline;
+}

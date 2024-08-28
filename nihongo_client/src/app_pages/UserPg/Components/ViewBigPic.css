@@ -1,15 +1,29 @@
-#bigPicGrid{
-    background-color: white;
-    margin: 10px;
-    height: 90%;
-    width: 90%;
-    display: grid;
-    grid-template-columns: 70% 20% 10%;
+#viewBigPictureContainer{
+    z-index: 1000; /* Ensure it's on top */
     border-radius: 24px;
+    background-color: white;
+    width: 80%; /* Adjust width as needed */
+    height: 80%; /* Adjust height as needed */
+    position: fixed; /* Fix the modal's position relative to the viewport */
+    top: 50%; /* Position in the center */
+    left: 50%; /* Position in the center */
+    transform: translate(-50%, -50%); /* Adjust position to center the modal */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
 }
 
-#bigImgContainer{
-    border: solid;
+#viewBigPictureGrid{
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 70% 30%;
+
+}
+
+#viewSpecificBigPictureContainer{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,25 +33,156 @@
     border-bottom-left-radius: 24px;
 }
 
-#renderBigImg{
+#specificBigPicture{
     max-width: 100%;
     max-height: 100%;
 }
 
-#bigPicBlock{
-    display: block;
+#viewBigPicSpecificInfoContainer{
+    display: flex;
+    flex-direction: column;
 }
 
-#userPicInfoGrid{
-    display: grid;
-    grid-template-columns: 60% 40%;
+#viewBigPicButtonsContainer{
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-#userPicImg{
-    height: 80px;
-    width: 80px;
-    border-radius: 50%;
+#viewBigPicSpecificUserInfo{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 20% 60%;
     margin-top: 10px;
+    align-items: center;
+}
+
+#viewBigPicSpecificUserPicContainer{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#viewBigPicSpecificUserImg{
+    max-width: 100%;
+    height: 100%;
+}
+
+#viewBigPicSpecificUserInfoColumn{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.viewBigPicSpecificUserNameInfo,
+.viewBigPicSpecificUserDateInfo{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.viewBigPicSpecificUserNameInfo{
+    font-weight: 380;
+}
+
+.viewBigPicSpecificUserDateInfo{
+    font-weight: 100;
+}
+
+#viewBigPicSpecificPrefectureContainer{
+    margin-top: 30px;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 100px;
+    background-position: center;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#viewBigPicSpecificPrefectureNameContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(1, 1, 1, 0.8);
+    width: 150px;
+    border-radius: 10px;
+}
+
+#viewBigPicSpecificPrefectureName{
+    color: white;
+    font-weight: 180;
+    text-decoration: underline;
+}
+
+#viewBigPicSpecificBusinessContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Add this to position child elements relative to the container */
+    overflow: hidden;
+    height: 100px;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 20px;
+}
+
+#viewBigPicSpecificBusinessImg {
+    position: absolute; /* Add this to layer the image */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the container */
+    z-index: 0; /* Set z-index to 0 so it's behind other elements */
+}
+
+#viewBigPicSpecificBusinessNameContainer {
+    position: relative; /* Add this to layer the name container on top */
+    z-index: 1; /* Ensure this is on top of the image */
+    background-color: rgba(1, 1, 1, 0.8);
+    width: 150px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#viewBigPicSpecificBusinessName {
+    color: white;
+    text-decoration: underline;
+    font-weight: 180;
+    z-index: 2; /* Make sure the text is above everything */
+}
+
+#viewBigPicDeleteSpecificPicContainer,
+#viewBigPicCloseSpecificPicContainer{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    border: solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-top: 27px;
     margin-left: 10px;
+}
+
+#viewBigPicDeleteSpecificPicContainer:hover{
+    background-color: grey;
+}
+
+#viewBigPicCloseSpecificPicContainer:hover{
+    background-color: red;
+}
+
+#viewBigPicDeleteSpecificPic,
+#viewBigPicCloseSpecificPic{
+    max-width: 100%;
+    max-height: 100%;
 }

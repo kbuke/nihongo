@@ -1,0 +1,14 @@
+.deleteReviewModal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    border: solid;
+    height: 200px;
+    width: 700px;
+    background-color: white;
+    text-align: center;
+    border-radius: 24px;
+    margin-top: 100px;
+    margin-left: 340px;
+}

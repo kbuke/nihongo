@@ -1,0 +1,58 @@
+#renderVisitedPrefectureContainer {
+    display: flex;
+    justify-content: center;
+}
+
+#renderVisitedPrefecturesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+#visitedPrefectureContainer {
+    height: 600px;
+    width: 400px;
+    border-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5; /* Set initial opacity for background */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition effect */
+    position: relative;
+}
+
+#visitedPrefectureName {
+    color: white;
+    font-weight: bold; /* Make the text bold */
+    font-size: 400%;
+    text-decoration: underline;
+    position: absolute; /* Keep text centered */
+    z-index: 1; /* Ensure text is above the background */
+    opacity: 1; /* Ensure text is at full opacity initially */
+    background-color: rgba(0, 0, 0, 0.5); /* Add semi-transparent background to the text */
+    padding: 10px; /* Add padding around the text */
+    border-radius: 12px; /* Add rounded corners to the text background */
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7); /* Add a subtle shadow to the text */
+    transition: opacity 0.3s ease-in-out; /* Smooth transition effect */
+}
+
+#visitedPrefectureContainer:hover {
+    opacity: 1; /* Full opacity on hover */
+}
+
+#visitedPrefectureContainer:hover #visitedPrefectureName {
+    opacity: 0; /* Hide the text on hover */
+}
+
+#visitedSpecificPrefectueContainer{
+    width: 100%;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+}
+
+

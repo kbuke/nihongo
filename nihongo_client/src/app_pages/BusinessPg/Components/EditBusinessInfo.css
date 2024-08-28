@@ -1,0 +1,10 @@
+#updateBusinessInformationHeaders{
+    text-decoration: underline;
+    font-weight: 200;
+}
+
+#updatingBusinessInfoGrid{
+    width: 100%;
+    display: grid;
+    border: solid;
+}

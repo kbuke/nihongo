@@ -17,6 +17,8 @@ function Home(){
     const users = appData.users
     const setUsers = appData.setUsers
 
+    console.log(users)
+
     //--------------see if user is signed in
     const loggedUser = appData.loggedUser
     const setLoggedUser = appData.setLoggedUser
@@ -25,6 +27,7 @@ function Home(){
     const [userSignedUp, setUserSignedUp] = useState(false)
     const [signedUpUserName, setSignedUpUserName] = useState("")
     const [loggedInUser, setLoggedInUser] = useState(false)
+
 
 
     return(

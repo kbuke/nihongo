@@ -1,0 +1,105 @@
+.prefectureBackgroundContainer {
+    height: 600px;
+    width: 100%;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.prefectureIntroCover {
+    height: 90%;
+    background-color: rgba(255, 255, 255, 0.85);
+    width: 35%;
+    margin-left: 20px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.prefectureFlagContainer {
+    height: 90px;
+    width: 150px;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 0px;
+}
+
+.specificPrefectureFlag {
+    height: 100%;
+    width: 100%;
+}
+
+.specificPrefectureName {
+    color: black;
+    font-weight: 150;
+    font-size: 450%;
+    text-decoration: underline;
+    margin-top: 20px;
+}
+
+.specificPrefectureOptionsGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.renderPrefectureInfoOptionButton {
+    height: 40px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.renderPrefectureInfoOption {
+    font-weight: 80;
+}
+
+.selectedPrefectureInfoOptionButton {
+    background-color: pink;
+}
+
+.selectedPrefectureInfoOption {
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.renderedPrefectureInfo {
+    color: black;
+    text-align: center;
+    font-weight: 250;
+    margin-top: 20px;
+}
+
+.prefectureExtendedInfoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: 50px;
+    margin-bottom: 0px;
+}
+
+.prefectureExtendedInfoText {
+    color: black;
+    font-weight: 180;
+    margin-top: 0px;
+}
+
+.alterPrefectureInfoButton {
+    height: 40px;
+    border-radius: 24px;
+    background-color: green;
+    color: white;
+    border: none;
+}
+
+

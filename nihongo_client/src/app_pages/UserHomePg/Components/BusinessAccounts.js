@@ -1,6 +1,9 @@
+import { useState } from "react";
 import "./BusinessAccounts.css";
 
 import { Link } from "react-router-dom";
+
+import locationIcon from "../../../assets/visitedMark.png"
 
 function BusinessAccounts({
     businessRole,
@@ -8,79 +11,148 @@ function BusinessAccounts({
     selectedPrefecture,
     selectedBusiness
 }) {
-    const businessArrayCopy = [...businessRole];
+    console.log(businessRole)
 
-    businessArrayCopy.forEach(business => {
-        const reviewRatings = business.business_reviews.map(ratings => ratings.review_rating);
-        const totalSum = reviewRatings.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-        const averageRating = reviewRatings.length ? (totalSum / reviewRatings.length).toFixed(1) : 'N/A';
-        business.numberReviews = reviewRatings.length;
-        business.averageRating = averageRating;
-    });
-
-
-
-    // Filter by business type
-    const filterBuisnessTypes = selectedBusiness === "All Businesses" ?
-        businessArrayCopy :
-        businessArrayCopy.filter(businessInfo =>
-            businessInfo.business_types.some(typeInfo =>
+    const [selectedBusinessName, setSelectedBusinessName] = useState("")
+    
+    const filteredBusinesses = selectedBusiness === "All Businesses" ?
+        businessRole
+        :
+        businessRole.filter(businessInfo => 
+            businessInfo.business_types.some(typeInfo => 
                 typeInfo.registered_type.business_type === selectedBusiness
             )
-        );
+        )
+    console.log(filteredBusinesses)
 
 
     // Filter by prefecture
     const filterPrefectureBusinesses = selectedPrefecture === "All Prefectures" ?
-        filterBuisnessTypes :
-        filterBuisnessTypes.filter(businessInfo => businessInfo.prefecture.prefecture_name === selectedPrefecture);
+        filteredBusinesses :
+        filteredBusinesses.filter(businessInfo => businessInfo.prefecture.prefecture_name === selectedPrefecture);
 
     // Filter by search term
     const filterSearch = filterPrefectureBusinesses.filter(business => 
         business.name.toLowerCase().includes(filterBar.toLowerCase())
     );
 
+    console.log(filterSearch)
 
     const businessCard = filterSearch.map((businessInfo, index) => (
-        <Link key={index} id="userCard" to={`/business/${businessInfo.id}`}>
-            <div id="userImgCardContainer">
-                <img 
-                    id="userCardImg"
-                    src={businessInfo.profile_picture.length > 0 ? businessInfo.profile_picture[0].picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"}
-                    alt={`${businessInfo.name}`}
-                />
-            </div>
-
+        <Link
+            key={index}
+            className="userCard"
+            to={`/business/${businessInfo.id}`}
+            style={{
+                backgroundImage: `url(${businessInfo.profile_picture.picture_route})`
+            }}
+            onMouseEnter={() => setSelectedBusinessName(businessInfo.name)}
+        >
             <div id="userNameCardContainer">
-                <h3>{businessInfo.name}</h3>
-            </div>
+                <h1
+                    id="businessNameOnCard"
+                >
+                    {businessInfo.name}
+                </h1>
 
-            <div id="allBusinessInfoGrid">
-                <div id="businessInfoCardGrid">
-                    <>
-                        <h6>⭐️ {businessInfo.averageRating}</h6>
-                    </>
-                
-                    <>
-                        <h6>⏱️ {businessInfo.opening_time} - {businessInfo.closing_time}</h6>
-                    </>
+                <h3>
+                    {businessInfo.business_reviews.length > 0 ?
+                        (
+                            `${(businessInfo.business_reviews.reduce((accumulator, review) => (
+                                accumulator + review.review_rating
+                            ), 0) / businessInfo.business_reviews.length)
+                            .toFixed(1)} ⭐️`
+                        )
+                        :
+                        ""
+                    }
+                </h3>
 
-                    <>
-                        <h6>📍 {businessInfo.prefecture.prefecture_name}</h6>
-                    </>
+                <div id="userCardTypesGrid">
+                    {businessInfo.business_types.length > 0 ?
+                        businessInfo.business_types.map((type, index) => (
+                            <div 
+                                key={index}
+                                id="businessCardTypeContainer"
+                            >
+                                <h3
+                                    id="businessCardTypeText"
+                                >
+                                    {type.registered_type.business_type}
+                                </h3>
+                            </div>
+                        ))
+                        :
+                        ""
+                    }
                 </div>
 
-                <div id="businessInfoCardGrid">
-                    {businessInfo.business_types.map(types => (
-                        <h6 key={types.id}>👤 {types.registered_type.business_type}</h6>
-                    ))}
-                </div>
+                {selectedBusinessName === businessInfo.name ? 
+                    <div
+                        id="businessUserCardLocationGrid"
+                    >
+                        <div id="businessUserCardLocationImgContainer">
+                            <img 
+                                id="businessUserCardLocationImg"
+                                src={locationIcon}
+                            />
+                        </div>
+
+                        <h5 id="businessUserCardAddress">
+                            {businessInfo.building_numbers} {businessInfo.neighbourhood}, {businessInfo.city}, {businessInfo.postal_code}
+                        </h5>
+                    </div>
+                    :
+                    null
+                }
             </div>
         </Link>
     ));
+    
+
+
+    // const businessCard = filterSearch.map((businessInfo, index) => (
+    //     <Link key={index} id="userCard" to={`/business/${businessInfo.id}`}>
+    //         <div id="userImgCardContainer">
+    //             <img 
+    //                 id="userCardImg"
+    //                 src={businessInfo.profile_picture.length > 0 ? businessInfo.profile_picture[0].picture_route : "https://static.vecteezy.com/system/resources/thumbnails/008/442/086/small/illustration-of-human-icon-user-symbol-icon-modern-design-on-blank-background-free-vector.jpg"}
+    //                 alt={`${businessInfo.name}`}
+    //             />
+    //         </div>
+
+    //         <div id="userNameCardContainer">
+    //             <h3>{businessInfo.name}</h3>
+    //         </div>
+
+    //         <div id="allBusinessInfoGrid">
+    //             <div id="businessInfoCardGrid">
+    //                 <>
+    //                     <h6>⭐️ {businessInfo.averageRating}</h6>
+    //                 </>
+                
+    //                 <>
+    //                     <h6>⏱️ {businessInfo.opening_time} - {businessInfo.closing_time}</h6>
+    //                 </>
+
+    //                 <>
+    //                     <h6>📍 {businessInfo.prefecture.prefecture_name}</h6>
+    //                 </>
+    //             </div>
+
+    //             <div id="businessInfoCardGrid">
+    //                 {businessInfo.business_types.map(types => (
+    //                     <h6 key={types.id}>👤 {types.registered_type.business_type}</h6>
+    //                 ))}
+    //             </div>
+    //         </div>
+    //     </Link>
+    // ));
 
     return (
-        businessCard
+        <>
+            {businessCard}
+        </>
     );
 }
 

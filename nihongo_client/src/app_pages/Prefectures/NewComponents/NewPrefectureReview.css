@@ -1,0 +1,56 @@
+#specificPrefectureReviewContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+#specificPrefectureReviewGrid{
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(2, 1fr);
+    margin-left: 10px;
+}
+
+#specificPrefectureReviewGridLeftSide{
+    width: 100%;
+    border-right: solid;
+}
+
+#specificPrevPrefectureRatingGrid{
+    display: grid;
+    grid-template-columns: 15% 60%;
+    align-items: center;
+    justify-content: center;
+}
+
+#specificPrevPrefectureRatingPicContainer{
+    height: 40px;
+    width: 40px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    border: solid;
+}
+
+#specificPrevPrefectureRatingPic{
+    max-width: 100%;
+    height: 100%;
+}
+
+#prevRatingUserName,
+#prevRatingDisplay{
+    font-weight: 180;
+    text-align: left;
+}
+
+#prevRatingUserName{
+    margin-bottom: 0px;
+    text-decoration: underline;
+}
+
+#prevRatingDisplay{
+    margin-top: 0px;
+}

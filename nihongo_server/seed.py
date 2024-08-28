@@ -25,8 +25,9 @@ if __name__ == '__main__':
             role="Admin",
             current_town = "Johannesburg",
             current_country = "South Africa",
+            cover_photo = "https://media.tacdn.com/media/attractions-content--1x-1/10/29/d5/01.jpg"
         )
-        kbuke13.password = "kara1328"
+        kbuke13.password_hash = "kara1328"
 
         db.session.add_all([kbuke13])
         db.session.commit()
@@ -42,7 +43,7 @@ if __name__ == '__main__':
             current_town = "Johannesburg",
             current_country = "South Africa",
         )
-        zhirji15.password = "louisBruce"
+        zhirji15.password_hash = "louisBruce"
 
         gbuke02 = Traveler(
             username = "gbuke02",
@@ -52,7 +53,7 @@ if __name__ == '__main__':
             home_country = "Ireland",
             role = "Traveller"
         )
-        gbuke02.password = "Armagh01"
+        gbuke02.password_hash = "Armagh01"
 
         db.session.add_all([zhirji15, gbuke02])
         db.session.commit()
@@ -67,7 +68,7 @@ if __name__ == '__main__':
             current_town = "Osaka",
             role="Citizen"
         )
-        rNishiyama29.password = "Kyoto1"
+        rNishiyama29.password_hash = "Kyoto1"
 
         db.session.add_all([rNishiyama29])
         db.session.commit()
@@ -129,8 +130,9 @@ if __name__ == '__main__':
             card_info = "A lovely hotel/hostel in the heart of Kyoto, 5 minutes from the palace",
             email = "kyotomorris@gmail.com",
             contact_number = "0923768978",
+            cover_photo="https://photos.smugmug.com/Kyoto/Kyoto-Hotels/i-STdTBzQ/0/81445256/O/kyoto-morris-hostel-booking.com-101303340.jpg",
         )
-        kyotoMorris.password = "kyotoMorris1"
+        kyotoMorris.password_hash = "kyotoMorris1"
 
         sapparoBeerMuseum = LocalBusinessSites(
             username = "Sapparo Beer Museum",
@@ -145,9 +147,10 @@ if __name__ == '__main__':
             city="Higashi Ward",
             neighbourhood = "Johigashi",
             prefecture_id = 1,
-            card_info = "The home of Japans oldest, and most famous beers. Come and see how it's produced."
+            card_info = "The home of Japans oldest, and most famous beers. Come and see how it's produced.",
+            cover_photo = "https://www.sapporobeer.jp/brewery/s_museum/img/index-main_img01.jpg"
         )
-        sapparoBeerMuseum.password = "iLoveBeer"
+        sapparoBeerMuseum.password_hash = "iLoveBeer"
 
         taitoHokkaido = LocalBusinessSites(
             username = "Taito Station Arcade Sapparo",
@@ -163,7 +166,7 @@ if __name__ == '__main__':
             neighbourhood = "Jonishi",
             prefecture_id = 1
         )
-        taitoHokkaido.password = "bestArcade"
+        taitoHokkaido.password_hash = "bestArcade"
 
         goldenTemple = LocalBusinessSites(
             username = "Golden Temple",
@@ -180,7 +183,7 @@ if __name__ == '__main__':
             prefecture_id = 2,
             card_info = "One of the most famouse temples in Japan, and the only golden one"
         )
-        goldenTemple.password = "loveGold"
+        goldenTemple.password_hash = "loveGold"
 
         kyotoMonkeyPark = LocalBusinessSites(
             username = "Arashiyama Monkey Park Iwatayama",
@@ -196,7 +199,7 @@ if __name__ == '__main__':
             neighbourhood = "Arashiyama Nakaoshitacho",
             prefecture_id = 2
         )
-        kyotoMonkeyPark.password = "monkeyingAbout"
+        kyotoMonkeyPark.password_hash = "monkeyingAbout"
 
         kyotoBambooForest = LocalBusinessSites(
             username = "Arashiyama Bamboo Forest",
@@ -212,7 +215,7 @@ if __name__ == '__main__':
             neighbourhood = "Sagaogurayama Tabuchiyamacho",
             prefecture_id = 2
         )
-        kyotoBambooForest.password = "loveBamboo"
+        kyotoBambooForest.password_hash = "loveBamboo"
 
         fushimiShrines = LocalBusinessSites(
             username = "Fushimi Inari Taisha",
@@ -228,7 +231,7 @@ if __name__ == '__main__':
             neighbourhood = "Fukakusa Yabunouchicho",
             prefecture_id = 2
         )
-        fushimiShrines.password = "shrinesAlot"
+        fushimiShrines.password_hash = "shrinesAlot"
 
         daigoJi = LocalBusinessSites(
             username = "Daigo-ji Temple",
@@ -244,9 +247,28 @@ if __name__ == '__main__':
             neighbourhood = "Daigohigashiojicho",
             prefecture_id = 2
         )
-        daigoJi.password = "goJi"
+        daigoJi.password_hash = "goJi"
 
-        db.session.add_all([kyotoMorris, sapparoBeerMuseum, taitoHokkaido, goldenTemple, kyotoMonkeyPark, kyotoBambooForest, fushimiShrines, daigoJi])
+        teamLabs = LocalBusinessSites(
+            username = "Team Labs Tokyo",
+            user_info = "Cool and unique museum",
+            role = "Local Business",
+            name = "Team Labs Tokyo",
+            opening_time = time(9, 0),
+            closing_time = time(17, 0),
+            postal_code = "135-0061",
+            building_numbers = "6 Chome-1-16 Toyosu",
+            city = "Koto City",
+            neighbourhood = "Tokyo",
+            prefecture_id=4,
+            cover_photo="https://team-lab.imagewave.pictures/Hbei6dFGY5h4eX9qGRHhBE?height=2400"
+        )
+        teamLabs.password_hash = "teamLabs"
+
+        db.session.add_all([
+            kyotoMorris, sapparoBeerMuseum, taitoHokkaido, goldenTemple, kyotoMonkeyPark, kyotoBambooForest, 
+            fushimiShrines, daigoJi, teamLabs
+        ])
         db.session.commit()
 
         print("Seeding reviews")
@@ -498,21 +520,21 @@ if __name__ == '__main__':
             rating = 5,
             prefecture_id = 2,
             prefecture_type_id = 1,
-            admin_id = 1
+            user_id = 1
         )
 
         kyotoTravelerHistoryReview = PrefectureCategoryReviews(
             rating=4,
             prefecture_id = 2,
             prefecture_type_id = 1,
-            traveler_id = 2
+            user_id = 2
         )
 
         kyotoFoodAdminReview = PrefectureCategoryReviews(
             rating = 4,
             prefecture_id = 2,
             prefecture_type_id = 3,
-            admin_id = 1
+            user_id = 1
         )
         db.session.add_all([kyotoAdminHistoryReview, kyotoTravelerHistoryReview, kyotoFoodAdminReview])
         db.session.commit()
@@ -614,9 +636,14 @@ if __name__ == '__main__':
             picture_route="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/ef/b9/e6/taito-station.jpg?w=2400&h=-1&s=1",
             user_id=7
         )
+
+        teamLabsPic = UserProfilePicture(
+            picture_route = "https://www.justonecookbook.com/wp-content/uploads/2023/03/teamLab-Planets-TOKYO-32-8116.jpg",
+            user_id=13
+        )
         db.session.add_all([
             kyotoMorrisPic, kbuke13Pic, sapparoBeerMuseumPic, monkeyParkPic, goldenTemplePic, fushimiInariPic,
-            bambooForestPic, daigojiPic, taitoArcade
+            bambooForestPic, daigojiPic, taitoArcade, teamLabsPic
         ])
         db.session.commit()
 

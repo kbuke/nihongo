@@ -120,4 +120,24 @@
     justify-content: center;
 }
 
+#renderPrefectureMainGrid{
+    width: 100%;
+    height: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    text-align: center;
+    align-items: center;
+}
+
+.renderMainPrefectureOptionsButtonChoice{
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    border: none;
+}
+
+#selectedMainPrefectureOptionButton{
+    background-color: pink;
+    text-decoration: underline;
+}
+
 /* #ffb7c5; */

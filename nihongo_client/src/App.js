@@ -19,6 +19,10 @@ function App() {
   const [allPrefectureWishLists, setAllPrefectureWishLists] = useState([])
   const [allProfilePics, setAllProfilePics] = useState([])
   const [businessWishlist, setBusinessWishlist] = useState([])
+  const [businessCheckIn, setBusinessCheckIn] = useState([])
+  const [allPictures, setAllPictures] = useState([])
+  const [allPrefectureCategories, setAllPrefectureCategories] = useState([])
+  const [allPrefectureCategoryReviews, setAllPrefectureCategoryReviews] = useState([])
 
   //Get all users
   useEffect(() => {
@@ -55,7 +59,7 @@ function App() {
       throw r
     })
     .then(businesses => setAllBusinesses(businesses))
-  }, [])
+  }, [users])
 
   //auto-login function
   useEffect(() => {
@@ -127,8 +131,55 @@ function App() {
         })
         .then(wishlists => setBusinessWishlist(wishlists))
         .catch(error => console.error("Error fetching wishlists", error))
-}, [])
-console.log(businessWishlist)
+    }, [])
+
+    //fecth all business checkins
+    useEffect(() => {
+      fetch("/businesscheckin")
+        .then(r => {
+          if(r.ok) {
+            return r.json()
+          }
+          throw r 
+        })
+        .then(checkIn => setBusinessCheckIn(checkIn))
+    }, [])
+    
+    //fetch all pictures
+    useEffect(() => {
+      fetch('/prefecturepics')
+        .then(r => {
+          if(r.ok) {
+            return r.json()
+          }
+          throw r 
+        })
+        .then(picture => setAllPictures(picture))
+    }, [])
+
+    //fetch all prefecture categories
+    useEffect(() => {
+      fetch("/prefecturecategories")
+        .then(r => {
+          if(r.ok) {
+            return r.json()
+          }
+          throw r 
+        })
+        .then(category => setAllPrefectureCategories(category))
+    }, [])
+
+    //fetch all prefecture category reviews
+    useEffect(() => {
+      fetch("/prefectureratings")
+        .then(r => {
+          if(r.ok) {
+            return r.json()
+          }
+          throw r 
+        })
+        .then(prefectureReview => setAllPrefectureCategoryReviews(prefectureReview))
+    }, [])
 
 
 
@@ -175,7 +226,19 @@ console.log(businessWishlist)
           setAllProfilePics: setAllProfilePics,
 
           businessWishlist,
-          setBusinessWishlist
+          setBusinessWishlist,
+
+          businessCheckIn, 
+          setBusinessCheckIn,
+
+          allPictures,
+          setAllPictures,
+
+          allPrefectureCategories,
+          setAllPrefectureCategories,
+
+          allPrefectureCategoryReviews, 
+          setAllPrefectureCategoryReviews
         }
       }/>
     </div>

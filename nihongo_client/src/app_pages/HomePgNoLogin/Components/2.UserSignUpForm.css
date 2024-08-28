@@ -2,7 +2,7 @@
     margin-top: 50px;
     margin-left: 20px;
     width: 600px;
-    height: 550px;
+    /* height: 90%; */
     border: solid;
     border-radius: 5%;
     background-color: black;
@@ -46,4 +46,29 @@
 .signUpError{
     text-align: center;
     color: red;
+}
+
+#newUserContainer{
+    border: solid;
+    object-fit: contain;
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+#newUserInput{
+    width: 90%;
+}
+
+#businessSignUpButtonContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.businessSignUpButton{
+    height: 40px;
+    border-radius: 10px;
 }
