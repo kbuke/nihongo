@@ -1,0 +1,12 @@
+.newBusinessTypeGrid{
+    width: 100%;
+    display: grid;
+}
+
+#updateBusinessTypeButtons{
+    margin: 10px;
+}
+
+#closeTypeButton{
+    margin-left: 10px;
+}

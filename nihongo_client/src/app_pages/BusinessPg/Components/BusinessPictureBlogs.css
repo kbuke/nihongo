@@ -9,6 +9,7 @@
 .businessCategoriesOption{
     font-weight: 80;
     font-size: 250%;
+    cursor: pointer;
 }
 
 #selectedBusinessCategoryOption{

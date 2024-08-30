@@ -155,6 +155,7 @@ function LoggedInHome() {
               style={{
                 backgroundImage: `url(https://img.freepik.com/premium-photo/watercolor-room-japanese-ryokan-room-traditional-japanese-inn-white-background-scene-art_655090-590933.jpg?w=1060)`
               }}
+              to="/hotelhome"
             >
               <div
                 className="homePgCardTitleContainer"

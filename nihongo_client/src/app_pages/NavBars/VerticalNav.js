@@ -59,32 +59,41 @@ function VerticalNav({
                         <h3>Blogs</h3>
                     </div>
 
-                    <div className="largeIconContainer">
+                    <Link 
+                        className="largeIconContainer"
+                        to="/hotelhome"
+                    >
                         <img 
                             className="largeIcon"
                             src={hotelIcon} 
                             alt="hotel icon"
                         />
                         <h3>Hotels</h3>
-                    </div>
+                    </Link>
 
-                    <div className="largeIconContainer">
+                    <Link 
+                        className="largeIconContainer"
+                        to="/userhome"
+                    >
                         <img 
                             className="largeIcon"
                             src={userIcon} 
                             alt="user icon"
                         />
                         <h3>Users</h3>
-                    </div>
+                    </Link>
 
-                    <div className="largeIconContainer">
+                    <Link 
+                        className="largeIconContainer"
+                        to="/siteshome"
+                    >
                         <img 
                             className="largeIcon"
                             src={sitesIcon} 
                             alt="sites icon"
                         />
                         <h3>Sites</h3>
-                    </div>
+                    </Link>
 
                     <Link 
                         className="largeIconContainer"

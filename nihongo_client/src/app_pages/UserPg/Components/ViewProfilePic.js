@@ -7,11 +7,14 @@ function ViewProfilePic({
     userProfilePics,
     setViewUserPic,
     changeProfilePic,
-    userProfilePicId
+    userProfilePicId,
+    loggedUser,
+    specificUserProfileId
 }){
 
 
     console.log(userProfilePics)
+
 
   
     return(
@@ -32,18 +35,22 @@ function ViewProfilePic({
                         userProfilePicId={userProfilePicId}
                     />
                     :
-                    <div>
+                    <div id="profilePictureOptionsGrid">
                         <button 
                             onClick={() => setViewUserPic(false)}
                         >
                             Close Window
                         </button>
 
-                        <button
-                            onClick={() => setChangeProfilePic(true)}
-                        >
-                            Update Profile Picture
-                        </button>
+                        {loggedUser.id === specificUserProfileId ?
+                            <button
+                                onClick={() => setChangeProfilePic(true)}
+                            >
+                                Update Profile Picture
+                            </button>
+                            :
+                            null
+                        }
                     </div>
             }
         </div>

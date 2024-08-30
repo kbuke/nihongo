@@ -13,7 +13,7 @@
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
-    padding: 20px; /* Optional: Add padding for content inside */
+    padding-right: 20px;
 }
 
 
@@ -37,4 +37,6 @@
     display: grid;
     grid-template-columns: 50% 50%;
     gap: 10px;
+    width: 100%;
+    margin-left: 8px;
 }

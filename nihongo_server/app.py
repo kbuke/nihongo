@@ -811,13 +811,47 @@ class BusinessReviewId(Resource):
                 "-user.business_wishlist",
                 "-user.business_reviews",
                 "-user.business_pictures",
-                "-user.profile_picture",
+                "-user.profile_picture.user",
                 "-user.user",
                 "-user.prefecture_reviews",
 
                 "-business",
             )), 201)
         return {"error": "Business Review Not Found"}
+    
+    def patch(self, id):
+        data = request.get_json()
+        review_info = BusinessReviews.query.filter(BusinessReviews.id==id).first()
+        if review_info:
+            try:
+                for attr in data:
+                    setattr(review_info, attr, data[attr])
+                db.session.add(review_info)
+                db.session.commit()
+                return make_response(review_info.to_dict(rules=(
+                    "-user.admins",
+                    "-user.travelers",
+                    "-user.citizens",
+                    "-user.businesses",
+                    "-user.prefecture_visit",
+                    "-user.prefecture_wishlist",
+                    "-user.business_visit",
+                    "-user.business_wishlist",
+                    "-user.business_reviews",
+                    "-user.business_pictures",
+                    "-user.profile_picture.user",
+                    "-user.user",
+                    "-user.prefecture_reviews",
+
+                    "-business",
+                )), 202)
+            except ValueError:
+                return{
+                    "error": ["Validation Error"]
+                }, 400
+        return{
+            "error": "Review not found"
+        }, 404
     
     def delete(self, id):
         review_info = BusinessReviews.query.filter(BusinessReviews.id == id).first()
@@ -862,6 +896,29 @@ class AllBusinessTypesConnection(Resource):
     def get(self):
         business_types = [business_type.to_dict() for business_type in BusinessTypes.query.all()]
         return business_types, 200
+
+    def post(self):
+        json = request.get_json()
+        specific_business_id = json.get("specificBusinessId")
+        business_types = json.get("businessTypes")  # This is expected to be an array of business type IDs
+
+        new_connections = []
+
+        try:
+            for business_type_id in business_types:
+                new_business_connection = BusinessTypes(
+                    business_id=specific_business_id,
+                    business_type_id=business_type_id
+                )
+                db.session.add(new_business_connection)
+                new_connections.append(new_business_connection)
+
+            db.session.commit()
+            return [connection.to_dict() for connection in new_connections], 201
+        except ValueError as e:
+            return {
+                "error": [str(e)]
+            }, 400
 
 class AllPrefectureCategories(Resource):
     def get(self):
@@ -1418,6 +1475,7 @@ class PrefecturePhotographs(Resource):
 
             # Generate the file URL
             file_url = url_for('uploaded_file', filename=filename, _external=True)
+            breakpoint()
 
             new_picture = PrefecturePhotos(
                 picture_route=file_url,  # Save the URL instead of the path

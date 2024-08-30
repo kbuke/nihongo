@@ -1,0 +1,31 @@
+#editReviewModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    border: solid;
+    height: 400px;
+    width: 1000px;
+    background-color: white;
+    text-align: center;
+    border-radius: 24px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+
+.editReviewInfoGrid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    align-items: center;
+    gap: 20px;
+}
+
+#availableRankBox{
+    height: 40px;
+    text-align: center;
+    width: 80px;
+}

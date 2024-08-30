@@ -8,6 +8,7 @@
 .renderedUserFeedOptions{
     font-weight: 80;
     font-size: 300%;
+    cursor: pointer;
 }
 
 #selectedUserOptionFeed{

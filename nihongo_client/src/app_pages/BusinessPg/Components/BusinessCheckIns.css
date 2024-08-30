@@ -6,7 +6,7 @@
     align-items: center;
     margin-top: 30px;
     justify-content: center;
-    border-bottom: rgba(1, 1, 1, 0.8);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 }
 
 #renderedCheckInImgContainer{
@@ -30,15 +30,14 @@
 }
 
 #checkInInfo{
-    font-weight: 280;
-    font-size: 120%;
-    margin-top: 10px;
     margin-bottom: 0px;
 }
 
-#checkInInfoDate{
-    font-weight: 200;
-    font-size: 100%;
-    margin-top: 0px;
+#checkInInfoDetails{
     margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+#checkInInfoDate{
+    margin-top: 0px;
 }

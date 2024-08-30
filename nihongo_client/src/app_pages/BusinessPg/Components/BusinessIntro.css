@@ -47,6 +47,7 @@
     border: solid;
     margin-bottom: 0px;
     margin-top: 10px;
+    cursor: pointer;
 }
 
 
@@ -71,6 +72,7 @@
     margin: 2px;
     border: none;
     height: 40px;
+    cursor: pointer;
 }
 
 /* Styles for the selected option */
@@ -145,6 +147,7 @@
     align-items: center;
     overflow: hidden;
     margin-top: 15px;
+    cursor: pointer;
 }
 
 #checkInImg{
@@ -172,13 +175,27 @@
 #updateBusinessInfoButton{
     border-radius: 24px;
     background-color: green;
-    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
     text-decoration: underline;
     height: 40px;
     color: white;
+    cursor: pointer;
+}
+
+#updateBusinessCategoriesInfo{
+    border-radius: 24px;
+    background-color: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    color: white;
+    height: 40px;
+    margin-top: 10px;
+    text-decoration: underline;
 }
 
 #updateBusinessInfoButtonText{

@@ -23,6 +23,8 @@ function App() {
   const [allPictures, setAllPictures] = useState([])
   const [allPrefectureCategories, setAllPrefectureCategories] = useState([])
   const [allPrefectureCategoryReviews, setAllPrefectureCategoryReviews] = useState([])
+  const [businessTypes, setBusinessTypes] = useState([])
+  const [businessTypeConnections, setBusinessTypeConnections] = useState([])
 
   //Get all users
   useEffect(() => {
@@ -59,7 +61,7 @@ function App() {
       throw r
     })
     .then(businesses => setAllBusinesses(businesses))
-  }, [users])
+  }, [users, businessTypeConnections])
 
   //auto-login function
   useEffect(() => {
@@ -181,6 +183,30 @@ function App() {
         .then(prefectureReview => setAllPrefectureCategoryReviews(prefectureReview))
     }, [])
 
+    //fetch all business types
+    useEffect(() => {
+      fetch("/businesstypes")
+        .then(r => {
+          if(r.ok) {
+            return r.json()
+          }
+          throw r 
+        })
+        .then(businessType => setBusinessTypes(businessType))
+    }, [])
+
+    //fetch all business type connections
+    useEffect(() => {
+      fetch("/businesstypesconnection")
+        .then(r => {
+          if(r.ok) {
+            return r.json()
+          }
+          throw r 
+        })
+        .then(businessConnection => setBusinessTypeConnections(businessConnection))
+    }, [])
+
 
 
 
@@ -238,7 +264,13 @@ function App() {
           setAllPrefectureCategories,
 
           allPrefectureCategoryReviews, 
-          setAllPrefectureCategoryReviews
+          setAllPrefectureCategoryReviews,
+
+          businessTypes,
+          setBusinessTypes,
+
+          businessTypeConnections,
+          setBusinessTypeConnections
         }
       }/>
     </div>

@@ -1,0 +1,19 @@
+#wishListName{
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+#wishListConfirm{
+    font-weight: 300;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#wishListDate{
+    margin-top: 0px;
+    font-weight: 350;
+}
+
+#wishListButton{
+    margin-top: 20px;
+}

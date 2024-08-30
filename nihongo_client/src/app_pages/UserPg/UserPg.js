@@ -110,6 +110,8 @@ function UserPg(){
                     specificUserInfo={specificUserInfo}
                     changeProfilePic={changeProfilePic}
                     userProfilePicId={userProfilePicId}
+                    loggedUser={loggedUser}
+                    specificUserProfileId={specificUserProfileId}
                 />
                 :
                 null

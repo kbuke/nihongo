@@ -9,9 +9,11 @@ function UpdateProfilePic({
     const [newPic, setNewPic] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [selectedPic, setSelectedPic] = useState(false)
 
     const handleUpdatePic = (e) => {
         setNewPic(e.target.files[0]);
+        setSelectedPic(true)
     };
 
     const handleSubmit = (e) => {
@@ -61,9 +63,15 @@ function UpdateProfilePic({
                     accept=".png, .jpg, .jpeg, .gif" // Restrict file types if needed
                 />
                 {error && <p className="error">{error}</p>}
-                <button type="submit" disabled={loading}>
+
+                <button 
+                    type="submit" 
+                    disabled={loading}
+                    id={selectedPic ? "loadedPic" : ""}
+                >
                     {loading ? "Uploading..." : "Change Profile Picture"}
                 </button>
+
                 <button type="button" onClick={() => setChangeProfilePic(false)}>Cancel</button>
             </form>
         </div>

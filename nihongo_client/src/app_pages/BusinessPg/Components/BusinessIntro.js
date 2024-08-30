@@ -7,6 +7,7 @@ import BusinessWishList from "./BusinessWishList"
 import Reviews from "./Reviews"
 import ViewProfilePic from "./ViewProfilePic"
 import EditBusinessInfo from "./EditBusinessInfo"
+import UpdateBusinessTypes from "./UpdateBusinessTypes"
 
 import emailIcon from "../../../assets/email_icon.png"
 import clockIcon from "../../../assets/clock_icon.png"
@@ -39,13 +40,19 @@ function BusinessIntro({
     setNewReview,
     setAllBusinesses,
     allBusinesses,
-    businessPictureInfo
+    businessPictureInfo,
+    setEditReview,
+    setCurrentBusinessReview,
+    setCurrentBusinessReviewComment,
+    loggedUserRole,
+    appData
 }){
 
 
     const[chosenOption, setChosenOption] = useState("Intro")
     const[viewProfilePicture, setViewProfilePicture] = useState(false)
     const[updatingBusinessInfo, setUpdatingBusinessInfo] = useState(false)
+    const[updateBusinessTypes, setUpdateBusinessTypes] = useState(false)
    
 
     const availableOptions = ["Intro", "About", "Check-Ins", "WishLists", "Reviews"]
@@ -197,12 +204,25 @@ function BusinessIntro({
                         >
                             <h4 id="specificBusinessIntroInfo">{businessesBio}</h4>
                             {loggedUserId === specificBusinessId ? 
-                                <div 
-                                    id="updateBusinessInfoButton"
-                                    onClick={() => setUpdatingBusinessInfo(true)}    
-                                >
-                                    <h4 id="updateBusinessInfoButtonText">Update {specificBusiness?.name}'s Info</h4>
-                                </div>
+                                <>
+                                    <div 
+                                        id="updateBusinessInfoButton"
+                                        onClick={() => setUpdatingBusinessInfo(true)}    
+                                    >
+                                        <h4 id="updateBusinessInfoButtonText">Update {specificBusiness?.name}'s Info</h4>
+                                    </div>
+
+                                    <div
+                                        id="updateBusinessCategoriesInfo"
+                                        onClick={() => setUpdateBusinessTypes(true)}
+                                    >
+                                        <h4
+                                            id="updateBusinessInfoButtonText"
+                                        >
+                                            Update {specificBusiness?.name}'s Business Categories
+                                        </h4>
+                                    </div>
+                                </>
                                 :
                                 null
                             }
@@ -228,36 +248,42 @@ function BusinessIntro({
 
                     {/* Sort Check Ins */}
                     {chosenOption === "Check-Ins" ? (
-                        filterCheckIn.length > 0 ? (
-                        <div id="checkInBlock">
-                           <h3 id="specificBusinessInfoText">You have visited {specificBusiness.name}</h3>
-                           <div
-                            id="checkInImgButton"
-                            onClick={(e) => handleDelete(e, `/businesscheckin/${filterCheckIn[0].id}`, setBusinessCheckIn, filterCheckIn[0].id)}
-                           >
-                                <img 
-                                    id="checkInImg"
-                                    src={visitedIcon}
-                                />
-                           </div>
-                           <h3 id="specificBusinessInfoText">Click to check-out</h3>
-                        </div>
-                        ) : (
-                            <div 
-                                id="checkInBlock"
-                                onClick={(e) => handlePush(e, checkInUrl, setBusinessCheckIn, allCheckIns)}
-                            >
-                                <h3>You have not visited {specificBusiness.name}</h3>
-                                <div id="checkInImgButton">
-                                    <img
-                                        id="checkInImg"
-                                        src={locationIcon}
-                                    />
+                        loggedUserRole !== "Local Business" ? (
+                            filterCheckIn.length > 0 ? (
+                                <div id="checkInBlock">
+                                    <h3 id="specificBusinessInfoText">You have visited {specificBusiness.name}</h3>
+                                    <div
+                                        id="checkInImgButton"
+                                        onClick={(e) => handleDelete(e, `/businesscheckin/${filterCheckIn[0].id}`, setBusinessCheckIn, filterCheckIn[0].id)}
+                                    >
+                                        <img 
+                                            id="checkInImg"
+                                            src={visitedIcon}
+                                        />
+                                    </div>
+                                    <h3 id="specificBusinessInfoText">Click to check-out</h3>
                                 </div>
-                                <h3>Please click the icon above to mark visited</h3>
-                            </div>
-                        )
-                    ) : null}
+                            ) : (
+                                <div 
+                                    id="checkInBlock"
+                                    onClick={(e) => handlePush(e, checkInUrl, setBusinessCheckIn, allCheckIns)}
+                                >
+                                    <h3>You have not visited {specificBusiness.name}</h3>
+                                    <div id="checkInImgButton">
+                                        <img
+                                            id="checkInImg"
+                                            src={locationIcon}
+                                        />
+                                    </div>
+                                    <h3>Please click the icon above to mark visited</h3>
+                                </div>
+                            )
+                        ) 
+                        :
+                        <h2>As a business you can not add places to your checkins</h2>
+                    ): 
+                    null
+                    }
 
                     {/*Sort the reviews*/}
                     {chosenOption === "Reviews" ? (
@@ -295,41 +321,46 @@ function BusinessIntro({
 
                     {/*Sort Wish List */}
                     {chosenOption === "WishLists" ? (
-                        filterWishList.length > 0 ? (
+                        loggedUserRole !== "Local Business" ? (
+                            filterWishList.length > 0 ? (
+                                <div 
+                                    id="checkInBlock"
+                                    onClick={(e) => handleDelete(e, `/businesswishlist/${filterWishList[0].id}`, setAllWishLists, filterWishList[0].id)}
+                                >
+                                    <h3>{specificBusiness.name} is in your Wishlist</h3>
+                                    <div
+                                        id="checkInImgButton"
+                                    >
+                                        <img 
+                                            id="checkInImg"
+                                            src={wishListIcon}
+                                        />
+                                    </div>
+                                    <h3>Click to remove it from wishlist</h3>
+                                </div>
+                            )   
+                            :
                             <div 
                                 id="checkInBlock"
-                                onClick={(e) => handleDelete(e, `/businesswishlist/${filterWishList[0].id}`, setAllWishLists, filterWishList[0].id)}
+                                onClick={(e) => handlePush(e, wishListUrl, setAllWishLists, allWishLists)}
                             >
-                                <h3>{specificBusiness.name} is in your Wishlist</h3>
-                                <div
+                                <h3>{specificBusiness.name} is not in your Wishlist</h3>
+                                <div 
                                     id="checkInImgButton"
-
                                 >
                                     <img 
                                         id="checkInImg"
-                                        src={wishListIcon}
+                                        src={noWishListIcon}
                                     />
                                 </div>
-                                <h3>Click to remove it from wishlist</h3>
+                                <h3>Click the bag to add it to your wishlist</h3>
                             </div>
                         )
-                        :
-                        <div 
-                            id="checkInBlock"
-                            onClick={(e) => handlePush(e, wishListUrl, setAllWishLists, allWishLists)}
-                        >
-                            <h3>{specificBusiness.name} is not in your Wishlist</h3>
-                            <div 
-                                id="checkInImgButton"
-                            >
-                                <img 
-                                    id="checkInImg"
-                                    src={noWishListIcon}
-                                />
-                            </div>
-                            <h3>Click the bag to add it to your wishlist</h3>
-                        </div>
-                    ): null}
+                        : 
+                        <h2>As a business you can not add places to your wishlist</h2>
+                    )
+                    :
+                    null}
 
               
                 </div>
@@ -370,6 +401,9 @@ function BusinessIntro({
                                 loggedUserId={loggedUserId}
                                 setDeleteReview={setDeleteReview}
                                 setReviewId={setReviewId}
+                                setEditReview={setEditReview}
+                                setCurrentBusinessReview={setCurrentBusinessReview}
+                                setCurrentBusinessReviewComment={setCurrentBusinessReviewComment}
                             />
                         </div>
                     )}
@@ -402,6 +436,16 @@ function BusinessIntro({
                 />
                 :
                 null 
+            }
+
+            {updateBusinessTypes ?
+                <UpdateBusinessTypes 
+                    appData={appData}
+                    specificBusinessId={specificBusinessId}
+                    setUpdateBusinessTypes={setUpdateBusinessTypes}
+                />
+                :
+                null
             }
         </div>
     )
